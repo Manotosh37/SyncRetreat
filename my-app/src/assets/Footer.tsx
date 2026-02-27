@@ -1,27 +1,104 @@
-import { Mountain } from 'lucide-react';
+import { Twitter, Instagram, Linkedin, ArrowRight } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="py-12 bg-[#0a0a0a] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-blue-600/10 rounded-lg">
-              <Mountain className="w-5 h-5 text-blue-400" />
+    <footer className="bg-black border-t border-zinc-800 py-12 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <h3 className="text-lg font-bold text-white mb-3">SyncRetreat</h3>
+            <div className="flex space-x-3">
+              <a
+                href="#"
+                className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
+              >
+                <Twitter className="w-4 h-4 text-gray-400" />
+              </a>
+              <a
+                href="#"
+                className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
+              >
+                <Instagram className="w-4 h-4 text-gray-400" />
+              </a>
+              <a
+                href="#"
+                className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
+              >
+                <Linkedin className="w-4 h-4 text-gray-400" />
+              </a>
             </div>
-            <span className="text-white font-bold text-lg">SyncRetreat</span>
           </div>
 
-          <div className="flex items-center gap-8 text-sm text-slate-400">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="mailto:hello@syncretreat.com" className="hover:text-white transition-colors">
-              Contact
-            </a>
+          <div>
+            <h4 className="text-white font-semibold mb-3 text-sm">Quick Links</h4>
+            <ul className="space-y-1">
+              <li>
+                <a href="/gift" className="text-gray-400 hover:text-white transition-colors text-xs">
+                  Gift a trip
+                </a>
+              </li>
+              <li>
+                <a href="/about" className="text-gray-400 hover:text-white transition-colors text-xs">
+                  About us
+                </a>
+              </li>
+              <li>
+                <a href="/community-rules" className="text-gray-400 hover:text-white transition-colors text-xs">
+                  Community rules
+                </a>
+              </li>
+              <li>
+                <a href="/terms" className="text-gray-400 hover:text-white transition-colors text-xs">
+                  Terms & Conditions
+                </a>
+              </li>
+              <li>
+                <a href="/privacy" className="text-gray-400 hover:text-white transition-colors text-xs">
+                  Privacy
+                </a>
+              </li>
+              <li>
+                <a href="/faqs" className="text-gray-400 hover:text-white transition-colors text-xs">
+                  FAQs
+                </a>
+              </li>
+            </ul>
           </div>
 
-          <p className="text-slate-500 text-sm">
-            © 2026 Syncretreat. Ladakh, India.
+          <div>
+            <h4 className="text-white font-semibold mb-3 text-sm">Destinations</h4>
+            <ul className="space-y-1">
+              <li>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors text-xs">
+                  Ladakh
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors text-xs">
+                  Goa
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-semibold mb-3 text-sm">Get Updates</h4>
+            <div className="flex mb-3">
+              <input
+                type="email"
+                placeholder="Email"
+                className="flex-1 bg-zinc-900 border border-zinc-800 rounded-l-md px-3 py-2 text-white placeholder-gray-500 text-xs focus:outline-none focus:border-blue-500"
+              />
+              <button className="bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-r-md transition-colors">
+                <ArrowRight className="w-4 h-4 text-white" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-zinc-800 pt-4 text-center">
+          <p className="text-gray-600 text-xs">
+            © 2026 SyncRetreat. All rights reserved. Engineered for focus.
           </p>
         </div>
       </div>

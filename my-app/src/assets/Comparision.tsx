@@ -15,14 +15,14 @@ export default function PainComparison() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Why July? Why Ladakh?
+            Why June? Why Ladakh?
           </h2>
           <p className="text-xl text-slate-400">
             While India melts, Ladakh thrives.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -37,7 +37,7 @@ export default function PainComparison() {
                 <div className="p-3 bg-red-600/20 rounded-lg">
                   <CloudRain className="w-6 h-6 text-red-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-white">India in July</h3>
+                <h3 className="text-2xl font-bold text-white">India in June</h3>
               </div>
 
               <div className="space-y-4">
@@ -67,6 +67,50 @@ export default function PainComparison() {
               </div>
             </div>
           </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-linear-to-br from-red-950/20 to-red-900/10 border border-red-800/30 rounded-2xl p-8 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-3xl" />
+
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-red-600/20 rounded-lg">
+                  <CloudRain className="w-6 h-6 text-red-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Europe in June</h3>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-slate-300 font-medium">Un-Airconditioned Heat</p>
+                    <p className="text-slate-500 text-sm">European flats lack AC. When heatwaves hit, your hardware throttles and deep work dies.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-slate-300 font-medium">Summer Slump</p>
+                    <p className="text-slate-500 text-sm">Constant social obligations, networking, and FOMO. The continent stops shipping code.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-slate-300 font-medium">Peak Tourist Chaos</p>
+                    <p className="text-slate-500 text-sm">Overcrowded hubs, bloated daily costs, and zero isolation. Your focus is destroyed.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -82,7 +126,7 @@ export default function PainComparison() {
                 <div className="p-3 bg-blue-600/20 rounded-lg">
                   <Sun className="w-6 h-6 text-blue-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-white">Ladakh in July</h3>
+                <h3 className="text-2xl font-bold text-white">Ladakh in June</h3>
               </div>
 
               <div className="space-y-4">

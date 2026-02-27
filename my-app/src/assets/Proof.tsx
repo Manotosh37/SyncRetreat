@@ -1,84 +1,63 @@
-import { motion } from 'framer-motion';
-import { Shield, Wifi, Award, CheckCircle } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 
-const badges = [
-  {
-    icon: Shield,
-    title: 'Supported by Ladakh Tourism',
-    description: 'Official infrastructure partnership',
-  },
-  {
-    icon: Wifi,
-    title: 'Enterprise Network Security',
-    description: 'Encrypted VPN-ready connections',
-  },
-  {
-    icon: Award,
-    title: 'Curated Selection Process',
-    description: 'Interview-only admissions',
-  },
-  {
-    icon: CheckCircle,
-    title: '100% Uptime Guarantee',
-    description: 'Power & internet redundancy',
-  },
-];
+export default function Qualification() {
+  const notFor = [
+    "A backpacker looking for a standard 'yoga retreat' or sightseeing tour",
+    'Someone expecting a luxury resort vacation instead of a deep-work camp',
+    "Easily distracted, undisciplined, or looking to 'find yourself'",
+  ];
 
-export default function SocialProof() {
+  const engineeredFor = [
+    'Funded founders with strict product launch deadlines',
+    'Senior engineers requiring 100% network uptime (Dual-WAN) to ship code',
+    'Operators who view $1,500 as an ROI-positive business investment for 30 days of absolute focus',
+  ];
+
   return (
-    <section className="py-24 bg-linear-to-b from-[#0f0f0f] to-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Trusted Infrastructure
-          </h2>
-          <p className="text-xl text-slate-400">
-            Backed by partners who understand the stakes
-          </p>
-        </motion.div>
+    <section className="py-24 px-4">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-4xl md:text-5xl font-bold text-white mb-16 text-center">
+          Strictly Vetted: Who This Infrastructure is{' '}
+          <span className="text-red-500">NOT</span> For
+        </h2>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {badges.map((badge, index) => (
-            <motion.div
-              key={badge.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white/5 border border-white/10 rounded-xl p-6 text-center backdrop-blur-sm hover:bg-white/[0.07] transition-colors"
-            >
-              <div className="inline-flex p-3 bg-blue-600/10 rounded-lg mb-4">
-                <badge.icon className="w-6 h-6 text-blue-400" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="bg-zinc-900 border-2 border-red-900 p-8 rounded-lg">
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="bg-red-900 p-2 rounded">
+                <X className="w-6 h-6 text-red-400" />
               </div>
-              <h3 className="text-white font-semibold mb-2">{badge.title}</h3>
-              <p className="text-slate-400 text-sm">{badge.description}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-16 max-w-3xl mx-auto"
-        >
-          <div className="bg-linear-to-r from-blue-600/10 to-purple-600/10 border border-blue-600/30 rounded-2xl p-8 text-center">
-            <p className="text-slate-300 text-lg leading-relaxed">
-              "Not your typical 'digital nomad' setup. This is where serious builders go to ship without compromise."
-            </p>
-            <div className="mt-4 flex items-center justify-center gap-2">
-              <div className="w-2 h-2 bg-blue-400 rounded-full" />
-              <p className="text-slate-400 text-sm">Founding Member, Private Alpha</p>
+              <h3 className="text-2xl font-bold text-red-400">Do Not Apply If You Are:</h3>
             </div>
+
+            <ul className="space-y-4">
+              {notFor.map((item, index) => (
+                <li key={index} className="flex items-start space-x-3">
+                  <X className="w-5 h-5 text-red-500 mt-1 shrink-0" />
+                  <span className="text-gray-300 leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </motion.div>
+
+          <div className="bg-zinc-900 border-2 border-green-900 p-8 rounded-lg">
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="bg-green-900 p-2 rounded">
+                <Check className="w-6 h-6 text-green-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-green-400">This is Engineered For:</h3>
+            </div>
+
+            <ul className="space-y-4">
+              {engineeredFor.map((item, index) => (
+                <li key={index} className="flex items-start space-x-3">
+                  <Check className="w-5 h-5 text-green-500 mt-1 shrink-0" />
+                  <span className="text-gray-300 leading-relaxed">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );

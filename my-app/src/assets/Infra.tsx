@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Wifi, Armchair, Heart, Users, Car, Infinity } from 'lucide-react';
+import { Wifi, Armchair, Heart, Users, Car, Shield } from 'lucide-react';
 
 const features = [
   {
@@ -33,10 +33,10 @@ const features = [
     detail:'Pre-planned group trips to Pangong Lake, Nubra Valley, and Khardung La. We handle the permits, drivers, and logistics. You just show up and explore.'
   },
   {
-    icon: Infinity,
-    title: 'Zero-Friction Living',
-    description: 'All logistics covered & Complimentries.',
-    detail:''
+    icon: Shield,
+    title: 'Complete Logistics',
+    description: 'Complete Logistics',
+    detail:'All permits, accommodation, and local coordination handled. You focus on shipping.'
   }
 ];
 
@@ -56,12 +56,12 @@ export default function Infrastructure() {
             <br />
             <span className="text-slate-400">Not Just Sleeping</span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-400 max-w-5xl mx-auto">
             This isn't a hostel with bad WiFi. It's a productivity fortress with 5-star infrastructure.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-8xl mx-auto">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}

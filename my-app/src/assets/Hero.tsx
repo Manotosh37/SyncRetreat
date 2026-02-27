@@ -12,7 +12,7 @@ export default function Hero() {
                 animate= {{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}>
                     <div className='inline-block mb-4 px-4 py-2 border border-blue-500/30 rounded-full bg-blue-500/5 backdrop-blur-sm'>
-                        <span className='text-blue-400 text-sm font-medium tracking-wide'>July 2026 Founding Batch</span>
+                        <span className='text-blue-400 text-sm font-medium tracking-wide'>June 2026 Founding Batch</span>
                     </div>
 
                     <h1 className='text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-6 tracking-tight'>
