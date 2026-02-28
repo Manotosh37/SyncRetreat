@@ -11,7 +11,7 @@ const features = [
   {
     icon: Armchair,
     title: 'Comfort',
-    description: 'Herman Miller Tier Ergonomic Chairs',
+    description: 'Mordern Tier Ergonomic Chairs',
     detail: '8-hour work sessions without back pain. Premium desks with mountain views.',
   },
   {

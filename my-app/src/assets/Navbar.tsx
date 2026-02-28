@@ -15,7 +15,7 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#home" className="text-gray-300 hover:text-white transition-colors">
+            <a href="/" className="text-gray-300 hover:text-white transition-colors">
               Home
             </a>
             <div className="relative group">
@@ -33,25 +33,25 @@ export default function Navbar() {
                   onMouseEnter={() => setDestinationsOpen(true)}
                   onMouseLeave={() => setDestinationsOpen(false)}
                 >
-                  <a href="#ladakh" className="block px-4 py-2 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors">
+                  <a href="/ladakh" className="block px-4 py-2 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors">
                     Ladakh
                   </a>
-                  <a href="#goa" className="block px-4 py-2 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors">
+                  <a href="/goa" className="block px-4 py-2 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors">
                     Goa
                   </a>
                 </div>
               )}
             </div>
-            <a href="#about" className="text-gray-300 hover:text-white transition-colors">
+            <a href="/gift" className="text-gray-300 hover:text-white transition-colors">
               Gift Cards
             </a>
-            <a href="#community" className="text-gray-300 hover:text-white transition-colors">
+            <a href="/community" className="text-gray-300 hover:text-white transition-colors">
               Community
             </a>
-            <a href="#How it works" className="text-gray-300 hover:text-white transition-colors">
+            <a href="/How it works" className="text-gray-300 hover:text-white transition-colors">
               How it works
             </a>
-            <button className="bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">
+            <button  className="bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">
               Apply Now
             </button>
           </div>
@@ -70,10 +70,10 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-zinc-900 border-t border-zinc-800">
           <div className="px-4 py-4 space-y-3">
-            <a href="#home" className="block text-gray-300 hover:text-white transition-colors">
+            <a  href="/" className="block text-gray-300 hover:text-white transition-colors">
               Home
             </a>
-            <a href="#ladakh" className="block text-gray-300 hover:text-white transition-colors pl-4">
+            <a href="/ladakh" className="block text-gray-300 hover:text-white transition-colors pl-4">
               Ladakh
             </a>
             <a href="#goa" className="block text-gray-300 hover:text-white transition-colors pl-4">

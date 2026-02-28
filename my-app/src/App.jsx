@@ -19,7 +19,6 @@ import Ladakh from './assets/2nd-layer-assets/Ladakh'
 function Home() {
   return (
     <>
-    <h1 className='text-white text-4xl'>Test - Home is rendering</h1>
     <Hero />
       <Comparison />
       <Infra />
@@ -34,7 +33,6 @@ function App() {
   return (
     <BrowserRouter>
     <div className="min-h-screen bg-[#0a0a0a]">
-      <h1 className='text-white text-4xl'>Test - App is rendering</h1>
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />

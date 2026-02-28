@@ -9,19 +9,19 @@ export default function Footer() {
             <h3 className="text-lg font-bold text-white mb-3">SyncRetreat</h3>
             <div className="flex space-x-3">
               <a
-                href="#"
+                href="https://x.com/RetreatSyn57144"
                 className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
               >
                 <Twitter className="w-4 h-4 text-gray-400" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/sync.retreat/"
                 className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
               >
                 <Instagram className="w-4 h-4 text-gray-400" />
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/111381004/admin/dashboard/"
                 className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
               >
                 <Linkedin className="w-4 h-4 text-gray-400" />
@@ -69,12 +69,12 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-3 text-sm">Destinations</h4>
             <ul className="space-y-1">
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors text-xs">
+                <a href="/ladakh" className="text-gray-400 hover:text-white transition-colors text-xs">
                   Ladakh
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors text-xs">
+                <a href="/goa" className="text-gray-400 hover:text-white transition-colors text-xs">
                   Goa
                 </a>
               </li>
