@@ -9,10 +9,10 @@ export default function Navbar() {
     <nav className="fixed w-full border-b border-zinc-800 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
+          <a href='/' className="flex items-center">
             <img src="./logo2.png" alt="SyncRetreat" className='w-auto h-10' />
             <span className="text-white text-xl font-bold tracking-tight">SyncRetreat</span>
-          </div>
+          </a>
 
           <div className="hidden md:flex items-center space-x-8">
             <a href="/" className="text-gray-300 hover:text-white transition-colors">
@@ -45,10 +45,7 @@ export default function Navbar() {
             <a href="/gift" className="text-gray-300 hover:text-white transition-colors">
               Gift Cards
             </a>
-            <a href="/community" className="text-gray-300 hover:text-white transition-colors">
-              Community
-            </a>
-            <a href="/How it works" className="text-gray-300 hover:text-white transition-colors">
+            <a href="/howitworks" className="text-gray-300 hover:text-white transition-colors">
               How it works
             </a>
             <button  className="bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">

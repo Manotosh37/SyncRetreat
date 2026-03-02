@@ -7,14 +7,15 @@ import Proof from './assets/Proof';
 import Form from './assets/Form';
 import Footer from './assets/Footer';
 import Navbar from './assets/Navbar';
-import Terms from './assets/2nd-layer-assets/Terms';
-import Privacy from './assets/2nd-layer-assets/Privacy'
-import Community from './assets/2nd-layer-assets/Community-Rules'
-import About from './assets/2nd-layer-assets/About'
-import FAQs from './assets/2nd-layer-assets/FAQs'
-import Gift from './assets/2nd-layer-assets/gift'
-import Goa from './assets/2nd-layer-assets/Goa'
-import Ladakh from './assets/2nd-layer-assets/Ladakh'
+import Terms from './assets/Pages/Terms'
+import Privacy from './assets/Pages/Privacy'
+import Community from './assets/Pages/Community-Rules'
+import About from './assets/Pages/About'
+import FAQs from './assets/Pages/FAQs'
+import Gift from './assets/Pages/gift'
+import Goa from './assets/Pages/Goa'
+import Ladakh from './assets/Pages/Ladakh'
+import Works from './assets/Pages/Howitworks';
 
 function Home() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path='/terms' element={<Terms />} />
         <Route path = '/privacy' element={<Privacy />} />
         <Route path = '/community' element={<Community />} />
+        <Route path='/howitworks' element={<Works />} />
         <Route path = '/faqs' element={<FAQs />} />
         <Route path = '/goa' element={<Goa />} />
         <Route path = '/ladakh' element={<Ladakh />} />

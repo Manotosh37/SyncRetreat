@@ -8,19 +8,34 @@ function Lists() {
       title: 'Ladakh',
       description: 'A high altitude deep-work place to work. The Land of High Passes.',
       image: './Gemini_Generated_Image_glize7glize7gliz.png',
-      tags: ['Deep-Work', 'Monk Land', 'Cold Desert', 'India', 'Ladakh', 'co-living', 'co-working']
+      tags: ['Deep-Work', 'Monk Land', 'Cold Desert', 'India', 'Ladakh', 'co-living', 'co-working'],
+      price: 1500,
+      currency: '$',
+      route: '/ladakh',
+      right: 'See the dates',
+      duration: '/28 days'
     },
     {
       title: 'Goa',
       description: 'A.',
       image: './Gemini_Generated_Image_ig1sunig1sunig1s.png',
-      tags: ['Deep-Work', 'Hippie Land', 'Beach Life', 'India', 'Goa', 'co-living', 'co-working']
+      tags: ['Deep-Work', 'Hippie Land', 'Beach Life', 'India', 'Goa', 'co-living', 'co-working'],
+      price: 'TBA',
+      currency: '',
+      route: '#',
+      right: 'Upcoming...',
+      duration: ''
     },
     {
       title: 'Coming Soon...',
       description: 'New Place in India to explore and work from',
       image: './ChatGPTImageJan20202612_47_40P.jpeg',
-      tags: ['Deep-Work', 'India', 'co-living', 'co-working']
+      tags: ['Deep-Work', 'India', 'co-living', 'co-working'],
+      price:'',
+      currency: '$',
+      route: '/tba',
+      right: 'Coming Soon...',
+      duration: ''
     }
   ]
 
@@ -68,41 +83,32 @@ function Lists() {
                         </span>
                       ))}
                     </div>
+                    <div className="flex items-center justify-between mt-4 pt-4 border-t border-zinc-700">
+                      <div>
+                        {listings.price ? (
+                          <>
+                          <span className="text-gray-400 text-sm">Start from</span>
+                          <p className="text-white text-xl font-semibold">
+                            {listings.currency}{listings.price.toLocaleString()}
+                            <span className="text-gray-400 text-sm font-normal">{listings.duration}</span>
+                          </p>
+                          </>
+                        ):(
+                          <span className="text-gray-400 text-sm">Price TBA</span>
+                        )}
+                      </div>
+                      <button className="bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">
+                      <a href={listings.route} className=" text-sm font-medium flex-medium flex items-center gap-1 transition-colors">
+                        {listings.right} <ChevronRight size={16} />
+                      </a>
+                      </button>
+                    </div>
+
                     <div className="flex space-x-4">
-                      
                     </div>
                   </div>
                 </div>
               ))}
-              <div className="flex justify-center items-center space-x-4">
-              <button
-                onClick={prevPage}
-                className="p-3 border border-gray-500 text-gray-300 hover:border-white- hover:text-white transition-all duration-300 rounded-full"
-                disabled={currentPage === 0}
-              >
-                <ChevronLeft size={20} />
-              </button>
-              
-              <div className="flex space-x-2">
-                {Array.from({ length: totalPages }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentPage(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      currentPage === index ? 'bg-white' : 'bg-gray-500 hover:bg-gray-400'
-                    }`}
-                  />
-                ))}
-              </div>
-              
-              <button
-                onClick={nextPage}
-                className="p-3 border border-gray-500 text-gray-300 hover:border-white hover:text-white transition-all duration-300 rounded-full"
-                disabled={currentPage === totalPages - 1}
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
             </div>
         </div>
     </section>

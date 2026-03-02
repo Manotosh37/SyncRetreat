@@ -43,7 +43,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/community-rules" className="text-gray-400 hover:text-white transition-colors text-xs">
+                <a href="/community" className="text-gray-400 hover:text-white transition-colors text-xs">
                   Community rules
                 </a>
               </li>
