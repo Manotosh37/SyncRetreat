@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "strict": false
+  },
+  "imports": {
+    "std/http/": "https://deno.land/std@0.168.0/http/"
+  }
+}

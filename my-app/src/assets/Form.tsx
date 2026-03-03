@@ -6,9 +6,9 @@ function Lists() {
   const listings = [
     {
       title: 'Ladakh',
-      description: 'A high altitude deep-work place to work. The Land of High Passes.',
+      description: '15°C mountain air, zero urban noise, and absolute isolation. Engineered strictly for uninterrupted product shipping with enterprise-grade Dual-WAN infrastructure.',
       image: './Gemini_Generated_Image_glize7glize7gliz.png',
-      tags: ['Deep-Work', 'Monk Land', 'Cold Desert', 'India', 'Ladakh', 'co-living', 'co-working'],
+      tags: ['Deep Work', 'High-Altitude Isolation', 'Dual-WAN Uptime', 'Strictly Vetted', 'Deep-Work', 'Monk Land', 'Cold Desert', 'India', 'Ladakh', 'co-living', 'co-working'],
       price: 1500,
       currency: '$',
       route: '/ladakh',
@@ -17,21 +17,21 @@ function Lists() {
     },
     {
       title: 'Goa',
-      description: 'A.',
+      description: 'Goa is a massive liability for a productivity brand because of its party reputation. You must aggressively counter this by selling isolation within Goa. Do not sell the beach; sell the private compound.',
       image: './Gemini_Generated_Image_ig1sunig1sunig1s.png',
-      tags: ['Deep-Work', 'Hippie Land', 'Beach Life', 'India', 'Goa', 'co-living', 'co-working'],
-      price: 'TBA',
-      currency: '',
+      tags: ['Private Compound','Coastal Isolation','Focus Sprints','Enterprise Infrastructure','Deep-Work', 'Hippie Land', 'Beach Life', 'India', 'Goa', 'co-living', 'co-working'],
+      price: '1800',
+      currency: '$',
       route: '#',
       right: 'Upcoming...',
       duration: ''
     },
     {
       title: 'Coming Soon...',
-      description: 'New Place in India to explore and work from',
+      description: 'We are currently auditing and stress-testing new global locations. Only properties that pass our strict criteria for absolute isolation and network uptime will be deployed.New Place in India to explore and work from.',
       image: './ChatGPTImageJan20202612_47_40P.jpeg',
-      tags: ['Deep-Work', 'India', 'co-living', 'co-working'],
-      price:'',
+      tags: ['Vetting in Progress', 'Infrastructure Audit', 'Next Chapter'],
+      price:'1600 - 2000',
       currency: '$',
       route: '/tba',
       right: 'Coming Soon...',
@@ -54,7 +54,7 @@ function Lists() {
   }
 
   return (
-    <section className="py-24 px-4">
+    <section id="application-form" className="py-24 px-4">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center">
           Secure Your Bed. <span className="text-blue-500">Alpha Retreat</span>
@@ -77,7 +77,7 @@ function Lists() {
                     <h3 className="text-xl font-light text-white mb-3 tracking-wide">{listings.title}</h3>
                     <p className="text-gray-200 mb-4 leading-relaxed font-light text-sm">{listings.description}</p>
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {listings.tags.map((tag: string) => (
+                      {listings.tags.filter(Boolean).map((tag: string) => (
                         <span key={tag} className="text-gray-300 text-xs font-light tracking-wide border-b border-gray-500">
                           {tag}
                         </span>

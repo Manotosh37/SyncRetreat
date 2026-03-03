@@ -16,16 +16,37 @@ import Gift from './assets/Pages/gift'
 import Goa from './assets/Pages/Goa'
 import Ladakh from './assets/Pages/Ladakh'
 import Works from './assets/Pages/Howitworks';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import Admin from './assets/Pages/admin';
 
 function Home() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const scrollTo = params.get("scrollTo");
+    
+    if (scrollTo) {
+      setTimeout(() => {
+        const element = document.getElementById(scrollTo);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  }, [location]);
+
   return (
     <>
-    <Hero />
+      <Hero />
       <Comparison />
       <Infra />
       <Itinerary />
       <Proof />
-      <Form />
+      <div id="application-form">
+        <Form />
+      </div>
     </>
   )
 }
@@ -46,6 +67,7 @@ function App() {
         <Route path = '/ladakh' element={<Ladakh />} />
         <Route path = '/gift' element={<Gift />} />
         <Route path = '/about' element={<About />} />
+        <Route path='/admin' element={<Admin />}/>
         </Routes>      
       <Footer />
     </div>

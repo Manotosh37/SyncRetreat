@@ -1,21 +1,42 @@
-import { useState } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { useState } from "react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [destinationsOpen, setDestinationsOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const scrollToForm = () => {
+    setIsOpen(false);
+    
+    if (location.pathname === "/") {
+      const formElement = document.getElementById("application-form");
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      navigate("/?scrollTo=application-form");
+    }
+  };
 
   return (
     <nav className="fixed w-full border-b border-zinc-800 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <a href='/' className="flex items-center">
-            <img src="./logo2.png" alt="SyncRetreat" className='w-auto h-10' />
-            <span className="text-white text-xl font-bold tracking-tight">SyncRetreat</span>
+          <a href="/" className="flex items-center">
+            <img src="./logo2.png" alt="SyncRetreat" className="w-auto h-10" />
+            <span className="text-white text-xl font-bold tracking-tight">
+              SyncRetreat
+            </span>
           </a>
 
           <div className="hidden md:flex items-center space-x-8">
-            <a href="/" className="text-gray-300 hover:text-white transition-colors">
+            <a
+              href="/"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Home
             </a>
             <div className="relative group">
@@ -33,22 +54,42 @@ export default function Navbar() {
                   onMouseEnter={() => setDestinationsOpen(true)}
                   onMouseLeave={() => setDestinationsOpen(false)}
                 >
-                  <a href="/ladakh" className="block px-4 py-2 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors">
+                  <a
+                    href="/ladakh"
+                    className="block px-4 py-2 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                  >
                     Ladakh
                   </a>
-                  <a href="/goa" className="block px-4 py-2 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors">
+                  <a
+                    href="/goa"
+                    className="block px-4 py-2 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                  >
                     Goa
                   </a>
                 </div>
               )}
             </div>
-            <a href="/gift" className="text-gray-300 hover:text-white transition-colors">
+            {/* <a
+              href="/gift"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Gift Cards
-            </a>
-            <a href="/howitworks" className="text-gray-300 hover:text-white transition-colors">
+            </a> */}
+            <a
+              href="/howitworks"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               How it works
             </a>
-            <button  className="bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">
+            <a
+              href="/about"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              About
+            </a>
+            <button
+             onClick={scrollToForm}
+            className="bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">
               Apply Now
             </button>
           </div>
@@ -58,7 +99,11 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-300 hover:text-white"
             >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
             </button>
           </div>
         </div>
@@ -67,22 +112,39 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-zinc-900 border-t border-zinc-800">
           <div className="px-4 py-4 space-y-3">
-            <a  href="/" className="block text-gray-300 hover:text-white transition-colors">
+            <a
+              href="/"
+              className="block text-gray-300 hover:text-white transition-colors"
+            >
               Home
             </a>
-            <a href="/ladakh" className="block text-gray-300 hover:text-white transition-colors pl-4">
+            <a
+              href="/ladakh"
+              className="block text-gray-300 hover:text-white transition-colors pl-4"
+            >
               Ladakh
             </a>
-            <a href="#goa" className="block text-gray-300 hover:text-white transition-colors pl-4">
+            <a
+              href="#goa"
+              className="block text-gray-300 hover:text-white transition-colors pl-4"
+            >
               Goa
             </a>
-            <a href="#about" className="block text-gray-300 hover:text-white transition-colors">
+            <a
+              href="#about"
+              className="block text-gray-300 hover:text-white transition-colors"
+            >
               About
             </a>
-            <a href="#community" className="block text-gray-300 hover:text-white transition-colors">
+            <a
+              href="#community"
+              className="block text-gray-300 hover:text-white transition-colors"
+            >
               Community
             </a>
-            <button className="w-full bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">
+            <button
+            onClick={scrollToForm}
+            className="w-full bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">
               Apply Now
             </button>
           </div>
