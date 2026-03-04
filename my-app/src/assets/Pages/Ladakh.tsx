@@ -175,6 +175,8 @@ export default function Ladakh() {
     "Tour leader and Videographer / Photographer",
     "Your Video at the end of your trip",
     "Local SIM card",
+    "Weekend Trips",
+    "Wellness Activities"
   ];
 
   const notIncluded = [
