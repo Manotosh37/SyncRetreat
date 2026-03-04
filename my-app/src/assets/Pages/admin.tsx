@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabase";
 import { sendEmail } from '../../lib/emailservice';
-import { Mail, Check, X, DollarSign, Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { Mail, Check, X, DollarSign, Loader2, AlertCircle, CheckCircle, ArrowLeft } from "lucide-react";
 
 interface Booking {
   id: string;
@@ -39,6 +39,7 @@ export default function Admin() {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [paymentLink, setPaymentLink] = useState("https://paypal.me/syncretreat/199USD");
   const [filter, setFilter] = useState<"all" | "pending" | "approved" | "rejected">("all");
+  const [selectedTrip, setSelectedTrip] = useState<string | null>(null);
 
   const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "syncretreat2026";
 
@@ -52,13 +53,9 @@ export default function Admin() {
 
   const fetchBookings = async () => {
     const { data, error } = await supabase.from("bookings").select("*");
-
-console.log("Fetched data:", data);
-console.log("Fetch error:", error);
-
-if (error) {
-  console.error("Error fetching bookings:", error.message);
-} else {
+    if (error) {
+      console.error("Error fetching bookings:", error.message);
+    } else {
       setBookings(data || []);
     }
     setLoading(false);
@@ -84,39 +81,31 @@ if (error) {
 
   const handleSendConfirmation = async (booking: Booking) => {
     setActionState(booking.id, "confirmation");
-
     const result = await sendEmail({
       to: booking.email,
       name: booking.name,
       type: "confirmation",
       destination: booking.destination,
     });
-
     if (result.success) {
       showToast("success", `✅ Confirmation email sent to ${booking.name} (${booking.email})`);
     } else {
       showToast("error", `❌ Failed to send email: ${result.message}`);
     }
-
     clearActionState(booking.id);
   };
 
   const handleApprove = async (booking: Booking) => {
     setActionState(booking.id, "approve");
-
-    // Update status in database
     const { error: updateError } = await supabase
       .from("bookings")
       .update({ status: "approved" })
       .eq("id", booking.id);
-
     if (updateError) {
       showToast("error", `❌ Failed to update status: ${updateError.message}`);
       clearActionState(booking.id);
       return;
     }
-
-    // Send approval email with payment link
     const result = await sendEmail({
       to: booking.email,
       name: booking.name,
@@ -124,7 +113,6 @@ if (error) {
       destination: booking.destination,
       paymentLink: paymentLink,
     });
-
     if (result.success) {
       showToast("success", `✅ ${booking.name} approved! Payment email sent to ${booking.email}`);
       fetchBookings();
@@ -132,33 +120,26 @@ if (error) {
       showToast("error", `⚠️ Status updated but email failed: ${result.message}`);
       fetchBookings();
     }
-
     clearActionState(booking.id);
   };
 
   const handleReject = async (booking: Booking) => {
     setActionState(booking.id, "reject");
-
-    // Update status in database
     const { error: updateError } = await supabase
       .from("bookings")
       .update({ status: "rejected" })
       .eq("id", booking.id);
-
     if (updateError) {
       showToast("error", `❌ Failed to update status: ${updateError.message}`);
       clearActionState(booking.id);
       return;
     }
-
-    // Send rejection email
     const result = await sendEmail({
       to: booking.email,
       name: booking.name,
       type: "rejected",
       destination: booking.destination,
     });
-
     if (result.success) {
       showToast("success", `✅ ${booking.name} rejected. Notification sent to ${booking.email}`);
       fetchBookings();
@@ -166,43 +147,36 @@ if (error) {
       showToast("error", `⚠️ Status updated but email failed: ${result.message}`);
       fetchBookings();
     }
-
     clearActionState(booking.id);
   };
 
   const handleMarkPaid = async (booking: Booking) => {
     setActionState(booking.id, "paid");
-
     const { error } = await supabase
       .from("bookings")
       .update({ payment_status: "paid" })
       .eq("id", booking.id);
-
     if (error) {
       showToast("error", `❌ Failed to update payment status: ${error.message}`);
     } else {
       showToast("success", `✅ ${booking.name} marked as PAID`);
       fetchBookings();
     }
-
     clearActionState(booking.id);
   };
 
   const handleMarkUnpaid = async (booking: Booking) => {
     setActionState(booking.id, "unpaid");
-
     const { error } = await supabase
       .from("bookings")
       .update({ payment_status: "unpaid" })
       .eq("id", booking.id);
-
     if (error) {
       showToast("error", `❌ Failed to update payment status: ${error.message}`);
     } else {
       showToast("success", `✅ ${booking.name} marked as UNPAID`);
       fetchBookings();
     }
-
     clearActionState(booking.id);
   };
 
@@ -210,6 +184,12 @@ if (error) {
     if (filter === "all") return true;
     return b.status === filter;
   });
+
+  // Get unique destinations
+  const tripList = Array.from(new Set(bookings.map(b => b.destination).filter(Boolean)));
+
+  // Bookings for selected trip
+  const tripBookings = filteredBookings.filter(b => b.destination === selectedTrip);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -291,16 +271,13 @@ if (error) {
         ))}
       </div>
 
-      {/* Header */}
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white">Booking Dashboard</h1>
             <p className="text-gray-400 mt-1">{bookings.length} total applications</p>
           </div>
-
           <div className="flex flex-col sm:flex-row gap-4">
-            {/* Payment Link Input */}
             <div className="flex items-center gap-2">
               <label className="text-gray-400 text-sm whitespace-nowrap">PayPal Link:</label>
               <input
@@ -310,8 +287,6 @@ if (error) {
                 className="px-3 py-2 rounded-lg bg-gray-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
               />
             </div>
-
-            {/* Filter */}
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value as any)}
@@ -325,172 +300,209 @@ if (error) {
           </div>
         </div>
 
-        {/* Bookings Grid */}
-        <div className="grid gap-6">
-          {filteredBookings.length === 0 ? (
-            <div className="text-center text-gray-500 py-12">
-              No bookings found.
-            </div>
-          ) : (
-            filteredBookings.map((booking) => (
-              <div key={booking.id} className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
-                  <div>
-                    <h2 className="text-xl font-bold text-white">{booking.name}</h2>
-                    <p className="text-gray-400">{booking.email}</p>
-                    <p className="text-gray-400">{booking.phone}</p>
-                    <p className="text-gray-500 text-sm mt-1">
-                      Applied: {new Date(booking.created_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(booking.status)} text-white`}>
-                      {booking.status.toUpperCase()}
-                    </span>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPaymentColor(booking.payment_status)} text-white`}>
-                      {booking.payment_status.toUpperCase()}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Details Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div className="bg-gray-700/50 p-3 rounded-lg">
-                    <p className="text-gray-500 text-xs uppercase">Destination</p>
-                    <p className="text-white">{booking.destination || "Not specified"}</p>
-                  </div>
-                  <div className="bg-gray-700/50 p-3 rounded-lg">
-                    <p className="text-gray-500 text-xs uppercase">Remote Work</p>
-                    <p className="text-white">{booking.remote_work || "Not specified"}</p>
-                  </div>
-                  <div className="bg-gray-700/50 p-3 rounded-lg">
-                    <p className="text-gray-500 text-xs uppercase">Work</p>
-                    <p className="text-white">{booking.work_designation || "Not specified"}</p>
-                  </div>
-                  <div className="bg-gray-700/50 p-3 rounded-lg">
-                    <p className="text-gray-500 text-xs uppercase">Country</p>
-                    <p className="text-white">{booking.country || "Not specified"}</p>
-                  </div>
-                  <div className="bg-gray-700/50 p-3 rounded-lg">
-                    <p className="text-gray-500 text-xs uppercase">Age</p>
-                    <p className="text-white">{booking.age || "Not specified"}</p>
-                  </div>
-                  <div className="bg-gray-700/50 p-3 rounded-lg">
-                    <p className="text-gray-500 text-xs uppercase">How Heard</p>
-                    <p className="text-white">{booking.how_heard || "Not specified"}</p>
-                  </div>
-                </div>
-
-                {/* Links */}
-                <div className="flex gap-4 mb-4">
-                  {booking.linkedin && (
-                    <a
-                      href={booking.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-400 hover:underline text-sm"
-                    >
-                      LinkedIn →
-                    </a>
-                  )}
-                  {booking.portfolio && (
-                    <a
-                      href={booking.portfolio}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-400 hover:underline text-sm"
-                    >
-                      Portfolio →
-                    </a>
-                  )}
-                </div>
-
-                {/* About */}
-                {booking.about_you && (
-                  <div className="mb-6">
-                    <p className="text-gray-500 text-xs uppercase mb-1">About</p>
-                    <p className="text-gray-300 text-sm">{booking.about_you}</p>
-                  </div>
-                )}
-
-                {/* Actions */}
-                <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-700">
-                  {/* Send Confirmation */}
-                  <button
-                    onClick={() => handleSendConfirmation(booking)}
-                    disabled={!!actionLoading[booking.id]}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    {actionLoading[booking.id] === "confirmation" ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Mail className="w-4 h-4" />
-                    )}
-                    Send Confirmation
-                  </button>
-
-                  {/* Approve */}
-                  <button
-                    onClick={() => handleApprove(booking)}
-                    disabled={!!actionLoading[booking.id] || booking.status === "approved"}
-                    className="flex items-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-green-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    {actionLoading[booking.id] === "approve" ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Check className="w-4 h-4" />
-                    )}
-                    Approve & Send Payment Link
-                  </button>
-
-                  {/* Reject */}
-                  <button
-                    onClick={() => handleReject(booking)}
-                    disabled={!!actionLoading[booking.id] || booking.status === "rejected"}
-                    className="flex items-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-red-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    {actionLoading[booking.id] === "reject" ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <X className="w-4 h-4" />
-                    )}
-                    Reject
-                  </button>
-
-                  {/* Payment Toggle */}
-                  {booking.payment_status === "unpaid" ? (
-                    <button
-                      onClick={() => handleMarkPaid(booking)}
-                      disabled={!!actionLoading[booking.id]}
-                      className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    >
-                      {actionLoading[booking.id] === "paid" ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <DollarSign className="w-4 h-4" />
-                      )}
-                      Mark as Paid
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleMarkUnpaid(booking)}
-                      disabled={!!actionLoading[booking.id]}
-                      className="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                    >
-                      {actionLoading[booking.id] === "unpaid" ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <DollarSign className="w-4 h-4" />
-                      )}
-                      Mark as Unpaid
-                    </button>
-                  )}
-                </div>
+        {/* Trip List Page */}
+        {!selectedTrip ? (
+          <div>
+            <h2 className="text-2xl font-bold text-blue-400 mb-6">Trips</h2>
+            {tripList.length === 0 ? (
+              <div className="text-center text-gray-500 py-12">
+                No trips found.
               </div>
-            ))
-          )}
-        </div>
+            ) : (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {tripList.map((trip) => (
+                  <button
+                    key={trip}
+                    onClick={() => setSelectedTrip(trip)}
+                    className="bg-gray-800 hover:bg-blue-700 transition-colors border border-gray-700 rounded-xl p-6 flex flex-col items-start"
+                  >
+                    <span className="text-xl font-semibold text-white mb-2">{trip}</span>
+                    <span className="text-gray-400 text-sm">
+                      {bookings.filter(b => b.destination === trip).length} bookings
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          // Trip Details Page
+          <div>
+            <button
+              onClick={() => setSelectedTrip(null)}
+              className="flex items-center gap-2 mb-6 text-blue-400 hover:underline"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Trips
+            </button>
+            <h2 className="text-2xl font-bold text-blue-400 mb-4">{selectedTrip}</h2>
+            {tripBookings.length === 0 ? (
+              <div className="text-center text-gray-500 py-12">
+                No bookings for this trip.
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {tripBookings.map((booking) => (
+                  <div key={booking.id} className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    {/* Header */}
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+                      <div>
+                        <h2 className="text-xl font-bold text-white">{booking.name}</h2>
+                        <p className="text-gray-400">{booking.email}</p>
+                        <p className="text-gray-400">{booking.phone}</p>
+                        <p className="text-gray-500 text-sm mt-1">
+                          Applied: {new Date(booking.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(booking.status)} text-white`}>
+                          {booking.status.toUpperCase()}
+                        </span>
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${getPaymentColor(booking.payment_status)} text-white`}>
+                          {booking.payment_status.toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Details Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                      <div className="bg-gray-700/50 p-3 rounded-lg">
+                        <p className="text-gray-500 text-xs uppercase">Destination</p>
+                        <p className="text-white">{booking.destination || "Not specified"}</p>
+                      </div>
+                      <div className="bg-gray-700/50 p-3 rounded-lg">
+                        <p className="text-gray-500 text-xs uppercase">Remote Work</p>
+                        <p className="text-white">{booking.remote_work || "Not specified"}</p>
+                      </div>
+                      <div className="bg-gray-700/50 p-3 rounded-lg">
+                        <p className="text-gray-500 text-xs uppercase">Work</p>
+                        <p className="text-white">{booking.work_designation || "Not specified"}</p>
+                      </div>
+                      <div className="bg-gray-700/50 p-3 rounded-lg">
+                        <p className="text-gray-500 text-xs uppercase">Country</p>
+                        <p className="text-white">{booking.country || "Not specified"}</p>
+                      </div>
+                      <div className="bg-gray-700/50 p-3 rounded-lg">
+                        <p className="text-gray-500 text-xs uppercase">Age</p>
+                        <p className="text-white">{booking.age || "Not specified"}</p>
+                      </div>
+                      <div className="bg-gray-700/50 p-3 rounded-lg">
+                        <p className="text-gray-500 text-xs uppercase">How Heard</p>
+                        <p className="text-white">{booking.how_heard || "Not specified"}</p>
+                      </div>
+                    </div>
+
+                    {/* Links */}
+                    <div className="flex gap-4 mb-4">
+                      {booking.linkedin && (
+                        <a
+                          href={booking.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:underline text-sm"
+                        >
+                          LinkedIn →
+                        </a>
+                      )}
+                      {booking.portfolio && (
+                        <a
+                          href={booking.portfolio}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:underline text-sm"
+                        >
+                          Portfolio →
+                        </a>
+                      )}
+                    </div>
+
+                    {/* About */}
+                    {booking.about_you && (
+                      <div className="mb-6">
+                        <p className="text-gray-500 text-xs uppercase mb-1">About</p>
+                        <p className="text-gray-300 text-sm">{booking.about_you}</p>
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-700">
+                      {/* Send Confirmation */}
+                      <button
+                        onClick={() => handleSendConfirmation(booking)}
+                        disabled={!!actionLoading[booking.id]}
+                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        {actionLoading[booking.id] === "confirmation" ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Mail className="w-4 h-4" />
+                        )}
+                        Send Confirmation
+                      </button>
+
+                      {/* Approve */}
+                      <button
+                        onClick={() => handleApprove(booking)}
+                        disabled={!!actionLoading[booking.id] || booking.status === "approved"}
+                        className="flex items-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-green-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        {actionLoading[booking.id] === "approve" ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Check className="w-4 h-4" />
+                        )}
+                        Approve & Send Payment Link
+                      </button>
+
+                      {/* Reject */}
+                      <button
+                        onClick={() => handleReject(booking)}
+                        disabled={!!actionLoading[booking.id] || booking.status === "rejected"}
+                        className="flex items-center gap-2 bg-red-600 hover:bg-red-700 disabled:bg-red-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        {actionLoading[booking.id] === "reject" ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <X className="w-4 h-4" />
+                        )}
+                        Reject
+                      </button>
+
+                      {/* Payment Toggle */}
+                      {booking.payment_status === "unpaid" ? (
+                        <button
+                          onClick={() => handleMarkPaid(booking)}
+                          disabled={!!actionLoading[booking.id]}
+                          className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                        >
+                          {actionLoading[booking.id] === "paid" ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <DollarSign className="w-4 h-4" />
+                          )}
+                          Mark as Paid
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleMarkUnpaid(booking)}
+                          disabled={!!actionLoading[booking.id]}
+                          className="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                        >
+                          {actionLoading[booking.id] === "unpaid" ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <DollarSign className="w-4 h-4" />
+                          )}
+                          Mark as Unpaid
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
