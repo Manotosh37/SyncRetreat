@@ -12,7 +12,7 @@ import Privacy from './assets/Pages/Privacy'
 import Community from './assets/Pages/Community-Rules'
 import About from './assets/Pages/About'
 import FAQs from './assets/Pages/FAQs'
-import Gift from './assets/Pages/gift'
+// import Gift from './assets/Pages/gift'
 import Goa from './assets/Pages/Goa'
 import Ladakh from './assets/Pages/Ladakh'
 import Works from './assets/Pages/Howitworks';
@@ -65,7 +65,7 @@ function App() {
         <Route path = '/faqs' element={<FAQs />} />
         <Route path = '/goa' element={<Goa />} />
         <Route path = '/ladakh' element={<Ladakh />} />
-        <Route path = '/gift' element={<Gift />} />
+        {/* <Route path = '/gift' element={<Gift />} /> */}
         <Route path = '/about' element={<About />} />
         <Route path='/admin' element={<Admin />}/>
         </Routes>      
