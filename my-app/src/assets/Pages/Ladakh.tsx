@@ -24,7 +24,7 @@ export default function Ladakh() {
     country: "",
     email: "",
     phone: "",
-    countryCode: "",
+    countryCode: "+91",
     destination: "",
     tripDate: "",
     howHeard: "",
@@ -53,14 +53,10 @@ export default function Ladakh() {
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
-  };;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Open Calendly after form submission
-    // window.open("https://calendly.com/syncretreat", "_blank");
-    // setIsFormOpen(false);
-    // setCurrentStep(1);
     if (!formData.undertaking) {
       alert("Please accept the undertaking to continue.");
       return;
@@ -69,7 +65,6 @@ export default function Ladakh() {
     setSubmitStatus("idle");
 
     try {
-      // Save form data to Supabase
       const { data, error } = await supabase.from("bookings").insert([
         {
           name: formData.name,
@@ -98,13 +93,9 @@ export default function Ladakh() {
         throw error;
       }
 
-      console.log("Booking saved:", data);
       setSubmitStatus("success");
-
-      // Open Calendly after successful submission
       window.open("https://calendly.com/syncretreat", "_blank");
 
-      // Reset form
       setFormData({
         name: "",
         age: "",
@@ -127,7 +118,6 @@ export default function Ladakh() {
         undertaking: false,
       });
 
-      // Close modal after short delay
       setTimeout(() => {
         setIsFormOpen(false);
         setSubmitStatus("idle");
@@ -445,37 +435,48 @@ export default function Ladakh() {
                 <p className="text-xs text-gray-500 mb-2">Your WhatsApp number</p>
                 <div className="flex gap-2">
                   <select
-  name="countryCode"
-  value={formData.countryCode}
-  onChange={e => {
-    const value = e.target.value;
-    setShowCustomCode(value === "custom");
-    setFormData(prev => ({
-      ...prev,
-      countryCode: value === "custom" ? "" : value
-    }));
-  }}
-  className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white"
->
-  <option value="+91">🇮🇳 +91</option>
-  <option value="+1">🇺🇸 +1</option>
-  <option value="+44">🇬🇧 +44</option>
-  <option value="+971">🇦🇪 +971</option>
-  <option value="+65">🇸🇬 +65</option>
-  <option value="+49">🇩🇪 +49</option>
-  <option value="custom">Other (enter manually)</option>
-</select>
-{showCustomCode && (
-  <input
-    type="text"
-    name="countryCode"
-    value={formData.countryCode}
-    onChange={handleInputChange}
-    placeholder="Enter custom code (e.g. +234)"
-    className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white mt-2"
-    required
-  />
-)}
+                    name="countryCode"
+                    value={showCustomCode ? "custom" : formData.countryCode}
+                    onChange={e => {
+                      const value = e.target.value;
+                      setShowCustomCode(value === "custom");
+                      setFormData(prev => ({
+                        ...prev,
+                        countryCode: value === "custom" ? "" : value
+                      }));
+                    }}
+                    className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white"
+                    style={{ minWidth: "110px" }}
+                  >
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+971">🇦🇪 +971</option>
+                    <option value="+65">🇸🇬 +65</option>
+                    <option value="+49">🇩🇪 +49</option>
+                    <option value="custom">Other (enter manually)</option>
+                  </select>
+                  {showCustomCode && (
+                    <input
+                      type="text"
+                      name="countryCode"
+                      value={formData.countryCode}
+                      onChange={handleInputChange}
+                      placeholder="Enter custom code (e.g. +234)"
+                      className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white"
+                      style={{ minWidth: "110px" }}
+                      required
+                    />
+                  )}
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    placeholder="Phone number"
+                    required
+                    className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white flex-1"
+                  />
                 </div>
               </div>
 
