@@ -250,9 +250,9 @@ export default function Ladakh() {
   ];
 
   const documents = [
-    { name: "Detailed Travel Itinerary", file: "travel-itinerary.pdf" },
-    { name: "Packing List & Visa Info", file: "packing-list.pdf" },
-    { name: "What to Expect? & Opportunities", file: "terms-conditions.pdf" },
+    { name: "Detailed Travel Itinerary & Packing List", file: "SyncRetreat_Deployment_Manifest.pdf" },
+    { name: "Info about Pricing Schedule & Invoice", file: "payment.pdf" },
+    { name: "What to Expect? & Opportunities", file: "SyncRetreat_Alignment_Protocol.pdf" },
   ];
 
   const community = [
