@@ -800,9 +800,9 @@ export default function Ladakh() {
                 >
                   Book Now
                 </button>
-                <button className="w-full border-2 border-blue-500 text-blue-500 font-bold py-3 rounded-lg hover:bg-blue-500/10 transition-colors">
+                {/* <button className="w-full border-2 border-blue-500 text-blue-500 font-bold py-3 rounded-lg hover:bg-blue-500/10 transition-colors">
                   Gift a Trip
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
