@@ -17,7 +17,7 @@ function Lists() {
     },
     {
       title: 'Goa',
-      description: 'Goa is a massive liability for a productivity brand because of its party reputation. You must aggressively counter this by selling isolation within Goa. Do not sell the beach; sell the private compound.',
+      description: 'A fully managed, private compound designed to insulate you from the coastal distractions. High-speed fiber, silent deep-work zones, and elite peer proximity.',
       image: './Gemini_Generated_Image_ig1sunig1sunig1s.png',
       tags: ['Private Compound','Coastal Isolation','Focus Sprints','Enterprise Infrastructure','Deep-Work', 'Hippie Land', 'Beach Life', 'India', 'Goa', 'co-living', 'co-working'],
       price: '1800',

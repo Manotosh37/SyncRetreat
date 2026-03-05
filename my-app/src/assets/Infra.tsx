@@ -11,7 +11,7 @@ const features = [
   {
     icon: Armchair,
     title: 'Comfort',
-    description: 'Mordern Tier Ergonomic Chairs',
+    description: 'Modern Tier Ergonomic Chairs',
     detail: '8-hour work sessions without back pain. Premium desks with mountain views.',
   },
   {
@@ -28,7 +28,7 @@ const features = [
   },
   {
     icon: Car,
-    title: 'Weekend Tours',
+    title: 'Weekend Decompression',
     description: 'Curated Himalayan expeditions during your downtime.',
     detail:'Pre-planned group trips to Pangong Lake, Nubra Valley, and Khardung La. We handle the permits, drivers, and logistics. You just show up and explore.'
   },

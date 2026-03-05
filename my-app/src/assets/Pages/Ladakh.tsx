@@ -168,15 +168,13 @@ export default function Ladakh() {
 
   const included = [
     "Private airport transfers",
-    "Private transportation during the trip",
-    "Accommodation (shared room)",
-    "2 vegetarian meals per day",
-    "All entrance fees",
-    "Tour leader and Videographer / Photographer",
-    "Your Video at the end of your trip",
+    "Private transportation during the retreat",
+    "Private Ensuite Accommodation",
+    "Chef-prepared meals (3x daily)",
+    "Enterprise-grade Dual-WAN internet",
     "Local SIM card",
-    "Weekend Trips",
-    "Wellness Activities"
+    "Weekend Decompression Excursions",
+    "24/7 Facility Management"
   ];
 
   const notIncluded = [
@@ -250,7 +248,7 @@ export default function Ladakh() {
   ];
 
   const documents = [
-    { name: "Detailed Travel Itinerary & Packing List", file: "SyncRetreat_Deployment_Manifest.pdf" },
+    { name: "28-DAY PRODUCTIVITY SCHEDULE & PRE-ARRIVAL GUIDE", file: "SyncRetreat_Deployment_Manifest.pdf" },
     { name: "Info about Pricing Schedule & Invoice", file: "payment.pdf" },
     { name: "What to Expect? & Opportunities", file: "SyncRetreat_Alignment_Protocol.pdf" },
   ];
@@ -258,18 +256,18 @@ export default function Ladakh() {
   const community = [
     {
       image: "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=1470&auto=format&fit=crop",
-      title: "Do Life Together",
-      description: "We build relationships to last...the rest of our lives. Retirement-Tribe anyone?",
+      title: "High-Signal Networking",
+      description: "Build relationships with other funded founders, freelancers, and senior operators.",
     },
     {
       image: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1470&auto=format&fit=crop",
-      title: "Cocreate the Adventure",
-      description: "Discover how different travel feels when the experience is cocreated and shared as a Tribe.",
+      title: "Strategic Cross-Pollination",
+      description: "Solve your business bottlenecks by collaborating with experts outside your immediate echo chamber.",
     },
     {
       image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1471&auto=format&fit=crop",
-      title: "Reignite Your Work",
-      description: "Realize your goals and dreams knowing you have the world's best cheerleaders in your corner.",
+      title: "Accountability & Execution",
+      description: "Realize your 28-day goals knowing you are surrounded by peers operating at maximum capacity.",
     },
   ];
 
@@ -755,9 +753,9 @@ export default function Ladakh() {
           <div className="md:col-span-1">
             <div className="bg-white/5 border border-white/10 rounded-xl p-6 sticky top-24">
               <p className="text-sm uppercase tracking-wide text-gray-400 mb-2">
-                To Book This Trip You Need To Pay
+                RESERVE YOUR WORKSPACE: You Need To Pay
               </p>
-              <p className="text-3xl font-bold text-blue-500">$199</p>
+              <p className="text-3xl font-bold text-blue-500">$200</p>
               <p className="text-blue-500 text-sm mb-6">DEPOSIT ONLY</p>
 
               <h4 className="font-bold uppercase tracking-wide mb-4">
@@ -792,7 +790,7 @@ export default function Ladakh() {
 
               <div className="bg-white/5 rounded-lg p-4 mb-4">
                 <p className="text-sm text-gray-400 uppercase">Total Price</p>
-                <p className="text-4xl font-bold">$1,499</p>
+                <p className="text-4xl font-bold">$1,500</p>
               </div>
 
               <div className="flex flex-col gap-3">

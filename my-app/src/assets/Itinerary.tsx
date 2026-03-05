@@ -54,7 +54,7 @@ export default function Itinerary() {
             Work Hard, Explore Harder
           </h2>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-            Weekdays for shipping. Weekends for the adventure you'll remember forever.
+            Weekdays for shipping. Weekends for cognitive recovery and high-level networking.
           </p>
         </motion.div>
 

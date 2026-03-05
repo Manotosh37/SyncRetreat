@@ -34,7 +34,7 @@ export default function Faqs() {
         },
         {
             question: "What is the payment schedule?",
-            answer: "Upon application approval, a $200 non-refundable deposit is required via credit card (Stripe) to lock your node. The remaining $1,300 balance is due 14 days prior to the cohort launch."
+            answer: "Upon application approval, a $200 non-refundable deposit is required via credit card (Stripe/Razorpay) to secure your spot. The remaining $1,300 balance is due 30 days prior to the cohort launch."
         },
         {
             question: "Can I expense this to my company?",
@@ -42,7 +42,7 @@ export default function Faqs() {
         },
         {
             question: "What is your cancellation policy?",
-            answer: "Because we secure high-demand real estate and enterprise hardware months in advance, the $200 deposit is strictly non-refundable. If you cancel within 14 days of the start date, the full $1,500 is non-refundable. We strongly advise purchasing standard travel insurance."
+            answer: "Because we secure premium real estate in advance, the $200 deposit is non-refundable. For the remaining balance, cancellations made 30 days before the retreat start date are eligible for a 50% refund. Cancellations made within 30 days of the start date are strictly non-refundable."
         }
     ];
 

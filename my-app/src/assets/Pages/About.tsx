@@ -33,7 +33,7 @@ export default function About() {
                             We do not sell vacations. We do not accept backpackers, casual tourists, or anyone looking to "find themselves."
                         </p>
                         <p>
-                            SyncRetreat is a highly vetted, 30-day deep work hub designed exclusively for <span className="text-white font-medium">funded founders, CTOs, and senior operators</span> who have strict deadlines and require an uncompromising environment to execute them.
+                            SyncRetreat is a highly vetted, 28-day deep work hub designed exclusively for <span className="text-white font-medium"> funded founders, remote professionals, and high-level operators...</span> who have strict deadlines and require an uncompromising environment to execute them.
                         </p>
                     </div>
 

@@ -71,7 +71,7 @@ export default function Terms() {
                         </div>
                     </section>
 
-                    <section id="Section-3">
+                   <section id="Section-3">
                         <h2 className='text-2xl font-semibold text-white mb-4'>Section 3 - Financial Mechanics and Payment Terms</h2>
                         <div className='text-gray-300 space-y-4'>
                             <p>
@@ -85,6 +85,9 @@ export default function Terms() {
                             </p>
                             <p>
                                 <b>Balance of Payment:</b> The remaining balance of $1,300 USD must be settled in full no later than thirty (30) days prior to the official launch date of the Camp. Failure to remit the balance will result in the immediate forfeiture of your allocation and the $200 USD deposit.
+                            </p>
+                            <p>
+                                <b>Cancellation & Refund Policy:</b> SyncRetreat operates on strict infrastructure leasing agreements. The initial $200 deposit is strictly non-refundable. For the remaining balance, cancellations made thirty (30) days prior to the cohort start date are eligible for a 50% refund. Cancellations made within thirty (30) days of the start date are strictly non-refundable due to the inability to re-lease the physical node on short notice.
                             </p>
                         </div>
                     </section>

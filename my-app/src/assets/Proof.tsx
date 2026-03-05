@@ -8,9 +8,9 @@ export default function Qualification() {
   ];
 
   const engineeredFor = [
-    'Funded founders with strict product launch deadlines',
-    'Senior engineers requiring 100% network uptime (Dual-WAN) to ship code',
-    'Operators who view $1,500 as an ROI-positive business investment for 30 days of absolute focus',
+    "Funded founders and entrepreneurs with strict launch deadlines",
+    "Remote professionals, designers, and creators requiring absolute focus",
+    "Operators who view $1,500 as an ROI-positive business investment for 28 days of uninterrupted execution",
   ];
 
   return (
