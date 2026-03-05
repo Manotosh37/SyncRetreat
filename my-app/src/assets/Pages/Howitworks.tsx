@@ -108,13 +108,20 @@ export default function Works() {
     <div className="bg-black min-h-screen pt-24 px-4">
       <div className="max-w-4xl mx-auto py-12">
         {/* Replacement 1: The Core Values Section */}
-        <h1 className="text-4xl md:text-5xl font-serif text-center text-white mb-10">
-          The SyncRetreat Operating Principles
-        </h1>
-        <div className="flex text-gray-300 pt-2 pb-2">
-          <h3>
-            SyncRetreat is a premium, productivity-focused environment for ambitious remote professionals. We curate a community of driven peers—founders, freelancers, designers, marketers, and more—who come together to focus, collaborate, and scale their businesses.
+        <div className="relative rounded-2xl overflow-hidden mb-16 h-80 flex flex-col justify-center items-center text-center px-4">
+          <img 
+            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80" 
+            alt="Premium Workspace" 
+            className="absolute inset-0 w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-black" />
+          <h1 className="relative text-4xl md:text-5xl font-serif text-white mb-6 z-10">
+            The SyncRetreat Operating Principles
+          </h1>
+          <h3 className="relative text-gray-300 max-w-3xl z-10 text-lg">
+            SyncRetreat is a premium, productivity-focused environment for ambitious remote professionals. We curate a community of driven peers—founders, freelancers, designers, marketers, and more—who come together to focus, collaborate, and scale.
           </h3>
+        </div>
         </div>
         <div className="grid md:grid-cols-3 gap-4 max-w-8xl my-10">
           {principles.map((principle, index) => (
@@ -139,28 +146,62 @@ export default function Works() {
             </motion.div>
           ))}
         </div>
-        <div className="max-w-4xl mx-auto text-center py-12 px-8 border-l-4 border-white/30 bg-white/5 rounded-r-lg italic text-gray-300 text-xl font-serif">
-          "You are the average of the five people you spend the most time with."
-          - Jim Rohn
+        {/* Visual Break: Quote Section */}
+        <div className="relative rounded-2xl overflow-hidden my-20 h-64 flex items-center justify-center">
+          <img 
+            src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80" 
+            alt="Team collaboration" 
+            className="absolute inset-0 w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+          <div className="relative z-10 text-center px-8 max-w-4xl">
+            <p className="italic text-gray-200 text-2xl md:text-3xl font-serif mb-4 shadow-black drop-shadow-lg">
+              "You are the average of the five people you spend the most time with."
+            </p>
+            <p className="text-blue-400 font-bold tracking-widest uppercase text-sm">- Jim Rohn</p>
+          </div>
         </div>
 
         {/* Replacement 2: The Application Process */}
-        <section className="max-w-4xl mx-auto py-16 px-4">
+        {/* Replacement 2: The Application Process (Split Layout) */}
+        <section className="max-w-5xl mx-auto py-16 px-4">
           <h2 className="text-4xl font-serif text-center text-white mb-6">
             The Vetting & Application Protocol
           </h2>
           <p className="text-center text-gray-400 text-lg mb-12 max-w-3xl mx-auto">
             To maintain a high standard of professionalism and community, every applicant goes through a careful review to ensure the best fit for our focused environment.
           </p>
-          <div className="grid md:grid-cols-2 gap-10">
-            {applicationSteps.map((step, idx) => (
-              <div key={step.title}>
-                <h3 className="text-xl font-bold text-white mb-3">
-                  {idx + 1}. {step.title}
-                </h3>
-                <p className="text-gray-400">{step.description}</p>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left side: Image */}
+            {/* Left side: Image (BULLETPROOF VERSION) */}
+            <div className="w-full h-500px rounded-2xl overflow-hidden hidden md:block border border-white/10 relative bg-zinc-900">
+              <img 
+                src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80" 
+                alt="Alignment Call" 
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              />
+              {/* Using Tailwind v3 compatible gradient */}
+              <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent z-0" />
+              <div className="absolute bottom-6 left-6 text-white font-bold uppercase tracking-widest text-sm z-10">
+                Step 2: The Alignment Call
               </div>
-            ))}
+            </div>
+
+            {/* Right side: Text Steps */}
+            <div className="space-y-8">
+              {applicationSteps.map((step, idx) => (
+                <div key={step.title} className="relative pl-8">
+                  <div className="absolute left-0 top-1 text-blue-500 font-bold text-xl">
+                    {idx + 1}.
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-400 leading-relaxed">{step.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -220,6 +261,6 @@ export default function Works() {
           </div>
         </section>
       </div>
-    </div>
+    
   );
 }

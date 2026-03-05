@@ -170,7 +170,7 @@ export default function Ladakh() {
     "Private airport transfers",
     "Private transportation during the retreat",
     "Private Ensuite Accommodation",
-    "Chef-prepared meals (3x daily)",
+    "Chef-prepared meals (2x daily)",
     "Enterprise-grade Dual-WAN internet",
     "Local SIM card",
     "Weekend Decompression Excursions",
