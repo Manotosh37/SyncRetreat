@@ -1,16 +1,92 @@
-# React + Vite
+# SyncRetreat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SyncRetreat is a premium, productivity-focused co-living and co-working retreat for ambitious remote professionals. This project is built with React and Vite, and provides a seamless application experience for high-performance digital nomads, founders, freelancers, designers, marketers, and remote workers.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Modern React Frontend**: Built with Vite for fast development and hot module replacement.
+- **Premium Application Flow**: Apply, get vetted, and join curated monthly cohorts.
+- **Deep Work Infrastructure**: Information about premium housing, daily meals, and high-speed Wi-Fi.
+- **Admin Dashboard**: Manage applications and cohort status.
+- **Newsletter & Waitlist**: Integrated with Supabase for backend data management.
+- **Community Guidelines & Terms**: Transparent policies and operational standards.
+- **Payment & Refund FAQ**: Clear B2B payment and cancellation policies.
+- **Responsive Design**: Optimized for desktop and mobile.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: React, Vite, TypeScript (optional), Tailwind CSS
+- **Backend/Database**: Supabase
+- **Email Service**: Custom integration via Deno functions
+- **Icons**: [react-icons](https://react-icons.github.io/react-icons/)
+- **Deployment**: Vercel
 
-## Expanding the ESLint configuration
+## Folder Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+my-app/
+├── public/                # Static assets
+│   └── documents/         # Legal and informational documents
+├── src/
+│   ├── App.jsx            # Main app entry
+│   ├── assets/            # Components and pages
+│   │   ├── Footer.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── Pages/         # Main site pages
+│   │   │   ├── About.tsx
+│   │   │   ├── FAQs.tsx
+│   │   │   ├── Howitworks.tsx
+│   │   │   ├── Terms.tsx
+│   │   │   └── ...        # Other pages
+│   ├── lib/               # Utility modules
+│   │   ├── supabase.ts
+│   │   └── emailservice.ts
+├── supabase/              # Supabase backend config and functions
+│   ├── Waitlist_table.sql
+│   └── functions/
+│       └── send-email/
+├── package.json           # Project dependencies and scripts
+├── vite.config.js         # Vite configuration
+├── vercel.json            # Vercel deployment config
+└── README.md              # Project documentation
+```
+
+## Getting Started
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment variables**
+   - Copy `.env.example` to `.env` and fill in your Supabase and email service credentials.
+
+3. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+5. **Deploy**
+   - The project is ready for deployment on Vercel or any static hosting provider.
+
+## Customization
+
+- **Supabase Integration**: Update `src/lib/supabase.ts` with your Supabase project credentials.
+- **Email Service**: Configure `src/lib/emailservice.ts` and `supabase/functions/send-email/index.ts` for transactional emails.
+- **Branding**: Update content and images in `src/assets/Pages/` to match your brand voice and offering.
+
+## Funding & License
+
+Some dependencies may request funding. Run `npm fund` to see details.
+
+This project is for professional use only. All content, code, and branding are subject to copyright by SyncRetreat.
+
+---
+
+**SyncRetreat**  
+Engineered for focus. Designed for results.
