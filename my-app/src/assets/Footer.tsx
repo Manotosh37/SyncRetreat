@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Twitter, Instagram, Linkedin, ArrowRight, } from 'lucide-react';
+import { BsTwitter, BsInstagram, BsLinkedin, BsArrowRight, BsWhatsapp, BsYoutube } from 'react-icons/bs';
+
 import { supabase } from '../lib/supabase';
 
 export default function Footer() {
@@ -56,26 +57,32 @@ export default function Footer() {
                 href="https://x.com/RetreatSyn57144"
                 className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
               >
-                <Twitter className="w-4 h-4 text-gray-400" />
+                <BsTwitter className="w-4 h-4 text-gray-400" />
               </a>
               <a
                 href="https://www.instagram.com/sync.retreat/"
                 className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
               >
-                <Instagram className="w-4 h-4 text-gray-400" />
+                <BsInstagram className="w-4 h-4 text-gray-400" />
               </a>
               <a
                 href="https://www.linkedin.com/company/111381004/admin/dashboard/"
                 className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
               >
-                <Linkedin className="w-4 h-4 text-gray-400" />
+                <BsLinkedin className="w-4 h-4 text-gray-400" />
               </a>
+              <a
+                href="https://l.instagram.com/?u=https%3A%2F%2Fchat.whatsapp.com%2FK8OntEo4WTkAfX2iGA9Io9%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnqXQFjoXkLq9VKUxmOdOtGH4RSno05nSs1WQOkTfxOFzjG3VwEXzca8RGVNk_aem_PlscZXR_D3tSjJeK71_gSA&e=AT4pjW15s0XL-g73dNkfxu_olAy1Wu0WbqTZA7ACKsLx7uO5lqfSxZFAh_t9j-PnevPvCVbVRFHmZuoTLGovU5UPLwE-umbLDvnqVh9TvQMFoFXSx1lqXDVzfQ"
+                className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
+              >
+                <BsWhatsapp className="w-4 h-4 text-gray-400" />
+              </a> 
               {/* <a
                 href="https://l.instagram.com/?u=https%3A%2F%2Fchat.whatsapp.com%2FK8OntEo4WTkAfX2iGA9Io9%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnqXQFjoXkLq9VKUxmOdOtGH4RSno05nSs1WQOkTfxOFzjG3VwEXzca8RGVNk_aem_PlscZXR_D3tSjJeK71_gSA&e=AT4pjW15s0XL-g73dNkfxu_olAy1Wu0WbqTZA7ACKsLx7uO5lqfSxZFAh_t9j-PnevPvCVbVRFHmZuoTLGovU5UPLwE-umbLDvnqVh9TvQMFoFXSx1lqXDVzfQ"
                 className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
               >
-                <Whatsapp className="w-4 h-4 text-gray-400" />
-              </a> */}
+                <BsYoutube className="w-4 h-4 text-gray-400" />
+              </a>  */}
             </div>
           </div>
 
@@ -156,7 +163,7 @@ export default function Footer() {
                 {status === "success" ? (
                   <span className="text-white text-xs">✓</span>
                 ) : (
-                  <ArrowRight className="w-4 h-4 text-white" />
+                  <BsArrowRight className="w-4 h-4 text-white" />
                 )}
               </button>
             </form>
