@@ -10,6 +10,7 @@ function Lists() {
       image: './Gemini_Generated_Image_glize7glize7gliz.png',
       tags: ['Deep Work', 'High-Altitude Isolation', 'Dual-WAN Uptime', 'Strictly Vetted', 'Deep-Work', 'Monk Land', 'Cold Desert', 'India', 'Ladakh', 'co-living', 'co-working'],
       price: 1500,
+      originalPrice: 1800,
       currency: '$',
       route: '/ladakh',
       right: 'See the dates',
@@ -20,7 +21,7 @@ function Lists() {
       description: 'A fully managed, private compound designed to insulate you from the coastal distractions. High-speed fiber, silent deep-work zones, and elite peer proximity.',
       image: './Gemini_Generated_Image_ig1sunig1sunig1s.png',
       tags: ['Private Compound','Coastal Isolation','Focus Sprints','Enterprise Infrastructure','Deep-Work', 'Hippie Land', 'Beach Life', 'India', 'Goa', 'co-living', 'co-working'],
-      price: '1800',
+      price: 1800,
       currency: '$',
       route: '#',
       right: 'Upcoming...',
@@ -85,17 +86,24 @@ function Lists() {
                     </div>
                     <div className="flex items-center justify-between mt-4 pt-4 border-t border-zinc-700">
                       <div>
-                        {listings.price ? (
-                          <>
-                          <span className="text-gray-400 text-sm">Start from</span>
-                          <p className="text-white text-xl font-semibold">
-                            {listings.currency}{listings.price.toLocaleString()}
-                            <span className="text-gray-400 text-sm font-normal">{listings.duration}</span>
-                          </p>
-                          </>
-                        ):(
-                          <span className="text-gray-400 text-sm">Price TBA</span>
-                        )}
+                          {listings.price ? (
+                            <>
+                              <span className="text-gray-400 text-sm">Start from</span>
+                              <div className="flex items-center gap-2">
+                                {listings.originalPrice && listings.price !== listings.originalPrice ? (
+                                  <span className="text-gray-400 text-lg line-through">
+                                    {listings.currency}{listings.originalPrice.toLocaleString()}
+                                  </span>
+                                ) : null}
+                                <p className="text-white text-xl font-semibold">
+                                  {listings.currency}{listings.price.toLocaleString()}
+                                  <span className="text-gray-400 text-sm font-normal">{listings.duration}</span>
+                                </p>
+                              </div>
+                            </>
+                          ) : (
+                            <span className="text-gray-400 text-sm">Price TBA</span>
+                          )}
                       </div>
                       <button className="bg-white text-black px-6 py-2 rounded-md font-medium hover:bg-gray-200 transition-colors">
                       <a href={listings.route} className=" text-sm font-medium flex-medium flex items-center gap-1 transition-colors">

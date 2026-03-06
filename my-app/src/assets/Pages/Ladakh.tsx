@@ -181,8 +181,8 @@ export default function Ladakh() {
     "International flights",
     "Visa",
     "Travel insurance",
-    "Meals not stated in the itinerary",
-    "Personal expenses during the trip",
+    "Meals outside of the provided daily schedule",
+    "Personal expenses during your stay",
   ];
 
   const places = [
@@ -790,7 +790,15 @@ export default function Ladakh() {
 
               <div className="bg-white/5 rounded-lg p-4 mb-4">
                 <p className="text-sm text-gray-400 uppercase">Total Price</p>
-                <p className="text-4xl font-bold">$1,500</p>
+                <div className="flex items-baseline gap-3">
+                  <span className="text-2xl md:text-3xl text-gray-400 line-through font-semibold">
+                    $1,800
+                  </span>
+                  <span className="text-4xl font-bold text-blue-500">
+                    $1,500
+                  </span>
+                </div>
+                <p className="text-xs text-green-400 mt-2 font-semibold">Founding Retreat Discount!</p>
               </div>
 
               <div className="flex flex-col gap-3">
