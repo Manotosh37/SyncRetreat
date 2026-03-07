@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Hero from './assets/Hero';
 import Comparison from './assets/Comparision';
 import Infra from './assets/Infra';
@@ -70,6 +71,7 @@ function App() {
         <Route path='/admin' element={<Admin />}/>
         </Routes>      
       <Footer />
+      <SpeedInsights />
     </div>
     </BrowserRouter>
   );
