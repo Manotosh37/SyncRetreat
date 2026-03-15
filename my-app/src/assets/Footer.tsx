@@ -72,7 +72,7 @@ export default function Footer() {
                 <BsLinkedin className="w-4 h-4 text-gray-400" />
               </a>
               <a
-                href="https://l.instagram.com/?u=https%3A%2F%2Fchat.whatsapp.com%2FK8OntEo4WTkAfX2iGA9Io9%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnqXQFjoXkLq9VKUxmOdOtGH4RSno05nSs1WQOkTfxOFzjG3VwEXzca8RGVNk_aem_PlscZXR_D3tSjJeK71_gSA&e=AT4pjW15s0XL-g73dNkfxu_olAy1Wu0WbqTZA7ACKsLx7uO5lqfSxZFAh_t9j-PnevPvCVbVRFHmZuoTLGovU5UPLwE-umbLDvnqVh9TvQMFoFXSx1lqXDVzfQ"
+                href="https://chat.whatsapp.com/K8OntEo4WTkAfX2iGA9Io9"
                 className="bg-zinc-900 p-2 rounded-md hover:bg-zinc-800 transition-colors"
               >
                 <BsWhatsapp className="w-4 h-4 text-gray-400" />
