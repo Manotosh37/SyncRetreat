@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Check,
   X,
@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Navbar from "../Navbar";
 import { supabase } from "../../lib/supabase";
+// import { getCalApi } from "@calcom/embed-react";
 
 export default function Ladakh() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -94,7 +95,7 @@ export default function Ladakh() {
       }
 
       setSubmitStatus("success");
-      window.open("https://calendly.com/syncretreat", "_blank");
+      window.open("https://cal.com/syncretreat/meet?user=syncretreat&overlayCalendar=true", "_blank");
 
       setFormData({
         name: "",
