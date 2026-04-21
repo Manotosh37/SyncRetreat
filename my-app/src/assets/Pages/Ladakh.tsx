@@ -1,62 +1,607 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Check,
   X,
   Monitor,
   Home,
   Car,
-  UtensilsCrossed,
+  Users,
   FileText,
   Download,
 } from "lucide-react";
 import Navbar from "../Navbar";
 import { supabase } from "../../lib/supabase";
-// import { getCalApi } from "@calcom/embed-react";
+import { useAuth } from "../../lib/AuthContext";
+import { sendEmail } from "../../lib/emailservice";
 
+// ============= CONSTANTS =============
+const COUNTRIES = [
+  "United States",
+  "United Kingdom",
+  "Canada",
+  "Australia",
+  "India",
+  "Germany",
+  "France",
+  "Netherlands",
+  "Singapore",
+  "UAE",
+  "Other",
+];
+const COUNTRY_CODES = [
+  { code: "+91", flag: "🇮🇳" },
+  { code: "+1", flag: "🇺🇸" },
+  { code: "+44", flag: "🇬🇧" },
+  { code: "+971", flag: "🇦🇪" },
+  { code: "+65", flag: "🇸🇬" },
+  { code: "+49", flag: "🇩🇪" },
+];
+
+const FORM_FIELDS = [
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    required: true,
+    help: "Your full name",
+  },
+  {
+    name: "age",
+    label: "Your age",
+    type: "number",
+    required: true,
+    help: "Must be at least 21",
+  },
+  {
+    name: "country",
+    label: "Country",
+    type: "select",
+    required: true,
+    help: "Where do you live?",
+    options: COUNTRIES,
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    required: true,
+    help: "No spam. We promise",
+    icon: "✉️",
+  },
+  {
+    name: "phone",
+    label: "Phone",
+    type: "phone",
+    required: true,
+    help: "Your WhatsApp number",
+  },
+  {
+    name: "destination",
+    label: "Destination",
+    type: "select",
+    required: true,
+    help: "Which trip?",
+    options: [
+      "Ladakh - July 06 to July 27",
+      "Ladakh - August 03 to August 31",
+    ],
+  },
+  {
+    name: "remoteWork",
+    label: "Remote Work",
+    type: "select",
+    required: true,
+    help: "Can you work during retreat?",
+    options: ["Yes", "Partially", "Soon", "No but I'll find"],
+  },
+  {
+    name: "workDesignation",
+    label: "Work Designation",
+    type: "text",
+    required: true,
+    help: "Your designation",
+    placeholder: "e.g., Software Engineer at Google",
+  },
+  {
+    name: "intendedWork",
+    label: "Intended Work",
+    type: "textarea",
+    required: true,
+    help: "Projects during retreat",
+    rows: 3,
+  },
+  {
+    name: "interests",
+    label: "Interests & Expectations",
+    type: "textarea",
+    required: true,
+    help: "What you hope to gain",
+    rows: 4,
+  },
+  {
+    name: "linkedin",
+    label: "LinkedIn Profile",
+    type: "url",
+    required: false,
+    help: "Optional",
+    placeholder: "https://linkedin.com/in/...",
+  },
+  {
+    name: "aboutYou",
+    label: "About You",
+    type: "textarea",
+    required: true,
+    help: "What makes you unique?",
+    rows: 4,
+  },
+  {
+    name: "howHeard",
+    label: "How did you hear about us?",
+    type: "select",
+    required: false,
+    options: [
+      "Instagram",
+      "Twitter/X",
+      "LinkedIn",
+      "YouTube",
+      "Friend/Referral",
+      "Google Search",
+      "Other",
+    ],
+  },
+];
+
+const INPUT_CLASS =
+  "w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all text-slate-900 bg-white";
+const BTN_CLASS =
+  "w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-full uppercase tracking-wide transition-colors cursor-pointer shadow-md shadow-emerald-900/20";
+
+const FEATURES = [
+  { icon: Monitor, text: "Co-working Space" },
+  { icon: Home, text: "Private Ensuite Room" },
+  { icon: Car, text: "Acclimatization Driver" },
+  { icon: Users, text: "Curated Community" },
+];
+
+const ACTIVITIES = [
+  {
+    image:
+      "https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?q=80&w=1447&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    title: "Deep Focus Co-Working hub.",
+    description:
+      "Ergonomic workstation with Dual-WAN load-balancing plus stunning mountain views.",
+  },
+  {
+    image:
+      "https://media-cdn.tripadvisor.com/media/photo-s/06/9d/27/42/cold-desert-camp.jpg",
+    title: "Weekend Trips.",
+    description:
+      "High-altitude expeditions with the community. 100% transport and permit logistics handled.",
+  },
+  {
+    image:
+      "https://a0.muscache.com/im/pictures/hosting/Hosting-1138245562661282426/original/f218e700-8949-4ab8-ade7-8196d4fa5e8c.jpeg?im_w=1440",
+    title: "Private Executive Quarters",
+    description:
+      "Private sanctuary optimized for deep rest and absolute privacy.",
+  },
+  {
+    image:
+      "https://media.istockphoto.com/id/648868332/photo/traveler-with-laptop-sits-on-top-view-point-on-the-mountain-valley.jpg?s=612x612&w=0&k=20&c=CVaa69S5lXbcTfW4WdkHwh1u1nyPWnHidysVbu8FLHo=",
+    title: "Frictionless Operations",
+    description:
+      "Zero cognitive load. We handle logistics so you focus only on your product.",
+  },
+];
+
+const PLACES = [
+  {
+    image:
+      "https://charzanholidays.com/wp-content/uploads/2024/12/Thiksey_Monastery-ladakh_charzan_holidays.jpg",
+    title: "Weekend 1:",
+    day1: "Explore Thiksey & Hemis monasteries. Return by 2 PM.",
+    day2: "Leh Palace, Tsemo Castle & sunset at Shanti Stupa.",
+  },
+  {
+    image:
+      "https://topclassholidays.com/wp-content/uploads/2025/07/Magnetic-Hill-Ladakh.jpg",
+    title: "Weekend 2:",
+    day1: "Gurudwara Pathar Sahib, Magnetic Hill & Sangam Viewpoint.",
+    day2: "1000-year-old Alchi Monastery & Likir. Back by 4 PM.",
+  },
+  {
+    image:
+      "https://www.eladakhtourism.com/camps-in-nubra/images/paramountcamp.jpg",
+    title: "Weekend 3:",
+    day1: "Cross Khardung La Pass (17,582 ft) & Bactrian camel safari.",
+    day2: "106-foot Maitreya Buddha at Diskit. Back by 3 PM.",
+  },
+  {
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7IXjTKCvo8hReTEv1x5PrLXbQMsM5ZCfFZA&s",
+    title: "Weekend 4:",
+    day1: "5 AM to Pangong Lake via Chang La Pass—10 hour extreme strike.",
+    day2: "Sleep in. Farewell BBQ on villa terrace, pack & decompress.",
+  },
+];
+
+const HOMESTAYS = [
+  "https://a0.muscache.com/im/pictures/miso/Hosting-18737819/original/8c0e5cae-4bed-4e0b-9d0b-f224dc3a64f2.jpeg?im_w=1200",
+  "https://a0.muscache.com/im/pictures/8d4ef684-31ed-4836-8e63-a9954aa751e2.jpg?im_w=720",
+  "https://a0.muscache.com/im/pictures/5e20521b-e3ce-492a-864f-39ed49a6833c.jpg?im_w=1440",
+];
+
+const TRIPS = [
+  {
+    fromDate: "JULY 06",
+    toDate: "JULY 27",
+    tripNumber: "01",
+    status: "AVAILABLE",
+  },
+  {
+    fromDate: "AUGUST 03",
+    toDate: "AUGUST 31",
+    tripNumber: "02",
+    status: "AVAILABLE",
+  },
+];
+
+const DOCUMENTS = [
+  {
+    name: "28-DAY PRODUCTIVITY SCHEDULE & PRE-ARRIVAL GUIDE",
+    file: "SyncRetreat_Deployment_Manifest.pdf",
+  },
+  { name: "Info about Pricing Schedule & Invoice", file: "payment.pdf" },
+  {
+    name: "What to Expect? & Opportunities",
+    file: "SyncRetreat_Alignment_Protocol.pdf",
+  },
+];
+
+const COMMUNITY = [
+  {
+    image:
+      "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=1470&auto=format&fit=crop",
+    title: "High-Signal Networking",
+    description:
+      "Build relationships with funded founders, freelancers, and senior operators.",
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1470&auto=format&fit=crop",
+    title: "Strategic Cross-Pollination",
+    description:
+      "Solve bottlenecks by collaborating with experts outside your echo chamber.",
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1471&auto=format&fit=crop",
+    title: "Accountability & Execution",
+    description:
+      "Realize goals surrounded by peers operating at maximum capacity.",
+  },
+];
+
+const PRICING = {
+  deposit: 199,
+  original: 1799,
+  discounted: 1499,
+  included: [
+    "Private airport transfers",
+    "Private transportation",
+    "Private Ensuite Accommodation",
+    "Chef-prepared meals (2x daily)",
+    "Enterprise-grade Dual-WAN internet",
+    "Local SIM card",
+    "Weekend Decompression Excursions",
+    "24/7 Facility Management",
+  ],
+  notIncluded: [
+    "International flights",
+    "Visa",
+    "Travel insurance",
+    "Meals outside provided schedule",
+    "Personal expenses",
+  ],
+};
+
+const INITIAL_FORM = Object.fromEntries([
+  ...FORM_FIELDS.map((f) => [f.name, ""]),
+  ["countryCode", "+91"],
+  ["undertaking", false],
+]);
+
+// ============= COMPONENTS =============
+
+const FormField = ({
+  field,
+  value,
+  onChange,
+  showCustomCode,
+  setShowCustomCode,
+  index,
+}: any) => {
+  const base = (
+    <label className="block text-sm font-medium text-slate-700 mb-1">
+      <span className="text-emerald-600 font-bold">{index}.</span> {field.label}{" "}
+      {field.required && <span className="text-red-500">*</span>}
+    </label>
+  );
+  const help = field.help && (
+    <p className="text-xs text-slate-500 mb-2">{field.help}</p>
+  );
+
+  if (field.type === "select") {
+    return (
+      <div className="mb-6">
+        {base} {help}
+        <select
+          name={field.name}
+          value={value}
+          onChange={onChange}
+          required={field.required}
+          className={INPUT_CLASS}
+        >
+          <option value="">Select an option</option>
+          {field.options?.map((opt: string) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
+  if (field.type === "textarea") {
+    return (
+      <div className="mb-6">
+        {base} {help}
+        <textarea
+          name={field.name}
+          value={value}
+          onChange={onChange}
+          required={field.required}
+          rows={field.rows}
+          className={INPUT_CLASS}
+        />
+      </div>
+    );
+  }
+
+  if (field.type === "phone") {
+    return (
+      <div className="mb-6">
+        {base} {help}
+        <div className="flex gap-2">
+          <select
+            value={showCustomCode ? "custom" : value.countryCode}
+            onChange={(e) => {
+              const v = e.target.value;
+              setShowCustomCode(v === "custom");
+              if (v !== "custom")
+                onChange({ target: { name: "countryCode", value: v } });
+            }}
+            className={`${INPUT_CLASS} min-w-27.5`}
+          >
+            {COUNTRY_CODES.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.flag} {c.code}
+              </option>
+            ))}
+            <option value="custom">Other</option>
+          </select>
+          {showCustomCode && (
+            <input
+              type="text"
+              name="countryCode"
+              value={value.countryCode}
+              onChange={onChange}
+              placeholder="+234"
+              className={`${INPUT_CLASS} min-w-27.5`}
+              required
+            />
+          )}
+          <input
+            type="tel"
+            name="phone"
+            value={value.phone}
+            onChange={onChange}
+            placeholder="Number"
+            className={`${INPUT_CLASS} flex-1`}
+            required
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mb-6">
+      {base} {help}
+      <div className={field.icon ? "relative" : ""}>
+        <input
+          name={field.name}
+          type={field.type}
+          value={value}
+          onChange={onChange}
+          placeholder={field.placeholder}
+          required={field.required}
+          className={INPUT_CLASS}
+        />
+        {field.icon && (
+          <span className="absolute right-3 top-1/2 -translate-y-1/2">
+            {field.icon}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const Card = ({ children }: any) => <div className="group">{children}</div>;
+const ImgCard = ({ item, h = "h-56" }: any) => (
+  <Card>
+    <div className="overflow-hidden rounded-2xl mb-4 shadow-sm border border-slate-100">
+      <img
+        src={item.image}
+        alt={item.title}
+        className={`w-full ${h} object-cover group-hover:scale-105 transition-transform duration-300`}
+      />
+    </div>
+    <h4 className="text-lg font-bold uppercase tracking-wide text-slate-900 mb-2">
+      {item.title}
+    </h4>
+    <p className="text-slate-600 text-sm leading-relaxed">{item.description}</p>
+  </Card>
+);
+
+const PlaceCard = ({ item }: any) => (
+  <Card>
+    <div className="overflow-hidden rounded-2xl mb-4 shadow-sm border border-slate-100">
+      <img
+        src={item.image}
+        alt={item.title}
+        className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
+      />
+    </div>
+    <h4 className="text-lg font-bold uppercase tracking-wide text-slate-900 mb-3">
+      {item.title}
+    </h4>
+    <div className="space-y-3">
+      {["day1", "day2"].map((day) => (
+        <div key={day}>
+          <span className="text-emerald-600 font-semibold text-sm capitalize">
+            {day.replace("day", "Day ")}:
+          </span>
+          <p className="text-slate-600 text-sm leading-relaxed mt-1">
+            {item[day]}
+          </p>
+        </div>
+      ))}
+    </div>
+  </Card>
+);
+
+const Section = ({ title, children }: any) => (
+  <section className="bg-[#fefbf7] text-slate-900 py-16 px-4">
+    <div className="max-w-6xl mx-auto">
+      {title && (
+        <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-slate-900 mb-10">
+          {title}
+        </h3>
+      )}
+      {children}
+    </div>
+  </section>
+);
+
+const BookingForm = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  formData,
+  handleInputChange,
+  isSubmitting,
+  submitStatus,
+  showCustomCode,
+  setShowCustomCode,
+}: any) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto relative border border-slate-200 shadow-xl">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-slate-500 hover:text-slate-700 z-10 transition-colors"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        <div className="p-8 pb-4">
+          <h2 className="text-2xl font-serif text-slate-900">Apply Now</h2>
+        </div>
+        <form onSubmit={onSubmit} className="px-8 pb-8">
+          {FORM_FIELDS.map((field, i) => (
+            <FormField
+              key={field.name}
+              field={field}
+              value={formData[field.name]}
+              onChange={handleInputChange}
+              showCustomCode={showCustomCode}
+              setShowCustomCode={setShowCustomCode}
+              index={i + 1}
+            />
+          ))}
+          <div className="mb-8 p-4 bg-slate-50 rounded-lg border border-slate-200">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="undertaking"
+                checked={formData.undertaking}
+                onChange={handleInputChange}
+                required
+                className="mt-1 w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+              />
+              <span className="text-sm text-slate-700 leading-relaxed">
+                {" "}
+                I understand that this is not an application for a job and that
+                SyncRetreat does not provide remote work. I am applying to
+                become a member of a coliving travel community.{" "}
+                <span className="text-red-500">*</span>
+              </span>
+            </label>
+          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting || !formData.undertaking}
+            className={`${BTN_CLASS} ${isSubmitting ? "bg-slate-400 hover:bg-slate-400 cursor-not-allowed shadow-none" : submitStatus === "success" ? "bg-emerald-500 hover:bg-emerald-500" : submitStatus === "error" ? "bg-red-500 hover:bg-red-600" : !formData.undertaking ? "bg-slate-400 hover:bg-slate-400 cursor-not-allowed shadow-none" : ""}`}
+          >
+            {isSubmitting
+              ? "Submitting..."
+              : submitStatus === "success"
+                ? "✓ Submitted!"
+                : submitStatus === "error"
+                  ? "Error - Try Again"
+                  : "Submit & Schedule a Call"}
+          </button>
+          {submitStatus === "error" && (
+            <p className="text-xs text-red-500 text-center mt-2">
+              Error. Check console and try again.
+            </p>
+          )}
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// ============= MAIN =============
 export default function Ladakh() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCustomCode, setShowCustomCode] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({
-    name: "",
-    age: "",
-    country: "",
-    email: "",
-    phone: "",
-    countryCode: "+91",
-    destination: "",
-    tripDate: "",
-    howHeard: "",
-    message: "",
-    remoteWork: "",
-    workDesignation: "",
-    intendedWork: "",
-    interests: "",
-    expectations: "",
-    portfolio: "",
-    linkedin: "",
-    aboutYou: "",
-    undertaking: false,
-  });
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
+  const [formData, setFormData] = useState(INITIAL_FORM);
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const countries = [
-    "United States", "United Kingdom", "Canada", "Australia", "India", 
-    "Germany", "France", "Netherlands", "Singapore", "UAE", "Other"
-  ];
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    if (type === 'checkbox') {
-      const checked = (e.target as HTMLInputElement).checked;
-      setFormData(prev => ({ ...prev, [name]: checked }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
+  const handleInputChange = (e: any) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev: any) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const openForm = () => {
+    setFormData(INITIAL_FORM);
+    setIsFormOpen(true);
+  };
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!formData.undertaking) {
       alert("Please accept the undertaking to continue.");
@@ -64,9 +609,8 @@ export default function Ladakh() {
     }
     setIsSubmitting(true);
     setSubmitStatus("idle");
-
     try {
-      const { data, error } = await supabase.from("bookings").insert([
+      const { error } = await supabase.from("bookings").insert([
         {
           name: formData.name,
           age: formData.age,
@@ -79,880 +623,313 @@ export default function Ladakh() {
           work_designation: formData.workDesignation,
           intended_work: formData.intendedWork,
           interests: formData.interests,
-          portfolio: formData.portfolio,
           linkedin: formData.linkedin,
           about_you: formData.aboutYou,
           how_heard: formData.howHeard,
           undertaking: formData.undertaking,
+          user_id: user?.id,
           status: "pending",
           payment_status: "unpaid",
         },
       ]);
+      if (error) throw error;
 
-      if (error) {
-        console.error("Supabase error:", error);
-        throw error;
-      }
-
-      setSubmitStatus("success");
-      window.open("https://cal.com/syncretreat/meet?user=syncretreat&overlayCalendar=true", "_blank");
-
-      setFormData({
-        name: "",
-        age: "",
-        country: "",
-        email: "",
-        phone: "",
-        countryCode: "+91",
-        destination: "",
-        tripDate: "",
-        howHeard: "",
-        message: "",
-        remoteWork: "",
-        workDesignation: "",
-        intendedWork: "",
-        interests: "",
-        expectations: "",
-        portfolio: "",
-        linkedin: "",
-        aboutYou: "",
-        undertaking: false,
+      // Automated Confirmation Email
+      sendEmail({
+        to: formData.email,
+        name: formData.name,
+        type: "confirmation",
+        destination: "Ladakh"
       });
 
+      setSubmitStatus("success");
       setTimeout(() => {
+        setFormData(INITIAL_FORM);
         setIsFormOpen(false);
         setSubmitStatus("idle");
-      }, 2000);
-
+        navigate("/checkout");
+      }, 1000);
     } catch (error) {
-      console.error("Error saving booking:", error);
+      console.error("Error:", error);
       setSubmitStatus("error");
-      alert("Error submitting form. Check console for details.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const features = [
-    { icon: Monitor, text: "Co-working Space" },
-    { icon: Home, text: "Private Ensuite Room" },
-    { icon: Car, text: "Acclimatization Driver" },
-    { icon: UtensilsCrossed, text: "Chef-Prepared Meals" },
-  ];
-
-  const activities = [
-    {
-      image: "https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?q=80&w=1447&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: "Deep Focus Co-Working hub.",
-      description:
-        "Ergonomic worstation equipped with strict Dual-WAN load-balancing. Witness the stunning mountain And Deep Co-Working Spaces and focus working from there.",
-    },
-    {
-      image: "https://media-cdn.tripadvisor.com/media/photo-s/06/9d/27/42/cold-desert-camp.jpg",
-      title: "Weekend Trips.",
-      description:
-        "High-altitude weekend epeditions to discover the beuty of Ladakh with the community and like minded people. We handle 100% of the transport and permit logistics so you can step away from the screen without planning a single detail.",
-    },
-    {
-      image: "https://a0.muscache.com/im/pictures/hosting/Hosting-1138245562661282426/original/f218e700-8949-4ab8-ade7-8196d4fa5e8c.jpeg?im_w=1440",
-      title: "PRIVATE EXECUTIVE QUARTERS",
-      description:
-        "We do not do standard co-living dorms. You get a private, isolated sanctuary within the compound, optimized for deep rest and absolute privacy after a high-output day.",
-    },
-    {
-      image: "https://media.istockphoto.com/id/1144996192/photo/happy-successful-young-woman-freelancer-working-remotely-using-a-laptop-in-country-cottage.jpg?s=612x612&w=0&k=20&c=qO3LGVjYWJqXKm7dtCsv9mXeSxdhZtCPf1XZzF4KSgw=",
-      title: "FRICTIONLESS OPERATIONS",
-      description:
-        "Zero cognitive load. From managing your local Protected Area Permits to providing macro-optimized meals via our private chef, we eliminate daily chores so your only focus is your product.",
-    },
-  ];
-
-  const included = [
-    "Private airport transfers",
-    "Private transportation during the retreat",
-    "Private Ensuite Accommodation",
-    "Chef-prepared meals (2x daily)",
-    "Enterprise-grade Dual-WAN internet",
-    "Local SIM card",
-    "Weekend Decompression Excursions",
-    "24/7 Facility Management"
-  ];
-
-  const notIncluded = [
-    "International flights",
-    "Visa",
-    "Travel insurance",
-    "Meals outside of the provided daily schedule",
-    "Personal expenses during your stay",
-  ];
-
-  const places = [
-    {
-      image: "https://charzanholidays.com/wp-content/uploads/2024/12/Thiksey_Monastery-ladakh_charzan_holidays.jpg",
-      title: "Weekend 1:",
-      day1: "Deploy south along the Indus River to explore Thiksey & Hemis monasteries. Return by 2 PM for chef-prepared lunch.",
-      day2: "Test your altitude adaptation with a hike to Leh Palace, Tsemo Castle & sunset at Shanti Stupa, plus time to explore Leh market.",
-    },
-    {
-      image: "https://topclassholidays.com/wp-content/uploads/2025/07/Magnetic-Hill-Ladakh.jpg",
-      title: "Weekend 2:",
-      day1: "Half-day strike to Gurudwara Pathar Sahib, Magnetic Hill & Sangam Viewpoint where the Indus meets the Zanskar.",
-      day2: "Full expedition to the 1000-year-old Alchi Monastery & Likir. Catered lunch on the road, back by 4 PM for Monday prep.",
-    },
-    {
-      image: "https://www.eladakhtourism.com/camps-in-nubra/images/paramountcamp.jpg",
-      title: "Weekend 3:",
-      day1: "Cross Khardung La Pass (17,582 ft), arrive in Hundar for a Bactrian camel safari & overnight in premium Swiss Tents—total disconnection.",
-      day2: "Visit the 106-foot Maitreya Buddha at Diskit, then return over the pass. Back at basecamp by 3 PM with hot showers & high-speed internet.",
-    },
-    {
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7IXjTKCvo8hReTEv1x5PrLXbQMsM5ZCfFZA&s",
-      title: "Weekend 4:",
-      day1: "5 AM departure to Pangong Lake via Chang La Pass—a 10-hour extreme strike to witness the iconic blue waters, returning to your premium bed that night.",
-      day2: "Sleep in. Farewell Mastermind BBQ on the villa terrace, followed by unstructured time to pack and decompress before departure.",
-    },
-  ];
-
-  const homeStays = [
-    {
-      image: "https://a0.muscache.com/im/pictures/miso/Hosting-18737819/original/8c0e5cae-4bed-4e0b-9d0b-f224dc3a64f2.jpeg?im_w=1200",
-      title: "",
-      description: "",
-    },
-    {
-      image: "https://a0.muscache.com/im/pictures/8d4ef684-31ed-4836-8e63-a9954aa751e2.jpg?im_w=720",
-      title: "",
-      description: "",
-    },
-    {
-      image: "https://a0.muscache.com/im/pictures/5e20521b-e3ce-492a-864f-39ed49a6833c.jpg?im_w=1440",
-      title: "",
-      description: "",
-    },
-  ];
-
-  const trips = [
-    {
-      fromDate: "JUNE 15",
-      toDate: "JULY 13",
-      tripNumber: "01",
-      status: "AVAILABLE",
-      statusType: "",
-    },
-    {
-      fromDate: "AUGUST 03",
-      toDate: "AUGUST 31",
-      tripNumber: "02",
-      status: "AVAILABLE",
-      statusType: "available",
-    },
-  ];
-
-  const documents = [
-    { name: "28-DAY PRODUCTIVITY SCHEDULE & PRE-ARRIVAL GUIDE", file: "SyncRetreat_Deployment_Manifest.pdf" },
-    { name: "Info about Pricing Schedule & Invoice", file: "payment.pdf" },
-    { name: "What to Expect? & Opportunities", file: "SyncRetreat_Alignment_Protocol.pdf" },
-  ];
-
-  const community = [
-    {
-      image: "https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=1470&auto=format&fit=crop",
-      title: "High-Signal Networking",
-      description: "Build relationships with other funded founders, freelancers, and senior operators.",
-    },
-    {
-      image: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1470&auto=format&fit=crop",
-      title: "Strategic Cross-Pollination",
-      description: "Solve your business bottlenecks by collaborating with experts outside your immediate echo chamber.",
-    },
-    {
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1471&auto=format&fit=crop",
-      title: "Accountability & Execution",
-      description: "Realize your 28-day goals knowing you are surrounded by peers operating at maximum capacity.",
-    },
-  ];
-
-  const ImageCard = ({
-    item,
-    height = "h-56",
-  }: {
-    item: { image: string; title: string; description: string };
-    height?: string;
-  }) => (
-    <div className="group">
-      <div className="overflow-hidden rounded-2xl mb-4">
-        <img
-          src={item.image}
-          alt={item.title}
-          className={`w-full ${height} object-cover group-hover:scale-105 transition-transform duration-300`}
-        />
-      </div>
-      <h4 className="text-lg font-bold uppercase tracking-wide mb-2">
-        {item.title}
-      </h4>
-      <p className="text-gray-400 text-sm leading-relaxed">
-        {item.description}
-      </p>
-    </div>
-  );
-
-  const PlaceCard = ({
-    item,
-    height = "h-56",
-  }: {
-    item: { image: string; title: string; day1: string; day2: string };
-    height?: string;
-  }) => (
-    <div className="group">
-      <div className="overflow-hidden rounded-2xl mb-4">
-        <img
-          src={item.image}
-          alt={item.title}
-          className={`w-full ${height} object-cover group-hover:scale-105 transition-transform duration-300`}
-        />
-      </div>
-      <h4 className="text-lg font-bold uppercase tracking-wide mb-3">
-        {item.title}
-      </h4>
-      <div className="space-y-3">
-        <div>
-          <span className="text-blue-400 font-semibold text-sm">Day 1:</span>
-          <p className="text-gray-400 text-sm leading-relaxed mt-1">{item.day1}</p>
-        </div>
-        <div>
-          <span className="text-blue-400 font-semibold text-sm">Day 2:</span>
-          <p className="text-gray-400 text-sm leading-relaxed mt-1">{item.day2}</p>
-        </div>
-      </div>
-    </div>
-  );
-
-  const SectionTitle = ({ children }: { children: string }) => (
-    <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-wide mb-10">
-      {children}
-    </h3>
-  );
-
   return (
     <>
-      {/* Form Modal */}
-      {isFormOpen && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto relative">
-            {/* Close Button */}
-            <button
-              onClick={() => setIsFormOpen(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors z-10"
-            >
-              <X className="w-6 h-6" />
-            </button>
-
-            {/* Form Header */}
-            <div className="p-8 pb-4">
-              <h2 className="text-2xl font-bold text-gray-900">Apply Now</h2>
-            </div>
-
-            {/* Form Content */}
-            <form onSubmit={handleSubmit} className="px-8 pb-8">
-              {/* 1. Name */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  1. Name <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">Your full name</p>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  maxLength={255}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900"
-                />
-                <p className="text-xs text-gray-400 text-right mt-1">{formData.name.length}/255</p>
-              </div>
-
-              {/* 2. Age */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  2. Your age <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">To join our trips, you <span className="underline">must be at least 21 years old</span></p>
-                <input
-                  type="number"
-                  name="age"
-                  value={formData.age}
-                  onChange={handleInputChange}
-                  min={21}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900"
-                />
-              </div>
-
-              {/* 3. Country */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  3. Country of residence <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">Where do you live?</p>
-                <select
-                  name="country"
-                  value={formData.country}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white"
-                >
-                  <option value="">Select a country</option>
-                  {countries.map((country, i) => (
-                    <option key={i} value={country}>{country}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* 4. Email */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  4. Email <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">No spam. We promise</p>
-                <div className="relative">
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 pr-10"
-                  />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-500">✉️</span>
-                </div>
-              </div>
-
-              {/* 5. Phone */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  5. Phone <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">Your WhatsApp number</p>
-                <div className="flex gap-2">
-                  <select
-                    name="countryCode"
-                    value={showCustomCode ? "custom" : formData.countryCode}
-                    onChange={e => {
-                      const value = e.target.value;
-                      setShowCustomCode(value === "custom");
-                      setFormData(prev => ({
-                        ...prev,
-                        countryCode: value === "custom" ? "" : value
-                      }));
-                    }}
-                    className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white"
-                    style={{ minWidth: "110px" }}
-                  >
-                    <option value="+91">🇮🇳 +91</option>
-                    <option value="+1">🇺🇸 +1</option>
-                    <option value="+44">🇬🇧 +44</option>
-                    <option value="+971">🇦🇪 +971</option>
-                    <option value="+65">🇸🇬 +65</option>
-                    <option value="+49">🇩🇪 +49</option>
-                    <option value="custom">Other (enter manually)</option>
-                  </select>
-                  {showCustomCode && (
-                    <input
-                      type="text"
-                      name="countryCode"
-                      value={formData.countryCode}
-                      onChange={handleInputChange}
-                      placeholder="Enter custom code (e.g. +234)"
-                      className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white"
-                      style={{ minWidth: "110px" }}
-                      required
-                    />
-                  )}
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder="Phone number"
-                    required
-                    className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white flex-1"
-                  />
-                </div>
-              </div>
-
-              {/* 6. Destination */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  6. Destination <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">Which trip are you interested in?</p>
-                <select
-                  name="destination"
-                  value={formData.destination}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white"
-                >
-                  <option value="">Select a destination</option>
-                  <option value="Ladakh - June 15 to July 13">Ladakh - June 15 to July 13</option>
-                  <option value="Ladakh - August 03 to August 31">Ladakh - August 03 to August 31</option>
-                  <option value="Goa">Goa</option>
-                </select>
-              </div>
-
-              {/* 7. Remote Work */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  7. Do you have work that can be done remotely? <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">We need to know if you can work during the retreat</p>
-                <select
-                  name="remoteWork"
-                  value={formData.remoteWork}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white"
-                >
-                  <option value="">Select an option</option>
-                  <option value="Yes">Yes</option>
-                  <option value="Partially">Partially</option>
-                  <option value="Soon">Soon</option>
-                  <option value="No but I'll find">No but I'll find</option>
-                </select>
-              </div>
-
-              {/* 8. Work Designation */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  8. What kind of work do you do? <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">Your designation and field of work</p>
-                <input
-                  type="text"
-                  name="workDesignation"
-                  value={formData.workDesignation}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="e.g., Software Engineer at Google, Freelance Designer"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900"
-                />
-              </div>
-
-              {/* 9. Intended Work */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  9. What kind of work do you intend to do during the retreat? <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">Projects, tasks, or goals you plan to work on</p>
-                <textarea
-                  name="intendedWork"
-                  value={formData.intendedWork}
-                  onChange={handleInputChange}
-                  required
-                  rows={3}
-                  placeholder="e.g., Building a SaaS product, Writing a book, Client projects..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 resize-none"
-                />
-              </div>
-
-              {/* 10. Interests & Expectations */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  10. What are your interests and expectations with this retreat? <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">Tell us what you hope to gain from this experience</p>
-                <textarea
-                  name="interests"
-                  value={formData.interests}
-                  onChange={handleInputChange}
-                  required
-                  rows={4}
-                  placeholder="Your interests, hobbies, and what you expect from this retreat..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 resize-none"
-                />
-              </div>
-
-              {/* 11. Portfolio & Links */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  11. Links to your work
-                </label>
-                <p className="text-xs text-gray-500 mb-2">Portfolio, LinkedIn, or any relevant links</p>
-                <div className="space-y-3">
-                  <input
-                    type="url"
-                    name="linkedin"
-                    value={formData.linkedin}
-                    onChange={handleInputChange}
-                    placeholder="LinkedIn Profile URL"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900"
-                  />
-                </div>
-              </div>
-
-              {/* 12. About You */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  12. About you <span className="text-red-500">*</span>
-                </label>
-                <p className="text-xs text-gray-500 mb-2">Anything else we should know about you?</p>
-                <textarea
-                  name="aboutYou"
-                  value={formData.aboutYou}
-                  onChange={handleInputChange}
-                  required
-                  rows={4}
-                  placeholder="Tell us about yourself - your personality, what makes you unique, why you want to join..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 resize-none"
-                />
-              </div>
-
-              {/* 13. How did you hear about us */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  13. How did you hear about us?
-                </label>
-                <select
-                  name="howHeard"
-                  value={formData.howHeard}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-gray-900 bg-white"
-                >
-                  <option value="">Select an option</option>
-                  <option value="Instagram">Instagram</option>
-                  <option value="Twitter/X">Twitter/X</option>
-                  <option value="LinkedIn">LinkedIn</option>
-                  <option value="YouTube">YouTube</option>
-                  <option value="Friend/Referral">Friend/Referral</option>
-                  <option value="Google Search">Google Search</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              {/* Undertaking Checkbox */}
-              <div className="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="undertaking"
-                    checked={formData.undertaking}
-                    onChange={handleInputChange}
-                    required
-                    className="mt-1 w-5 h-5 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700 leading-relaxed">
-                    I understand that this is not an application for a job and that SyncRetreat does not provide remote work. I am applying to become a member of a coliving travel community.
-                    <span className="text-red-500"> *</span>
-                  </span>
-                </label>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting || !formData.undertaking}
-                className={`w-full font-bold py-4 rounded-full uppercase tracking-wide transition-colors ${
-                  isSubmitting 
-                    ? "bg-gray-400 cursor-not-allowed" 
-                    : submitStatus === "success"
-                    ? "bg-green-500"
-                    : submitStatus === "error"
-                    ? "bg-red-500 hover:bg-red-600"
-                    : !formData.undertaking
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-500 hover:bg-blue-600"
-                } text-white`}
-              >
-                {isSubmitting 
-                  ? "Submitting..." 
-                  : submitStatus === "success"
-                  ? "✓ Submitted Successfully!"
-                  : submitStatus === "error"
-                  ? "Error - Try Again"
-                  : "Submit & Schedule a Call"}
-              </button>
-
-              {submitStatus === "error" && (
-                <p className="text-xs text-red-500 text-center mt-2">
-                  Something went wrong. Please check console and try again.
-                </p>
-              )}
-            </form>
-          </div>
-        </div>
-      )}
-
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50 }}>
+      <BookingForm
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        onSubmit={handleSubmit}
+        formData={formData}
+        handleInputChange={handleInputChange}
+        isSubmitting={isSubmitting}
+        submitStatus={submitStatus}
+        showCustomCode={showCustomCode}
+        setShowCustomCode={setShowCustomCode}
+      />
+      <div className="fixed top-0 left-0 right-0 z-50">
         <Navbar />
       </div>
-      <div style={{ paddingTop: "60px" }}></div>
+      <div className="pt-15" />
 
-      {/* Hero Section */}
       <div className="relative h-[60vh] w-full overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1600242466690-c1c04f081762?q=80&w=1470&auto=format&fit=crop"
           alt="ladakh"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-slate-900/30" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
-          <p className="text-sm md:text-base tracking-[0.3em] uppercase mb-4">
+          <p className="text-sm md:text-base tracking-[0.3em] uppercase mb-4 drop-shadow-md">
             High Altitude Retreat
           </p>
-          <h1 className="text-6xl md:text-8xl font-serif tracking-wide mb-4">
+          <h1 className="text-6xl md:text-8xl font-serif tracking-wide mb-4 drop-shadow-lg">
             LADAKH.
           </h1>
-          <p className="text-xl md:text-2xl tracking-widest uppercase mb-8">
+          <p className="text-xl md:text-2xl tracking-widest uppercase mb-8 drop-shadow-md">
             Leh, India
           </p>
-          <div className="space-y-2 mb-8">
-            <p className="text-lg md:text-xl">15 Jun - 13 Jul, 2026</p>
+          <div className="space-y-2 mb-8 drop-shadow-md">
+            <p className="text-lg md:text-xl">6 Jul – 27 Jul & 3 Aug – 31 Aug, 2026</p>
             <p className="text-lg md:text-xl">28 Days long stays.</p>
           </div>
         </div>
-        <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-16 text-white text-sm tracking-widths uppercase">
-          <a href="#about" className="hover:text-gray-300 transition-colors">
-            About The Experience
+        <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-16 text-white text-sm uppercase drop-shadow-md">
+          <a href="#about" className="hover:text-emerald-300 transition-colors">
+            About
           </a>
-          <a href="#coliving" className="hover:text-gray-300 transition-colors">
-            Our Coliving Home
+          <a
+            href="#coliving"
+            className="hover:text-emerald-300 transition-colors"
+          >
+            Coliving Home
           </a>
         </div>
       </div>
 
-      {/* Main Content */}
-      <section className="bg-black text-white py-16 px-4">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
+      <Section>
+        <div className="grid md:grid-cols-3 gap-12" id="about">
           <div className="md:col-span-2">
-            <h2 className="text-3xl md:text-4xl font-serif mb-4">
-              Discover the Most Beautiful
-              <br />
-              Region in the Himalayas
+            <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
+              Discover the Most Beautiful Region in the Himalayas
             </h2>
-
-            <div className="flex flex-wrap gap-8 my-10 border-y border-white/20 py-6">
-              {features.map((f, i) => (
-                <div key={i} className="flex flex-col items-center gap-2">
-                  <f.icon className="w-8 h-8 text-blue-500" />
+            <div className="flex flex-wrap gap-8 my-10 border-y border-slate-200 py-6">
+              {FEATURES.map((f, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col items-center gap-2 text-slate-700"
+                >
+                  <f.icon className="w-8 h-8 text-emerald-600" />
                   <span className="text-xs uppercase tracking-wider">
                     {f.text}
                   </span>
                 </div>
               ))}
             </div>
-
-            <SectionTitle>Things You Will Do</SectionTitle>
+            <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-slate-900 mb-10">
+              Things You Will Do
+            </h3>
             <div className="grid md:grid-cols-2 gap-6">
-              {activities.map((a, i) => (
-                <ImageCard key={i} item={a} height="h-48" />
+              {ACTIVITIES.map((a, i) => (
+                <ImgCard key={i} item={a} h="h-48" />
               ))}
             </div>
           </div>
-
-          {/* Pricing Card */}
-          <div className="md:col-span-1">
-            <div className="bg-white/5 border border-white/10 rounded-xl p-6 sticky top-24">
-              <p className="text-sm uppercase tracking-wide text-gray-400 mb-2">
-                RESERVE YOUR WORKSPACE: You Need To Pay
+          <div>
+            <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 sticky top-24">
+              <p className="text-sm uppercase tracking-wide text-slate-500 mb-2 font-semibold">
+                Reserve Your Workspace
               </p>
-              <p className="text-3xl font-bold text-blue-500">$200</p>
-              <p className="text-blue-500 text-sm mb-6">DEPOSIT ONLY</p>
-
-              <h4 className="font-bold uppercase tracking-wide mb-4">
+              <p className="text-3xl font-bold text-emerald-600">
+                ${PRICING.deposit}
+              </p>
+              <p className="text-slate-500 font-medium text-sm mb-6">
+                Deposit Only
+              </p>
+              <h4 className="font-bold text-slate-900 uppercase tracking-wide mb-4">
                 Included
               </h4>
               <ul className="space-y-2 mb-6">
-                {included.map((item, i) => (
+                {PRICING.included.map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-2 text-sm text-gray-300"
+                    className="flex items-start gap-2 text-sm text-slate-600 font-medium"
                   >
-                    <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                    <Check className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
-
-              <h4 className="font-bold uppercase tracking-wide mb-4">
+              <h4 className="font-bold text-slate-900 uppercase tracking-wide mb-4">
                 Not Included
               </h4>
               <ul className="space-y-2 mb-6">
-                {notIncluded.map((item, i) => (
+                {PRICING.notIncluded.map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-2 text-sm text-gray-300"
+                    className="flex items-start gap-2 text-sm text-slate-600 font-medium"
                   >
                     <X className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
-
-              <div className="bg-white/5 rounded-lg p-4 mb-4">
-                <p className="text-sm text-gray-400 uppercase">Total Price</p>
-                <div className="flex items-baseline gap-3">
-                  <span className="text-2xl md:text-3xl text-gray-400 line-through font-semibold">
-                    $1,800
-                  </span>
-                  <span className="text-4xl font-bold text-blue-500">
-                    $1,500
-                  </span>
+              <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-5 mb-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-lg shadow-sm">
+                  Save ${PRICING.original - PRICING.discounted}
                 </div>
-                <p className="text-xs text-green-400 mt-2 font-semibold">Founding Retreat Discount!</p>
+                <p className="text-sm text-emerald-800 font-bold uppercase tracking-wider mb-1">
+                  Total Price
+                </p>
+                <div className="flex flex-col gap-1">
+                  <span className="text-xl text-slate-400 line-through decoration-slate-400 decoration-2 font-black">
+                    ${PRICING.original}
+                  </span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-black text-emerald-600">
+                      ${PRICING.discounted}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-xs text-emerald-700 mt-3 font-bold uppercase tracking-wider bg-emerald-100 inline-block px-2 py-1 rounded">
+                  Founding Discount Applied!
+                </p>
               </div>
-
-              <div className="flex flex-col gap-3">
-                <button 
-                  onClick={() => setIsFormOpen(true)}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-lg uppercase tracking-wide transition-colors cursor-pointer"
-                >
-                  Book Now
-                </button>
-                {/* <button className="w-full border-2 border-blue-500 text-blue-500 font-bold py-3 rounded-lg hover:bg-blue-500/10 transition-colors">
-                  Gift a Trip
-                </button> */}
-              </div>
+              <button onClick={openForm} className={BTN_CLASS}>
+                Book Now
+              </button>
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* Places You Will See */}
-      <section className="bg-black text-white py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <SectionTitle>Places You Will See</SectionTitle>
-          <div className="grid md:grid-cols-4 gap-8">
-            {places.map((p, i) => (
-              <PlaceCard key={i} item={p} />
-            ))}
-          </div>
+      <Section title="Places You Will See">
+        <div className="grid md:grid-cols-4 gap-8">
+          {PLACES.map((p, i) => (
+            <PlaceCard key={i} item={p} />
+          ))}
         </div>
-      </section>
+      </Section>
 
-      {/* Our Home in Ladakh */}
-      <section className="bg-black text-white py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <SectionTitle>Our Home in Ladakh.</SectionTitle>
-          <div className="grid md:grid-cols-3 gap-8">
-            {homeStays.map((h, i) => (
-              <ImageCard key={i} item={h} />
-            ))}
-          </div>
+      <Section title="Our Home in Ladakh">
+        <div className="grid md:grid-cols-3 gap-8" id="coliving">
+          {HOMESTAYS.map((img, i) => (
+            <div
+              key={i}
+              className="group overflow-hidden rounded-2xl shadow-sm border border-slate-100"
+            >
+              <img
+                src={img}
+                alt="Home"
+                className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          ))}
         </div>
-      </section>
+      </Section>
 
-      {/* Choose Date & Documents */}
-      <section className="bg-black text-white py-16 px-4">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
+      <Section>
+        <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <SectionTitle>Choose Your Date</SectionTitle>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+            <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-slate-900 mb-10">
+              Choose Your Date
+            </h3>
+            <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-8">
               <div className="grid grid-cols-2 gap-8 mb-8">
-                {trips.map((trip, i) => (
-                  <div
-                    key={i}
-                    className={`cursor-pointer transition-all ${trip.statusType === "soldout" ? "opacity-50 cursor-not-allowed" : "hover:opacity-80"}`}
-                  >
+                {TRIPS.map((trip, i) => (
+                  <div key={i} className="hover:opacity-80 transition-opacity">
                     <div className="flex gap-4 mb-4">
                       <div>
-                        <p className="text-xs text-gray-400 uppercase">From</p>
-                        <p className="text-lg font-bold">
-                          {trip.fromDate.split(" ")[0]}
+                        <p className="text-xs text-slate-500 font-bold uppercase">
+                          From
                         </p>
-                        <p className="text-lg font-bold">
-                          {trip.fromDate.split(" ")[1]}
+                        <p className="text-lg font-bold text-slate-900">
+                          {trip.fromDate}
                         </p>
                       </div>
-                      <div className="border-l border-white/20 pl-4">
-                        <p className="text-xs text-gray-400 uppercase">To</p>
-                        <p className="text-lg font-bold">
-                          {trip.toDate.split(" ")[0]}
+                      <div className="border-l border-slate-200 pl-4">
+                        <p className="text-xs text-slate-500 font-bold uppercase">
+                          To
                         </p>
-                        <p className="text-lg font-bold">
-                          {trip.toDate.split(" ")[1]}
+                        <p className="text-lg font-bold text-slate-900">
+                          {trip.toDate}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div>
-                        <p className="text-xs text-gray-400 uppercase">Trip</p>
-                        <p className="text-4xl font-bold">{trip.tripNumber}</p>
-                      </div>
-                      <span
-                        className={`px-3 py-2 rounded-md text-xs font-bold uppercase ${trip.statusType === "soldout" ? "bg-blue-500 text-white" : "bg-blue-500/20 text-blue-400"}`}
-                      >
+                      <p className="text-4xl font-bold text-slate-900">
+                        {trip.tripNumber}
+                      </p>
+                      <span className="px-3 py-2 rounded-md text-xs font-bold uppercase bg-emerald-50 text-emerald-600 border border-emerald-100">
                         {trip.status}
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
-              <button 
-                onClick={() => setIsFormOpen(true)}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-full uppercase tracking-wide transition-colors cursor-pointer"
-              >
+              <button onClick={openForm} className={BTN_CLASS}>
                 Book Now
               </button>
             </div>
           </div>
-
           <div>
-            <SectionTitle>Important Documents</SectionTitle>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
-              <div className="flex flex-col gap-4">
-                {documents.map((doc, i) => (
-                  <a
-                    key={i}
-                    href={`/documents/${doc.file}`}
-                    download={doc.file}
-                    className="flex items-center justify-between w-full bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-white font-bold py-4 px-6 rounded-full uppercase tracking-wide transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5" />
-                      <span>{doc.name}</span>
-                    </div>
-                    <Download className="w-5 h-5" />
-                  </a>
-                ))}
-              </div>
+            <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-slate-900 mb-10">
+              Important Documents
+            </h3>
+            <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-8 space-y-4">
+              {DOCUMENTS.map((doc, i) => (
+                <a
+                  key={i}
+                  href={`/documents/${doc.file}`}
+                  download
+                  className="flex items-center justify-between w-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold py-4 px-6 rounded-xl transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-5 h-5 text-emerald-600" />
+                    <span className="text-sm">{doc.name}</span>
+                  </div>
+                  <Download className="w-5 h-5 text-slate-400" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* Community Section */}
-      <section className="bg-black text-white py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-serif text-center mb-4">
+      <Section>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-4">
             Not a Travel Program, a Community
           </h2>
-          <p className="text-center text-gray-400 text-lg mb-12 max-w-3xl mx-auto">
-            We live, explore, and build our community together.
-            <br />
-            Embracing openness and curiosity, as a Tribe, we explore new places
-            and ideas.
+          <p className="text-slate-600 text-lg max-w-3xl mx-auto">
+            We live, explore, and build together. Embracing openness and
+            curiosity, we explore new places and ideas.
           </p>
-          <div className="grid md:grid-cols-3 gap-8">
-            {community.map((c, i) => (
-              <div key={i} className="group">
-                <div className="overflow-hidden rounded-lg mb-6">
-                  <img
-                    src={c.image}
-                    alt={c.title}
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-3">{c.title}</h3>
-                <p className="text-gray-400 leading-relaxed">{c.description}</p>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center mt-16">
-            <div className="w-px h-16 bg-linear-to-b from-transparent via-blue-500 to-transparent"></div>
-          </div>
         </div>
-      </section>
+        <div className="grid md:grid-cols-3 gap-8">
+          {COMMUNITY.map((c, i) => (
+            <Card key={i}>
+              <div className="overflow-hidden rounded-2xl shadow-sm border border-slate-100 mb-6">
+                <img
+                  src={c.image}
+                  alt={c.title}
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                {c.title}
+              </h3>
+              <p className="text-slate-600 leading-relaxed">{c.description}</p>
+            </Card>
+          ))}
+        </div>
+        <div className="flex justify-center mt-16">
+          <div className="w-px h-16 bg-linear-to-b from-transparent via-emerald-300 to-transparent" />
+        </div>
+      </Section>
     </>
   );
 }
