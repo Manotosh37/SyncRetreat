@@ -30,12 +30,34 @@ const COUNTRIES = [
   "Other",
 ];
 const COUNTRY_CODES = [
-  { code: "+91", flag: "🇮🇳" },
-  { code: "+1", flag: "🇺🇸" },
-  { code: "+44", flag: "🇬🇧" },
-  { code: "+971", flag: "🇦🇪" },
-  { code: "+65", flag: "🇸🇬" },
-  { code: "+49", flag: "🇩🇪" },
+  // Core Markets (Top Conversion)
+  { code: "+44", flag: "🇬🇧", label: "UK" }, // Default
+  { code: "+1", flag: "🇺🇸", label: "USA" },
+  { code: "+1", flag: "🇨🇦", label: "Canada" },
+  { code: "+61", flag: "🇦🇺", label: "Australia" },
+  { code: "+64", flag: "🇳🇿", label: "New Zealand" },
+
+  // High-value Europe (Remote-heavy + wealthy)
+  { code: "+49", flag: "🇩🇪", label: "Germany" },
+  { code: "+33", flag: "🇫🇷", label: "France" },
+  { code: "+31", flag: "🇳🇱", label: "Netherlands" },
+  { code: "+41", flag: "🇨🇭", label: "Switzerland" },
+  { code: "+46", flag: "🇸🇪", label: "Sweden" },
+  { code: "+47", flag: "🇳🇴", label: "Norway" },
+  { code: "+45", flag: "🇩🇰", label: "Denmark" },
+  { code: "+358", flag: "🇫🇮", label: "Finland" },
+  { code: "+353", flag: "🇮🇪", label: "Ireland" },
+
+  // Asia (Remote + growing nomads)
+  { code: "+91", flag: "🇮🇳", label: "India" },
+  { code: "+81", flag: "🇯🇵", label: "Japan" },
+  { code: "+65", flag: "🇸🇬", label: "Singapore" },
+  { code: "+971", flag: "🇦🇪", label: "UAE" },
+  { code: "+63", flag: "🇵🇭", label: "Philippines" },
+
+  // Emerging Remote Talent
+  { code: "+55", flag: "🇧🇷", label: "Brazil" },
+  { code: "+52", flag: "🇲🇽", label: "Mexico" },
 ];
 
 const FORM_FIELDS = [
