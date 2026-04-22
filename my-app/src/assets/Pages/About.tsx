@@ -15,10 +15,10 @@ export default function About() {
                         SyncRetreat was not built by the tourism industry. It was built by software engineers.
                     </p>
                     <p>
-                        We understand the technical reality of shipping a product. We know what it takes to deploy a full-stack application, manage a DevOps pipeline, and coordinate remote servers. More importantly, we know that a single dropped SSH connection, a thermal-throttling laptop in a hot European apartment, or a noisy cafe can destroy a 10-hour sprint.
+                        We understand the technical reality of shipping a product. We know what it takes to deploy a full-stack application, manage a DevOps pipeline, and coordinate remote servers. More importantly, we know that a single dropped connection, an unreliable power grid, or a noisy environment can destroy a 10-hour sprint.
                     </p>
                     <p>
-                        We built the infrastructure we couldn't find anywhere else.
+                        We built the infrastructure we couldn't find in the world's most beautiful destinations.
                     </p>
                 </div>
 

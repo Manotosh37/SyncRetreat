@@ -1,9 +1,9 @@
-import { supabase } from "./supabase";
+// src/lib/emailservice.ts
 
 interface EmailData {
   to: string;
   name: string;
-  type: "confirmation" | "approved" | "rejected" | "welcome" | "reminder";
+  type: "confirmation" | "approved" | "rejected" | "welcome" | "booking_confirmation" | "final_payment";
   destination?: string;
   paymentLink?: string;
   password?: string;
@@ -12,32 +12,37 @@ interface EmailData {
 
 export const sendEmail = async (data: EmailData): Promise<{ success: boolean; message: string }> => {
   try {
-    console.log("--- Email Debug Start ---");
-    console.log("Payload:", data);
-    
-    const { data: result, error } = await supabase.functions.invoke("send-email", {
-      body: data,
+    // Construct the direct URL to your Edge Function
+    // Ensure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY match your .env file
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !anonKey) {
+      throw new Error("Missing Supabase environment variables.");
+    }
+
+    const functionUrl = `${supabaseUrl}/functions/v1/send-email`;
+
+    const response = await fetch(functionUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${anonKey}`
+      },
+      body: JSON.stringify(data)
     });
 
-    if (error) {
-      console.error("Supabase Edge Function Invoke Error:", error);
-      return { success: false, message: `Supabase Function Error: ${error.message}. Is the 'send-email' function deployed?` };
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error("Server rejected request:", result);
+      return { success: false, message: result.error || "Server returned an error." };
     }
 
-    if (result?.error) {
-      console.error("Email Provider Error:", result.error);
-      return { success: false, message: `Email Provider Error: ${result.error}` };
-    }
+    return { success: true, message: `Action successful for ${data.to}` };
 
-    console.log("Email Result:", result);
-    console.log("--- Email Debug End ---");
-    return { success: true, message: `Email sent to ${data.to}` };
-
-  } catch (error) {
-    console.error("Unexpected Email error:", error);
-    if (error instanceof Error) {
-      return { success: false, message: error.message };
-    }
-    return { success: false, message: "An unexpected error occurred." };
+  } catch (error: any) {
+    console.error("Fetch Execution Error:", error);
+    return { success: false, message: error.message || "An unexpected network error occurred." };
   }
 };

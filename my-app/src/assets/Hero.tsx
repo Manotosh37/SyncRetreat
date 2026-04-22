@@ -1,12 +1,5 @@
 import { motion, Variants } from "framer-motion";
-import {
-  Server,
-  Terminal,
-  Clock,
-  Activity,
-  ChevronRight,
-  ShieldCheck,
-} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Hero() {
@@ -45,143 +38,104 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen bg-[#F2EDC2] text-slate-800 font-sans flex overflow-hidden">
-      {/* Full width split container without boxing */}
+    <section className="relative min-h-screen bg-[#FDFCF2] text-slate-900 font-sans flex overflow-hidden">
+      {/* Split layout: Left for Brand, Right for Message */}
       <div className="flex flex-col lg:flex-row w-full min-h-screen">
-        {/* Left Pane: STRICTLY Logo, Name, Tagline */}
+        {/* Left Pane: Brand Identity */}
         <motion.div
-          className="w-full lg:w-5/12 p-12 lg:p-20 flex flex-col justify-center items-start z-10 pt-32 lg:pt-20"
+          className="w-full lg:w-5/12 p-12 lg:p-24 flex flex-col justify-center items-start z-10 pt-32 lg:pt-20 bg-[#F2EDC2]"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           <motion.div
             variants={itemVariants}
-            className="flex flex-col items-start space-y-8"
+            className="flex flex-col items-start space-y-12"
           >
-            <img
-              src="/Sync.png"
-              alt="SyncRetreat Logo"
-              className="w-40 h-auto"
-            />
+            <div className="relative">
+              <img
+                src="/Sync.png"
+                alt="SyncRetreat Logo"
+                className="w-48 h-auto relative z-10"
+              />
+              <div className="absolute -top-4 -left-4 w-12 h-12 bg-emerald-500/10 rounded-full blur-xl" />
+            </div>
+
             <div>
-              <h1 className="text-5xl md:text-7xl font-black tracking-widest text-slate-900 mb-6">
-                SYNCRETREAT<span className="text-emerald-900">.</span>
+              <h1 className="text-6xl md:text-8xl font-black tracking-tight text-slate-900 mb-8 leading-[0.9]">
+                SYNC
+                <br />
+                RETREAT<span className="text-emerald-600">.</span>
               </h1>
-              <p className="text-xl md:text-2xl font-medium text-slate-700 tracking-wide border-l-4 border-slate-900 pl-5 leading-relaxed">
-                Deep work and Travel, <br className="hidden xl:block" />{" "}
-                Redefined.
-              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-0.5 bg-slate-900" />
+                <p className="text-lg md:text-xl font-bold text-slate-800 uppercase tracking-widest">
+                  Deep work & Explore cultures
+                </p>
+              </div>
             </div>
           </motion.div>
         </motion.div>
 
-        {/* Right Pane: Video Background + Content in Dark */}
-        <div className="relative w-full lg:w-7/12 flex flex-col justify-center border-l border-slate-900/10">
+        {/* Right Pane: Video Background + New Content */}
+        <div className="relative w-full lg:w-7/12 flex flex-col justify-center overflow-hidden">
           {/* Background Video */}
           <video
             autoPlay
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover z-0"
-            src="/video.mp4"
+            className="absolute inset-0 w-full h-full object-cover z-0 grayscale-20 brightness-[0.7]"
+            src="/video1.mp4"
           />
-          {/* Dark Glassmorphism Overlay */}
 
           {/* Right Pane Content */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="relative z-20 p-10 lg:p-20 flex flex-col justify-center space-y-10"
+            className="relative z-20 p-12 lg:p-24 flex flex-col justify-center max-w-3xl"
           >
-            {/* What exactly it is */}
-            <motion.div variants={itemVariants}>
-              <h2 className="text-sm font-bold text-green-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <Terminal className="w-4 h-4" /> System Overview
+            <motion.div variants={itemVariants} className="space-y-8">
+              {/* Modern Headline */}
+              <h2 className="text-5xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
+                Remote work, <br />
+                <span className="text-emerald-400">reimagined.</span>
               </h2>
-              <p className="text-lg text-slate-300 leading-relaxed font-medium">
-                We solve the{" "}
-                <strong className="text-white font-bold">
-                  retention crisis
-                </strong>{" "}
-                and synchronous communication fatigue crippling Western tech
-                hubs. An{" "}
-                <strong className="text-white font-bold">
-                  Infrastructure-as-a-Service (IaaS)
-                </strong>{" "}
-                applied to physical hospitality, relocating your engineers to
-                extreme-isolation nodes in the Himalayas for a strict 28-day
-                sprint.
+
+              {/* Requested Text */}
+              <p className="text-xl lg:text-2xl text-slate-200 leading-relaxed font-medium">
+                We design exceptional 28-days journeys for digital nomads,
+                bringing together a community of like-minded professionals.
+                Whether you work fully remotely or can step away from the office
+                for a while, join us to explore the world and create a better
+                balance between work and life.
               </p>
-            </motion.div>
 
-            {/* What we are providing & Who is it for */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <motion.div
-                variants={itemVariants}
-                className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xs"
-              >
-                <Server className="w-6 h-6 text-green-400 mb-4" />
-                <h4 className="text-white font-bold text-lg mb-2">
-                  Physical Layer
-                </h4>
-                <p className="text-sm text-slate-400 leading-relaxed font-medium">
-                  Bonded dual-WAN load balancers and multi-tiered N+1 power
-                  backups.
-                </p>
-              </motion.div>
-
-              <motion.div
-                variants={itemVariants}
-                className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 shadow-xs"
-              >
-                <Clock className="w-6 h-6 text-green-400 mb-4" />
-                <h4 className="text-white font-bold text-lg mb-2">
-                  Protocol Layer
-                </h4>
-                <p className="text-sm text-slate-400 leading-relaxed font-medium">
-                  5-hour asynchronous "Ghost Mode" enforced by Indian Standard
-                  Time shift.
-                </p>
-              </motion.div>
-
-              <motion.div
-                variants={itemVariants}
-                className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 sm:col-span-2 shadow-xs"
-              >
-                <Activity className="w-6 h-6 text-green-400 mb-4" />
-                <h4 className="text-white font-bold text-lg mb-2">
-                  Target Allocation
-                </h4>
-                <p className="text-sm text-slate-400 leading-relaxed font-medium">
-                  Designed for remote professionals, founders, engineers, and
-                  senior operators seeking uninterrupted deep work in an
-                  extreme-focus environment.
-                </p>
-              </motion.div>
-            </div>
-
-            {/* Action / CTA */}
-            <motion.div
-              variants={itemVariants}
-              className="pt-6 border-t border-slate-800"
-            >
-              <div className="flex flex-col items-start gap-6">
+              {/* Action Button */}
+              <motion.div className="pt-8">
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full sm:w-auto px-10 py-5 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-green-500/20"
+                  whileHover={{ scale: 1.05, x: 10 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group px-12 py-6 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-full flex items-center justify-center gap-4 transition-all duration-300 shadow-2xl shadow-green-500/20"
                   onClick={scrollToForm}
                 >
-                  <ShieldCheck className="w-6 h-6" />
-                  APPLY FOR RETREAT
-                  <ChevronRight className="w-6 h-6 ml-1" />
+                  <span className="text-xl tracking-wide">GET STARTED</span>
+                  <ChevronRight className="w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" />
                 </motion.button>
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
+
+          {/* Decorative Elements */}
+          <div className="absolute bottom-12 right-12 z-10 opacity-20 hidden lg:block">
+            <div className="flex items-center gap-4 text-white">
+              <div className="w-20 h-px bg-white" />
+              <span className="text-xs font-bold tracking-[0.3em] uppercase">
+                Est. 2024
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

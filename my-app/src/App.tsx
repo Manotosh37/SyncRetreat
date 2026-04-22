@@ -12,6 +12,7 @@ import CommunitySection from "./assets/Pages/CommunitySection";
 import TestimonialsSection from "./assets/Pages/TestimonialsSection";
 import TestimonialsPage from "./assets/Pages/TestimonialsPage";
 import BlogPage from "./assets/Pages/BlogPage";
+import BlogPost from "./assets/Pages/BlogPost";
 import FaqSection from "./assets/Pages/FaqSection";
 
 import Terms from "./assets/Pages/Terms";
@@ -58,7 +59,6 @@ function Home() {
       <Why />
       <CommunitySection />
       <Infra />
-      {/* <TestimonialsSection limit={8} /> */}
       <FaqSection />
     </>
   );
@@ -90,6 +90,7 @@ function App() {
 
             <Route path="/testimonials" element={<TestimonialsPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
 
             {/* <Legal /> */}
             <Route path="/privacy" element={<Privacy />} />

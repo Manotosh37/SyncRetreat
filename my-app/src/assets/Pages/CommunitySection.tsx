@@ -45,8 +45,7 @@ export default function Community() {
         {/* Top Right Image */}
         <div className="w-full h-87.5 md:h-112.5">
           <img
-            src="./community.jpeg"
-            alt="Community Gathering"
+            src="https://internationalyouthclub.org/wp-content/uploads/2024/06/1519633344_Ladakh-Home_11zon.jpg"
             className="w-full h-full object-cover"
           />
         </div>
@@ -85,7 +84,7 @@ export default function Community() {
         {/* Bottom Right Image */}
         <div className="w-full h-87.5 md:h-112.5">
           <img
-            src="./weekend.jpeg"
+            src="https://images.unsplash.com/photo-1697490251825-0d6f7f3f7254?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Adventure"
             className="w-full h-full object-cover"
           />

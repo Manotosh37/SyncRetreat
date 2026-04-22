@@ -1,235 +1,188 @@
-import { serve } from 'https://deno.land/x/sift@0.6.0/mod.ts';
-import { Resend } from 'https://esm.sh/@resend/resend';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { Resend } from "npm:resend";
 
-/**
- * Edge Function to send transactional emails via Resend.
- * Also handles server-side user account creation for 'welcome' type.
- *
- * Expected payload (JSON):
- * {
- *   "to": "user@example.com",
- *   "name": "User Name",
- *   "type": "welcome" | "confirmation" | "approved" | "rejected" | "reminder",
- *   "destination": "Goa" (optional),
- *   "paymentLink": "https://..." (optional),
- *   "booking_id": "uuid" (optional, used for 'welcome' to link user account to booking)
- * }
- */
+// Standard CORS headers required by browsers interacting with Supabase Edge Functions
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
 
-function generatePassword(): string {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
-  return Array.from({ length: 12 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-}
-
-serve(async (req) => {
-  // Handle CORS preflight
+serve(async (req: { method: string; json: () => any; }) => {
+  // 1. Handle CORS Preflight (CRITICAL FOR FRONTEND CALLS)
   if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'authorization, content-type',
-      },
-    });
+    return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const { to, name, type, destination, paymentLink, booking_id } = await req.json();
+    // Ensure the API key is present
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    if (!resendKey) {
+      throw new Error("RESEND_API_KEY is not configured in Edge Function secrets.");
+    }
 
-    const apiKey = Deno.env.get('EMAIL_API_KEY');
-    if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'EMAIL_API_KEY not set' }), {
-        status: 500,
-        headers: { 'Access-Control-Allow-Origin': '*' },
+    const resend = new Resend(resendKey);
+    const SENDER_EMAIL = 'SyncRetreat <founder@syncretreat.com>';
+    const payload = await req.json();
+
+    // ---------------------------------------------------------
+    // ROUTE 1: DATABASE WEBHOOK (Automated State Changes)
+    // ---------------------------------------------------------
+    if (payload.type === 'UPDATE' && payload.table === 'bookings') {
+      const oldRecord = payload.old_record;
+      const newRecord = payload.record;
+
+      // Approval Automation
+      if (oldRecord.status !== 'approved' && newRecord.status === 'approved') {
+        const data = await resend.emails.send({
+          from: SENDER_EMAIL,
+          to: newRecord.email,
+          subject: `Action Required: Your SyncRetreat Application for ${newRecord.destination} is Approved`,
+          html: `
+            <h2>Welcome to the next step, ${newRecord.name}</h2>
+            <p>Your application has been reviewed and approved.</p>
+            <p>Please complete your payment of $1499 USD to secure your spot.</p>
+            <a href="https://paypal.me/syncretreat/1499USD" style="padding:10px 20px; background:#10b981; color:white; text-decoration:none; border-radius:5px;">Complete Payment</a>
+          `
+        });
+        return new Response(JSON.stringify({ success: true, db_event: "approved", data }), {
+          status: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // Rejection Automation
+      if (oldRecord.status !== 'rejected' && newRecord.status === 'rejected') {
+        const data = await resend.emails.send({
+          from: SENDER_EMAIL,
+          to: newRecord.email,
+          subject: 'Update regarding your SyncRetreat Application',
+          html: `<p>Hello ${newRecord.name}, unfortunately we are unable to proceed with your application at this time.</p>`
+        });
+        return new Response(JSON.stringify({ success: true, db_event: "rejected", data }), {
+          status: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      // Payment Automation
+      if (oldRecord.payment_status !== 'paid' && newRecord.payment_status === 'paid') {
+        const data = await resend.emails.send({
+          from: SENDER_EMAIL,
+          to: newRecord.email,
+          subject: 'Payment Received: Welcome to SyncRetreat',
+          html: `
+            <h2>Payment Confirmed</h2>
+            <p>Hello ${newRecord.name}, we have successfully received your payment for the ${newRecord.destination} cohort.</p>
+            <p>We will be sending your onboarding materials shortly.</p>
+          `
+        });
+        return new Response(JSON.stringify({ success: true, db_event: "paid", data }), {
+          status: 200,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+
+      return new Response(JSON.stringify({ success: true, message: "Webhook payload processed, no state change triggered an email." }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
 
-    const resend = new Resend(apiKey);
-    let subject = '';
-    let html = '';
-    let generatedPassword = '';
+    // ---------------------------------------------------------
+    // ROUTE 2: DIRECT API CALL (Manual Frontend Actions)
+    // ---------------------------------------------------------
+    const { to, name, type, destination } = payload;
 
-    // ---- For 'welcome' type: create Supabase Auth user server-side ----
-    if (type === 'welcome' && booking_id) {
-      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-      const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-      const adminClient = createClient(supabaseUrl, serviceKey);
-
-      // Check if user already exists
-      const { data: { users }, error: listErr } = await adminClient.auth.admin.listUsers();
-      const existing = users?.find((u) => u.email === to);
-
-      let userId: string | undefined;
-
-      if (existing) {
-        userId = existing.id;
-      } else {
-        generatedPassword = generatePassword();
-        const { data: newUser, error: createErr } = await adminClient.auth.admin.createUser({
-          email: to,
-          password: generatedPassword,
-          email_confirm: true,
-          user_metadata: { full_name: name },
-        });
-        if (createErr) {
-          console.error('User create error:', createErr);
-          return new Response(JSON.stringify({ error: `User creation failed: ${createErr.message}` }), {
-            status: 500,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-          });
-        }
-        userId = newUser.user?.id;
-      }
-
-      // Link user to booking
-      if (userId) {
-        await adminClient
-          .from('bookings')
-          .update({ user_id: userId })
-          .eq('id', booking_id);
-      }
+    if (type === 'reminder') {
+      const data = await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: to,
+        subject: `Reminder: SyncRetreat Application for ${destination}`,
+        html: `<p>Hello ${name}, this is a reminder regarding your pending application.</p>`
+      });
+      return new Response(JSON.stringify({ success: true, data }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
 
-    // ---- Build email content ----
-    const brandColor = '#059669';
-    const baseStyle = `font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #374151; max-width: 600px; margin: 0 auto;`;
-    const headerStyle = `background: linear-gradient(135deg, #064e3b 0%, #059669 100%); padding: 32px; border-radius: 12px 12px 0 0; text-align: center;`;
-    const bodyStyle = `background: #ffffff; padding: 32px; border-radius: 0 0 12px 12px; border: 1px solid #e5e7eb; border-top: none;`;
-    const footerStyle = `text-align: center; color: #9ca3af; font-size: 12px; margin-top: 24px;`;
-    const btnStyle = `display: inline-block; background: ${brandColor}; color: #ffffff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px; margin: 16px 0;`;
-
-    switch (type) {
-      case 'welcome':
-        subject = '🎉 Welcome to SyncRetreat — Your Account is Ready!';
-        html = `
-          <div style="${baseStyle}">
-            <div style="${headerStyle}">
-              <h1 style="color:#ffffff; margin:0; font-size:28px; font-weight:700;">SyncRetreat</h1>
-              <p style="color:#a7f3d0; margin:8px 0 0; font-size:15px;">Work. Explore. Connect.</p>
-            </div>
-            <div style="${bodyStyle}">
-              <h2 style="color:#111827; font-size:22px;">Welcome aboard, ${name}! 🙌</h2>
-              <p>Your payment has been confirmed and your spot is secured. We've created an account for you so you can manage your booking and trip details.</p>
-              ${destination ? `<p><strong>Destination:</strong> ${destination}</p>` : ''}
-              <div style="background:#f0fdf4; border-left: 4px solid ${brandColor}; padding: 16px 20px; border-radius: 8px; margin: 24px 0;">
-                <p style="margin:0 0 8px; font-weight:600; color:#111827;">Your Login Credentials</p>
-                <p style="margin:4px 0;">📧 Email: <strong>${to}</strong></p>
-                ${generatedPassword ? `<p style="margin:4px 0;">🔑 Password: <code style="background:#e5e7eb; padding:2px 6px; border-radius:4px; font-size:14px;">${generatedPassword}</code></p>` : ''}
-              </div>
-              <p style="text-align:center;">
-                <a href="https://syncretreat.com/login" style="${btnStyle}">Go to Dashboard →</a>
-              </p>
-              <p style="color:#6b7280; font-size:13px;">Please change your password after your first login for security.</p>
-            </div>
-            <div style="${footerStyle}"><p>© 2026 SyncRetreat. All rights reserved.</p></div>
-          </div>
-        `;
-        break;
-
-      case 'confirmation':
-        subject = `✅ Application Received — ${destination || 'SyncRetreat'}`;
-        html = `
-          <div style="${baseStyle}">
-            <div style="${headerStyle}">
-              <h1 style="color:#ffffff; margin:0; font-size:28px; font-weight:700;">SyncRetreat</h1>
-            </div>
-            <div style="${bodyStyle}">
-              <h2 style="color:#111827;">Hi ${name},</h2>
-              <p>We've received your application for <strong>${destination || 'the retreat'}</strong>. Our team will review it and get back to you within 2-3 business days.</p>
-              <p>In the meantime, feel free to explore our community guidelines and what to expect on retreat.</p>
-              <p style="text-align:center;"><a href="https://syncretreat.com" style="${btnStyle}">Visit SyncRetreat →</a></p>
-            </div>
-            <div style="${footerStyle}"><p>© 2026 SyncRetreat. All rights reserved.</p></div>
-          </div>
-        `;
-        break;
-
-      case 'approved':
-        subject = `🎊 You're Approved for ${destination || 'SyncRetreat'}!`;
-        html = `
-          <div style="${baseStyle}">
-            <div style="${headerStyle}">
-              <h1 style="color:#ffffff; margin:0; font-size:28px; font-weight:700;">SyncRetreat</h1>
-            </div>
-            <div style="${bodyStyle}">
-              <h2 style="color:#111827;">Congratulations, ${name}! 🎉</h2>
-              <p>Your application for <strong>${destination || 'the retreat'}</strong> has been <strong style="color:${brandColor};">approved</strong>. Secure your spot by completing payment below.</p>
-              ${paymentLink ? `<p style="text-align:center;"><a href="${paymentLink}" style="${btnStyle}">Complete Payment →</a></p>` : ''}
-              <p style="color:#6b7280; font-size:13px;">If you have any questions, reply to this email and we'll be happy to help.</p>
-            </div>
-            <div style="${footerStyle}"><p>© 2026 SyncRetreat. All rights reserved.</p></div>
-          </div>
-        `;
-        break;
-
-      case 'rejected':
-        subject = `Update on your ${destination || 'SyncRetreat'} application`;
-        html = `
-          <div style="${baseStyle}">
-            <div style="${headerStyle}">
-              <h1 style="color:#ffffff; margin:0; font-size:28px; font-weight:700;">SyncRetreat</h1>
-            </div>
-            <div style="${bodyStyle}">
-              <h2 style="color:#111827;">Hi ${name},</h2>
-              <p>Thank you for applying to <strong>${destination || 'our retreat'}</strong>. After careful review, we're unable to accommodate your application for this cohort.</p>
-              <p>We encourage you to apply again for a future retreat — we'd love to have you join the SyncRetreat community.</p>
-              <p style="text-align:center;"><a href="https://syncretreat.com" style="${btnStyle}">View Future Retreats →</a></p>
-            </div>
-            <div style="${footerStyle}"><p>© 2026 SyncRetreat. All rights reserved.</p></div>
-          </div>
-        `;
-        break;
-
-      case 'reminder':
-        subject = `⏰ Reminder: Complete Your ${destination || 'SyncRetreat'} Booking`;
-        html = `
-          <div style="${baseStyle}">
-            <div style="${headerStyle}">
-              <h1 style="color:#ffffff; margin:0; font-size:28px; font-weight:700;">SyncRetreat</h1>
-            </div>
-            <div style="${bodyStyle}">
-              <h2 style="color:#111827;">Hi ${name},</h2>
-              <p>This is a friendly reminder about your pending <strong>${destination || 'retreat'}</strong> booking. We'd love to confirm your spot!</p>
-              <p>If you have any questions about the payment process or the retreat, don't hesitate to reach out.</p>
-              <p style="text-align:center;"><a href="https://syncretreat.com/login" style="${btnStyle}">View My Booking →</a></p>
-            </div>
-            <div style="${footerStyle}"><p>© 2026 SyncRetreat. All rights reserved.</p></div>
-          </div>
-        `;
-        break;
-
-      default:
-        return new Response(JSON.stringify({ error: 'Invalid email type' }), {
-          status: 400,
-          headers: { 'Access-Control-Allow-Origin': '*' },
-        });
+    if (type === 'confirmation') {
+      const data = await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: to,
+        subject: `SyncRetreat Application Received`,
+        html: `<p>Hello ${name}, we have received your application for ${destination} and are currently reviewing it.</p>`
+      });
+      return new Response(JSON.stringify({ success: true, data }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
 
-    const result = await resend.emails.send({
-      from: 'SyncRetreat <no-reply@sync-retreat.com>',
-      to,
-      subject,
-      html,
+    if (type === 'welcome') {
+      const data = await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: to,
+        subject: `Welcome to SyncRetreat, ${name}!`,
+        html: `
+          <h1>Welcome to the Community!</h1>
+          <p>Hello ${name}, we're excited to have you join SyncRetreat.</p>
+          <p>Explore our upcoming retreats and start your journey with us.</p>
+          <a href="https://syncretreat.com/destinations" style="padding:10px 20px; background:#10b981; color:white; text-decoration:none; border-radius:5px;">Explore Destinations</a>
+        `
+      });
+      return new Response(JSON.stringify({ success: true, data }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (type === 'booking_confirmation') {
+      const data = await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: to,
+        subject: `Booking Confirmed: Thanks for joining SyncRetreat!`,
+        html: `
+          <h1>Your Booking is Confirmed!</h1>
+          <p>Hello ${name}, thank you for completing your payment. Your spot in the ${destination} cohort is now officially secured.</p>
+          <p>We're thrilled to have you with us. Stay tuned for onboarding details!</p>
+        `
+      });
+      return new Response(JSON.stringify({ success: true, data }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (type === 'final_payment') {
+      const data = await resend.emails.send({
+        from: SENDER_EMAIL,
+        to: to,
+        subject: `Action Required: Final Payment for your SyncRetreat`,
+        html: `
+          <h1>Final Payment Reminder</h1>
+          <p>Hello ${name}, your retreat in ${destination} is just one month away!</p>
+          <p>Please complete the remaining balance of your payment to finalize your booking.</p>
+          <a href="https://paypal.me/syncretreat/final" style="padding:10px 20px; background:#10b981; color:white; text-decoration:none; border-radius:5px;">Complete Final Payment</a>
+        `
+      });
+      return new Response(JSON.stringify({ success: true, data }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    // If payload matches neither Webhook nor Manual call
+    return new Response(JSON.stringify({ error: "Invalid payload type." }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 
-    if (result.error) {
-      console.error('Resend error:', result.error);
-      return new Response(JSON.stringify({ error: result.error }), {
-        status: 500,
-        headers: { 'Access-Control-Allow-Origin': '*' },
-      });
-    }
-
-    return new Response(
-      JSON.stringify({ success: true, message: 'Email sent', accountCreated: !!generatedPassword }),
-      { status: 200, headers: { 'Access-Control-Allow-Origin': '*' } }
-    );
-  } catch (e) {
-    console.error('Function error:', e);
-    return new Response(JSON.stringify({ error: e.message || 'Unexpected error' }), {
+  } catch (error: any) {
+    console.error("Function Error:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
 });
