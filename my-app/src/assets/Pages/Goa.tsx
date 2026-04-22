@@ -387,7 +387,7 @@ const FormField = ({
               if (v !== "custom")
                 onChange({ target: { name: "countryCode", value: v } });
             }}
-            className={`${INPUT_CLASS} min-w-27.5`}
+            className={`${INPUT_CLASS} w-24 shrink-0`}
           >
             {COUNTRY_CODES.map((c) => (
               <option key={c.code} value={c.code}>
@@ -403,7 +403,7 @@ const FormField = ({
               value={value.countryCode}
               onChange={onChange}
               placeholder="+234"
-              className={`${INPUT_CLASS} min-w-27.5`}
+              className={`${INPUT_CLASS} w-24 shrink-0`}
               required
             />
           )}
@@ -412,7 +412,7 @@ const FormField = ({
             name="phone"
             value={value.phone}
             onChange={onChange}
-            placeholder="Number"
+            placeholder="Phone number"
             className={`${INPUT_CLASS} flex-1`}
             required
           />

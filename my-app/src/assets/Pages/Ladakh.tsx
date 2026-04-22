@@ -30,12 +30,34 @@ const COUNTRIES = [
   "Other",
 ];
 const COUNTRY_CODES = [
-  { code: "+91", flag: "🇮🇳" },
-  { code: "+1", flag: "🇺🇸" },
-  { code: "+44", flag: "🇬🇧" },
-  { code: "+971", flag: "🇦🇪" },
-  { code: "+65", flag: "🇸🇬" },
-  { code: "+49", flag: "🇩🇪" },
+  // Core Markets (Top Conversion)
+  { code: "+44", flag: "🇬🇧", label: "UK" }, // Default
+  { code: "+1", flag: "🇺🇸", label: "USA" },
+  { code: "+1", flag: "🇨🇦", label: "Canada" },
+  { code: "+61", flag: "🇦🇺", label: "Australia" },
+  { code: "+64", flag: "🇳🇿", label: "New Zealand" },
+
+  // High-value Europe (Remote-heavy + wealthy)
+  { code: "+49", flag: "🇩🇪", label: "Germany" },
+  { code: "+33", flag: "🇫🇷", label: "France" },
+  { code: "+31", flag: "🇳🇱", label: "Netherlands" },
+  { code: "+41", flag: "🇨🇭", label: "Switzerland" },
+  { code: "+46", flag: "🇸🇪", label: "Sweden" },
+  { code: "+47", flag: "🇳🇴", label: "Norway" },
+  { code: "+45", flag: "🇩🇰", label: "Denmark" },
+  { code: "+358", flag: "🇫🇮", label: "Finland" },
+  { code: "+353", flag: "🇮🇪", label: "Ireland" },
+
+  // Asia (Remote + growing nomads)
+  { code: "+91", flag: "🇮🇳", label: "India" },
+  { code: "+81", flag: "🇯🇵", label: "Japan" },
+  { code: "+65", flag: "🇸🇬", label: "Singapore" },
+  { code: "+971", flag: "🇦🇪", label: "UAE" },
+  { code: "+63", flag: "🇵🇭", label: "Philippines" },
+
+  // Emerging Remote Talent
+  { code: "+55", flag: "🇧🇷", label: "Brazil" },
+  { code: "+52", flag: "🇲🇽", label: "Mexico" },
 ];
 
 const FORM_FIELDS = [
@@ -82,10 +104,7 @@ const FORM_FIELDS = [
     type: "select",
     required: true,
     help: "Which trip?",
-    options: [
-      "Ladakh - July 06 to July 27",
-      "Ladakh - August 03 to August 31",
-    ],
+    options: ["Ladakh - July 06 to July 27", "Ladakh - August 03 to August 31"],
   },
   {
     name: "remoteWork",
@@ -308,7 +327,7 @@ const PRICING = {
 
 const INITIAL_FORM = Object.fromEntries([
   ...FORM_FIELDS.map((f) => [f.name, ""]),
-  ["countryCode", "+91"],
+  ["countryCode", "+44"],
   ["undertaking", false],
 ]);
 
@@ -332,24 +351,52 @@ const FormField = ({
     <p className="text-xs text-slate-500 mb-2">{field.help}</p>
   );
 
-  if (field.type === "select") {
+  if (field.type === "phone") {
     return (
       <div className="mb-6">
         {base} {help}
-        <select
-          name={field.name}
-          value={value}
-          onChange={onChange}
-          required={field.required}
-          className={INPUT_CLASS}
-        >
-          <option value="">Select an option</option>
-          {field.options?.map((opt: string) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+        <div className="flex w-full items-stretch overflow-hidden rounded-lg border border-slate-300 bg-white focus-within:ring-2 focus-within:ring-emerald-500 focus-within:border-emerald-500">
+          <select
+            value={showCustomCode ? "custom" : value.countryCode}
+            onChange={(e) => {
+              const v = e.target.value;
+              setShowCustomCode(v === "custom");
+              if (v !== "custom") {
+                onChange({ target: { name: "countryCode", value: v } });
+              }
+            }}
+            className="w-28 shrink-0 border-0 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none sm:w-32"
+          >
+            {COUNTRY_CODES.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.flag} {c.code}
+              </option>
+            ))}
+            <option value="custom">Other</option>
+          </select>
+
+          {showCustomCode && (
+            <input
+              type="text"
+              name="countryCode"
+              value={value.countryCode}
+              onChange={onChange}
+              placeholder="+234"
+              className="w-28 shrink-0 border-0 border-l border-slate-300 px-3 py-3 text-sm outline-none sm:w-32"
+              required
+            />
+          )}
+
+          <input
+            type="tel"
+            name="phone"
+            value={value.phone}
+            onChange={onChange}
+            placeholder="Phone number"
+            className="min-w-0 flex-1 border-0 px-3 py-3 text-sm text-slate-900 outline-none"
+            required
+          />
+        </div>
       </div>
     );
   }
@@ -383,7 +430,7 @@ const FormField = ({
               if (v !== "custom")
                 onChange({ target: { name: "countryCode", value: v } });
             }}
-            className={`${INPUT_CLASS} min-w-27.5`}
+            className={`${INPUT_CLASS} w-24 shrink-0`}
           >
             {COUNTRY_CODES.map((c) => (
               <option key={c.code} value={c.code}>
@@ -399,7 +446,7 @@ const FormField = ({
               value={value.countryCode}
               onChange={onChange}
               placeholder="+234"
-              className={`${INPUT_CLASS} min-w-27.5`}
+              className={`${INPUT_CLASS} w-24 shrink-0`}
               required
             />
           )}
@@ -408,7 +455,7 @@ const FormField = ({
             name="phone"
             value={value.phone}
             onChange={onChange}
-            placeholder="Number"
+            placeholder="Phone number"
             className={`${INPUT_CLASS} flex-1`}
             required
           />
@@ -639,7 +686,7 @@ export default function Ladakh() {
         to: formData.email,
         name: formData.name,
         type: "confirmation",
-        destination: "Ladakh"
+        destination: "Ladakh",
       });
 
       setSubmitStatus("success");
@@ -693,7 +740,9 @@ export default function Ladakh() {
             Leh, India
           </p>
           <div className="space-y-2 mb-8 drop-shadow-md">
-            <p className="text-lg md:text-xl">6 Jul – 27 Jul & 3 Aug – 31 Aug, 2026</p>
+            <p className="text-lg md:text-xl">
+              6 Jul – 27 Jul & 3 Aug – 31 Aug, 2026
+            </p>
             <p className="text-lg md:text-xl">28 Days long stays.</p>
           </div>
         </div>
