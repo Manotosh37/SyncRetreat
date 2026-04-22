@@ -30,34 +30,12 @@ const COUNTRIES = [
   "Other",
 ];
 const COUNTRY_CODES = [
-  // Core Markets (Top Conversion)
-  { code: "+44", flag: "🇬🇧", label: "UK" }, // Default
-  { code: "+1", flag: "🇺🇸", label: "USA" },
-  { code: "+1", flag: "🇨🇦", label: "Canada" },
-  { code: "+61", flag: "🇦🇺", label: "Australia" },
-  { code: "+64", flag: "🇳🇿", label: "New Zealand" },
-
-  // High-value Europe (Remote-heavy + wealthy)
-  { code: "+49", flag: "🇩🇪", label: "Germany" },
-  { code: "+33", flag: "🇫🇷", label: "France" },
-  { code: "+31", flag: "🇳🇱", label: "Netherlands" },
-  { code: "+41", flag: "🇨🇭", label: "Switzerland" },
-  { code: "+46", flag: "🇸🇪", label: "Sweden" },
-  { code: "+47", flag: "🇳🇴", label: "Norway" },
-  { code: "+45", flag: "🇩🇰", label: "Denmark" },
-  { code: "+358", flag: "🇫🇮", label: "Finland" },
-  { code: "+353", flag: "🇮🇪", label: "Ireland" },
-
-  // Asia (Remote + growing nomads)
-  { code: "+91", flag: "🇮🇳", label: "India" },
-  { code: "+81", flag: "🇯🇵", label: "Japan" },
-  { code: "+65", flag: "🇸🇬", label: "Singapore" },
-  { code: "+971", flag: "🇦🇪", label: "UAE" },
-  { code: "+63", flag: "🇵🇭", label: "Philippines" },
-
-  // Emerging Remote Talent
-  { code: "+55", flag: "🇧🇷", label: "Brazil" },
-  { code: "+52", flag: "🇲🇽", label: "Mexico" },
+  { code: "+91", flag: "🇮🇳" },
+  { code: "+1", flag: "🇺🇸" },
+  { code: "+44", flag: "🇬🇧" },
+  { code: "+971", flag: "🇦🇪" },
+  { code: "+65", flag: "🇸🇬" },
+  { code: "+49", flag: "🇩🇪" },
 ];
 
 const FORM_FIELDS = [
@@ -74,14 +52,6 @@ const FORM_FIELDS = [
     type: "number",
     required: true,
     help: "Must be at least 21",
-  },
-  {
-    name: "country",
-    label: "Country",
-    type: "select",
-    required: true,
-    help: "Where do you live?",
-    options: COUNTRIES,
   },
   {
     name: "email",
@@ -351,6 +321,28 @@ const FormField = ({
     <p className="text-xs text-slate-500 mb-2">{field.help}</p>
   );
 
+  if (field.type === "select") {
+    return (
+      <div className="mb-6">
+        {base} {help}
+        <select
+          name={field.name}
+          value={value}
+          onChange={onChange}
+          required={field.required}
+          className={INPUT_CLASS}
+        >
+          <option value="">Select an option</option>
+          {field.options?.map((opt: string) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
   if (field.type === "phone") {
     return (
       <div className="mb-6">
@@ -365,7 +357,7 @@ const FormField = ({
                 onChange({ target: { name: "countryCode", value: v } });
               }
             }}
-            className="w-28 shrink-0 border-0 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none sm:w-32"
+            className="w-28 shrink-0 border-0 bg-slate-50 px-3 py-3 text-sm text-slate-900 outline-none sm:w-24"
           >
             {COUNTRY_CODES.map((c) => (
               <option key={c.code} value={c.code}>
@@ -382,7 +374,7 @@ const FormField = ({
               value={value.countryCode}
               onChange={onChange}
               placeholder="+234"
-              className="w-28 shrink-0 border-0 border-l border-slate-300 px-3 py-3 text-sm outline-none sm:w-32"
+              className="w-28 shrink-0 border-0 border-l border-slate-300 px-3 py-3 text-sm outline-none sm:w-24"
               required
             />
           )}
@@ -413,53 +405,6 @@ const FormField = ({
           rows={field.rows}
           className={INPUT_CLASS}
         />
-      </div>
-    );
-  }
-
-  if (field.type === "phone") {
-    return (
-      <div className="mb-6">
-        {base} {help}
-        <div className="flex gap-2">
-          <select
-            value={showCustomCode ? "custom" : value.countryCode}
-            onChange={(e) => {
-              const v = e.target.value;
-              setShowCustomCode(v === "custom");
-              if (v !== "custom")
-                onChange({ target: { name: "countryCode", value: v } });
-            }}
-            className={`${INPUT_CLASS} w-24 shrink-0`}
-          >
-            {COUNTRY_CODES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.flag} {c.code}
-              </option>
-            ))}
-            <option value="custom">Other</option>
-          </select>
-          {showCustomCode && (
-            <input
-              type="text"
-              name="countryCode"
-              value={value.countryCode}
-              onChange={onChange}
-              placeholder="+234"
-              className={`${INPUT_CLASS} w-24 shrink-0`}
-              required
-            />
-          )}
-          <input
-            type="tel"
-            name="phone"
-            value={value.phone}
-            onChange={onChange}
-            placeholder="Phone number"
-            className={`${INPUT_CLASS} flex-1`}
-            required
-          />
-        </div>
       </div>
     );
   }

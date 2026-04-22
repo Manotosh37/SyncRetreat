@@ -54,14 +54,6 @@ const FORM_FIELDS = [
     help: "Must be at least 21",
   },
   {
-    name: "country",
-    label: "Country",
-    type: "select",
-    required: true,
-    help: "Where do you live?",
-    options: COUNTRIES,
-  },
-  {
     name: "email",
     label: "Email",
     type: "email",
