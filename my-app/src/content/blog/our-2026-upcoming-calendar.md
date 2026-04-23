@@ -3,7 +3,7 @@ title: "Our 2026 Upcoming Calendar"
 date: "March 19, 2026"
 author: "Syncretreat"
 category: "Announcement"
-image: "https://images.unsplash.com/... (or a local path)"
+image: "/Calendar.png"
 excerpt: "A short summary that appears on the blog listing page."
 ---
 

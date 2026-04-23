@@ -629,13 +629,13 @@ export default function Goa() {
         },
       ]);
       if (error) throw error;
-      
+
       // Automated Confirmation Email
       sendEmail({
         to: formData.email,
         name: formData.name,
         type: "confirmation",
-        destination: "Goa"
+        destination: "Goa",
       });
 
       setSubmitStatus("success");

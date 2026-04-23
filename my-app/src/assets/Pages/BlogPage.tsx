@@ -22,14 +22,14 @@ const blogs = [
     date: "April 1, 2026",
     author: "SyncRetreat",
     image:
-      "https://images.unsplash.com/photo-1502086227464-1481e585f34c?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.moneycontrol.com/static-mcnews/2025/09/20250912054726_13.jpg",
     category: "Travel",
   },
   {
-    title: "Building Community in a Digital Nomad World",
-    slug: "goin-solo-together",
+    title: "Going Solo, But Never 'Solo-nely': Why Community is the Real Vibe",
+    slug: "going-solo-together",
     excerpt:
-      "The importance of physical connection in an increasingly digital landscape.",
+      "Stop waiting for your friends to align their leaves. Join a community that feels like home from day one.",
     date: "September 15, 2025",
     author: "SyncRetreat",
     image:
@@ -43,8 +43,7 @@ const blogs = [
       "We've got some incredible Calender ahead in 2026. Hopefully, 2026 is going to be our founding and great intial year.",
     date: "March 19, 2026",
     author: "Syncretreat",
-    image:
-      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=2070",
+    image: "/Calendar.png",
     category: "Announcement",
   },
   {

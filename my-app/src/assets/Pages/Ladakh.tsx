@@ -32,8 +32,8 @@ const COUNTRIES = [
 const COUNTRY_CODES = [
   // Core Markets (Top Conversion)
   { code: "+44", flag: "🇬🇧", label: "UK" }, // Default
-  { code: "+1", flag: "🇺🇸", label: "USA" },
-  { code: "+1", flag: "🇨🇦", label: "Canada" },
+  { code: "+1", flag: "🇺🇸 🇨🇦", label: "USA/Canada" },
+  // { code: "+1", flag: "🇨🇦", label: "Canada" },
   { code: "+61", flag: "🇦🇺", label: "Australia" },
   { code: "+64", flag: "🇳🇿", label: "New Zealand" },
 

@@ -38,7 +38,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen bg-[#FDFCF2] text-slate-900 font-sans flex overflow-hidden">
+    <section className="relative min-h-screen bg-[#FEFBF7] text-slate-900 font-sans flex overflow-hidden">
       {/* Split layout: Left for Brand, Right for Message */}
       <div className="flex flex-col lg:flex-row w-full min-h-screen">
         {/* Left Pane: Brand Identity */}
@@ -56,7 +56,7 @@ export default function Hero() {
               <img
                 src="/Sync.png"
                 alt="SyncRetreat Logo"
-                className="w-48 h-auto relative z-10"
+                className="w-48 h-auto relative z-10 mix-blend-multiply"
               />
               <div className="absolute -top-4 -left-4 w-12 h-12 bg-emerald-500/10 rounded-full blur-xl" />
             </div>

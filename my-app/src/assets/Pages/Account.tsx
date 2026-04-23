@@ -4,7 +4,6 @@ import { supabase } from "../../lib/supabase";
 import { sendEmail } from "../../lib/emailservice";
 import {
   User,
-  Camera,
   Instagram,
   Twitter,
   Youtube,
@@ -15,7 +14,6 @@ import {
 export default function Account() {
   const { user, isLoading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   // Form state
@@ -89,47 +87,6 @@ export default function Account() {
     }
   }, [user]);
 
-  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      setUploading(true);
-      if (!e.target.files || e.target.files.length === 0) return;
-      const file = e.target.files[0];
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${user?.id}-${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
-
-      // Upload image to Supabase Storage
-      const { error: uploadError } = await supabase.storage
-        .from("avatars")
-        .upload(filePath, file);
-
-      if (uploadError) throw uploadError;
-
-      // Get public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("avatars").getPublicUrl(filePath);
-
-      // Update user metadata
-      const { error: updateError } = await supabase.auth.updateUser({
-        data: { avatar_url: publicUrl },
-      });
-
-      if (updateError) throw updateError;
-
-      setFormData((prev) => ({ ...prev, avatarUrl: publicUrl }));
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 3000);
-    } catch (error: any) {
-      alert(
-        "Error uploading avatar: " +
-          error.message +
-          "\nMake sure you have an 'avatars' bucket in Supabase Storage with public access.",
-      );
-    } finally {
-      setUploading(false);
-    }
-  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -210,43 +167,6 @@ export default function Account() {
             </div>
 
             <form onSubmit={handleSave} className="space-y-12">
-              {/* Profile Photo Section */}
-              <div className="flex items-center gap-8 pb-10 border-b border-slate-100">
-                <div className="relative group">
-                  <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center border-4 border-white shadow-md overflow-hidden relative">
-                    {formData.avatarUrl ? (
-                      <img
-                        src={formData.avatarUrl}
-                        alt="Profile"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <User className="w-12 h-12 text-slate-300" />
-                    )}
-                    {uploading && (
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                        <Loader2 className="w-6 h-6 text-white animate-spin" />
-                      </div>
-                    )}
-                  </div>
-                  <label className="absolute bottom-0 right-0 bg-emerald-600 text-white p-2 rounded-full shadow-lg hover:bg-emerald-500 transition-colors border-2 border-white cursor-pointer">
-                    <Camera className="w-4 h-4" />
-                    <input
-                      type="file"
-                      className="hidden"
-                      accept="image/*"
-                      onChange={handleAvatarUpload}
-                      disabled={uploading}
-                    />
-                  </label>
-                </div>
-                <div>
-                  <h3 className="font-bold text-slate-900">Profile photo</h3>
-                  <p className="text-sm text-slate-500 mt-1">
-                    Upload a new profile photo
-                  </p>
-                </div>
-              </div>
 
               {/* Personal Info Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
