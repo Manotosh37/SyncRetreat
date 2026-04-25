@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../lib/AuthContext";
-import { supabase } from "../../lib/supabase";
-import { sendEmail } from "../../lib/emailservice";
+import { useAuth } from "../lib/AuthContext";
+import { supabase } from "../lib/supabase";
+import { sendEmail } from "../lib/emailservice";
 import {
   User,
   Instagram,

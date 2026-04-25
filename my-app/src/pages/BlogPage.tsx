@@ -2,62 +2,33 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 
-const blogs = [
-  {
-    title: "The Future of Remote Work: Beyond the Home Office",
-    slug: "future-of-remote-work",
-    excerpt:
-      "Why the next phase of remote work isn't about working from home, but about working from anywhere that inspires you.",
-    date: "October 12, 2025",
-    author: "SyncRetreat",
-    image:
-      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=2070",
-    category: "Future of Work",
-  },
-  {
-    title: "Why India, Is The Most Underrated Digital Nomad Destination",
-    slug: "india-is-underrated",
-    excerpt:
-      "Why India is the most underrated digital nomad destination and why you should visit it.",
-    date: "April 1, 2026",
-    author: "SyncRetreat",
-    image:
-      "https://images.moneycontrol.com/static-mcnews/2025/09/20250912054726_13.jpg",
-    category: "Travel",
-  },
-  {
-    title: "Going Solo, But Never 'Solo-nely': Why Community is the Real Vibe",
-    slug: "going-solo-together",
-    excerpt:
-      "Stop waiting for your friends to align their leaves. Join a community that feels like home from day one.",
-    date: "September 15, 2025",
-    author: "SyncRetreat",
-    image:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=2070",
-    category: "Community",
-  },
-  {
-    title: "Our 2026 Upcoming Calendar",
-    slug: "our-2026-upcoming-calendar",
-    excerpt:
-      "We've got some incredible Calender ahead in 2026. Hopefully, 2026 is going to be our founding and great intial year.",
-    date: "March 19, 2026",
-    author: "Syncretreat",
-    image: "/Calendar.png",
-    category: "Announcement",
-  },
-  {
-    title: "Your Guide to Visas",
-    slug: "Your-guide-to-visas",
-    excerpt:
-      "The importance of physical connection in an increasingly digital landscape.",
-    date: "September 15, 2025",
-    author: "SyncRetreat",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQubSbZ0YLDg6xpWBGh6PMnQqSYjYasNP1NMg&s",
-    category: "Community",
-  },
-];
+import matter from "gray-matter";
+
+const blogFiles = import.meta.glob("/src/content/blog/*.md", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+
+const blogs = Object.keys(blogFiles).map((path) => {
+  const fileContent = blogFiles[path] as string;
+  const { data } = matter(fileContent);
+  const slug = path.split('/').pop()?.replace('.md', '');
+  
+  return {
+    title: data.title || "Untitled",
+    slug: slug,
+    excerpt: data.excerpt || "",
+    date: data.date || "",
+    author: data.author || "SyncRetreat",
+    image: data.image || "",
+    category: data.category || "Announcement",
+  };
+});
+
+// Sort blogs by date (most recent first)
+// Note: This relies on dates being parseable by JS Date
+blogs.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 export default function BlogPage() {
   return (

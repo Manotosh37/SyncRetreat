@@ -1,25 +1,34 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../lib/supabase";
 
-export default function Login() {
+export default function Signup() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
     });
     setLoading(false);
     if (error) {
       alert(error.message);
     } else {
-      navigate("/account");
+      alert("Signup successful! Check your email to confirm your account.");
+      navigate("/login");
     }
   };
 
@@ -37,18 +46,50 @@ export default function Login() {
       {/* Left Column: Form */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 md:px-20 pt-20 pb-12">
         <div className="max-w-md w-full mx-auto">
-          <Link to="/" className="inline-flex items-center gap-2 mb-12">
+          <Link to="/" className="inline-flex items-center gap-2 mb-10">
             <img src="./logo2.png" alt="SyncRetreat Logo" className="h-8" />
             <span className="font-bold text-slate-900 text-xl tracking-wide">
               SyncRetreat
             </span>
           </Link>
 
-          <h1 className="text-4xl font-serif text-slate-900 mb-8">
-            Login to your account
+          <h1 className="text-4xl font-serif text-slate-900 mb-2">
+            Create your account
           </h1>
+          <p className="text-slate-600 mb-8 font-medium">
+            Join us and explore the benefits!
+          </p>
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleSignup} className="space-y-5">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white text-slate-900"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white text-slate-900"
+                  required
+                />
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Email
@@ -75,22 +116,14 @@ export default function Login() {
                 className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white text-slate-900"
                 required
               />
-              <div className="mt-2 text-right">
-                <a
-                  href="#"
-                  className="text-sm text-slate-500 hover:text-emerald-600"
-                >
-                  Forgot password?
-                </a>
-              </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#1A2421] text-white font-bold py-3.5 rounded-lg hover:bg-slate-800 transition-colors mt-2 shadow-md shadow-slate-900/20"
+              className="w-full bg-[#1A2421] text-white font-bold py-3.5 rounded-lg hover:bg-slate-800 transition-colors mt-4 shadow-md shadow-slate-900/20"
             >
-              {loading ? "Signing In..." : "Sign In"}
+              {loading ? "Creating..." : "Create Account"}
             </button>
           </form>
 
@@ -133,13 +166,13 @@ export default function Login() {
             Continue with Google
           </button>
 
-          <p className="text-center mt-10 text-slate-600">
-            Don't have an account?{" "}
+          <p className="text-center mt-8 text-slate-600">
+            Already have an account?{" "}
             <Link
-              to="/signup"
+              to="/login"
               className="text-emerald-600 font-semibold hover:underline"
             >
-              Sign up
+              Sign In
             </Link>
           </p>
         </div>
@@ -148,7 +181,7 @@ export default function Login() {
       {/* Right Column: Image */}
       <div className="hidden lg:block lg:w-1/2 relative bg-slate-100 border-l border-slate-200">
         <img
-          src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1200&q=80"
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
           alt="Workspace"
           className="absolute inset-0 w-full h-full object-cover"
         />

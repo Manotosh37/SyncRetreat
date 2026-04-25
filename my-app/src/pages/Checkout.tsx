@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CalendarCheck, CheckCircle2, ArrowRight } from "lucide-react";
-import { useAuth } from "../../lib/AuthContext";
+import { useAuth } from "../lib/AuthContext";
 import { Link } from "react-router-dom";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import { motion, AnimatePresence } from "framer-motion";

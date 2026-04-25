@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../../lib/AuthContext";
+import { useAuth } from "../lib/AuthContext";
 import { Luggage, Loader2, MapPin, Calendar, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../lib/supabase";
 
 export default function Bookings() {
   const { user, isLoading: authLoading } = useAuth();
