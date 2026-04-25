@@ -250,8 +250,8 @@ const TRIPS = [
     tripNumber: "01",
     status: "AVAILABLE",
     batchId: 1,
-    price: 1200,
-    originalPrice: 1500,
+    price: 1199,
+    originalPrice: 1499,
   },
   {
     fromDate: "AUGUST 03",
@@ -259,8 +259,8 @@ const TRIPS = [
     tripNumber: "02",
     status: "AVAILABLE",
     batchId: 2,
-    price: 1500,
-    originalPrice: 1800,
+    price: 1499,
+    originalPrice: 1799,
   },
 ];
 
@@ -609,7 +609,8 @@ export default function Ladakh() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const selectedTrip = TRIPS.find(t => t.batchId === selectedBatch) || TRIPS[0];
+  const selectedTrip =
+    TRIPS.find((t) => t.batchId === selectedBatch) || TRIPS[0];
 
   const handleInputChange = (e: any) => {
     const { name, value, type, checked } = e.target;
@@ -622,7 +623,10 @@ export default function Ladakh() {
   const openForm = () => {
     setFormData({
       ...INITIAL_FORM,
-      destination: selectedBatch === 1 ? "Ladakh - July 06 to July 27" : "Ladakh - August 03 to August 31"
+      destination:
+        selectedBatch === 1
+          ? "Ladakh - July 06 to July 27"
+          : "Ladakh - August 03 to August 31",
     });
     setIsFormOpen(true);
   };
@@ -673,7 +677,9 @@ export default function Ladakh() {
         setFormData(INITIAL_FORM);
         setIsFormOpen(false);
         setSubmitStatus("idle");
-        navigate("/checkout", { state: { batch: selectedBatch, price: selectedTrip.price } });
+        navigate("/checkout", {
+          state: { batch: selectedBatch, price: selectedTrip.price },
+        });
       }, 1000);
     } catch (error) {
       console.error("Error:", error);
@@ -722,7 +728,9 @@ export default function Ladakh() {
             <p className="text-lg md:text-xl">
               6 Jul – 27 Jul & 3 Aug – 31 Aug, 2026
             </p>
-            <p className="text-lg md:text-xl">21-Day and 28-Day Infrastructure Sprints.</p>
+            <p className="text-lg md:text-xl">
+              21-Day and 28-Day Infrastructure Sprints.
+            </p>
           </div>
         </div>
         <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-16 text-white text-sm uppercase drop-shadow-md">
@@ -868,9 +876,9 @@ export default function Ladakh() {
             <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-8">
               <div className="grid grid-cols-2 gap-8 mb-8">
                 {TRIPS.map((trip, i) => (
-                  <div 
-                    key={i} 
-                    className={`cursor-pointer transition-all p-4 rounded-xl border-2 ${selectedBatch === trip.batchId ? 'border-emerald-500 bg-emerald-50' : 'border-transparent hover:bg-slate-50'}`}
+                  <div
+                    key={i}
+                    className={`cursor-pointer transition-all p-4 rounded-xl border-2 ${selectedBatch === trip.batchId ? "border-emerald-500 bg-emerald-50" : "border-transparent hover:bg-slate-50"}`}
                     onClick={() => setSelectedBatch(trip.batchId)}
                   >
                     <div className="flex gap-4 mb-4">
