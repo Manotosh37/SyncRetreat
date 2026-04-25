@@ -249,12 +249,18 @@ const TRIPS = [
     toDate: "JULY 27",
     tripNumber: "01",
     status: "AVAILABLE",
+    batchId: 1,
+    price: 1200,
+    originalPrice: 1500,
   },
   {
     fromDate: "AUGUST 03",
     toDate: "AUGUST 31",
     tripNumber: "02",
     status: "AVAILABLE",
+    batchId: 2,
+    price: 1500,
+    originalPrice: 1800,
   },
 ];
 
@@ -599,8 +605,11 @@ export default function Ladakh() {
     "idle" | "success" | "error"
   >("idle");
   const [formData, setFormData] = useState(INITIAL_FORM);
+  const [selectedBatch, setSelectedBatch] = useState<number>(1);
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  const selectedTrip = TRIPS.find(t => t.batchId === selectedBatch) || TRIPS[0];
 
   const handleInputChange = (e: any) => {
     const { name, value, type, checked } = e.target;
@@ -611,7 +620,10 @@ export default function Ladakh() {
   };
 
   const openForm = () => {
-    setFormData(INITIAL_FORM);
+    setFormData({
+      ...INITIAL_FORM,
+      destination: selectedBatch === 1 ? "Ladakh - July 06 to July 27" : "Ladakh - August 03 to August 31"
+    });
     setIsFormOpen(true);
   };
 
@@ -661,7 +673,7 @@ export default function Ladakh() {
         setFormData(INITIAL_FORM);
         setIsFormOpen(false);
         setSubmitStatus("idle");
-        navigate("/checkout");
+        navigate("/checkout", { state: { batch: selectedBatch, price: selectedTrip.price } });
       }, 1000);
     } catch (error) {
       console.error("Error:", error);
@@ -710,7 +722,7 @@ export default function Ladakh() {
             <p className="text-lg md:text-xl">
               6 Jul – 27 Jul & 3 Aug – 31 Aug, 2026
             </p>
-            <p className="text-lg md:text-xl">28 Days long stays.</p>
+            <p className="text-lg md:text-xl">21-Day and 28-Day Infrastructure Sprints.</p>
           </div>
         </div>
         <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-16 text-white text-sm uppercase drop-shadow-md">
@@ -795,18 +807,18 @@ export default function Ladakh() {
               </ul>
               <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-5 mb-6 relative overflow-hidden">
                 <div className="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-lg shadow-sm">
-                  Save ${PRICING.original - PRICING.discounted}
+                  Save ${selectedTrip.originalPrice - selectedTrip.price}
                 </div>
                 <p className="text-sm text-emerald-800 font-bold uppercase tracking-wider mb-1">
                   Total Price
                 </p>
                 <div className="flex flex-col gap-1">
                   <span className="text-xl text-slate-400 line-through decoration-slate-400 decoration-2 font-black">
-                    ${PRICING.original}
+                    ${selectedTrip.originalPrice}
                   </span>
                   <div className="flex items-baseline gap-2">
                     <span className="text-5xl font-black text-emerald-600">
-                      ${PRICING.discounted}
+                      ${selectedTrip.price}
                     </span>
                   </div>
                 </div>
@@ -856,7 +868,11 @@ export default function Ladakh() {
             <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-8">
               <div className="grid grid-cols-2 gap-8 mb-8">
                 {TRIPS.map((trip, i) => (
-                  <div key={i} className="hover:opacity-80 transition-opacity">
+                  <div 
+                    key={i} 
+                    className={`cursor-pointer transition-all p-4 rounded-xl border-2 ${selectedBatch === trip.batchId ? 'border-emerald-500 bg-emerald-50' : 'border-transparent hover:bg-slate-50'}`}
+                    onClick={() => setSelectedBatch(trip.batchId)}
+                  >
                     <div className="flex gap-4 mb-4">
                       <div>
                         <p className="text-xs text-slate-500 font-bold uppercase">
