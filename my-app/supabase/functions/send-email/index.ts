@@ -57,57 +57,68 @@ serve(async (req) => {
     'abandoned_cart': "Did you forget something? Complete your SyncRetreat application."
   };
 
+  const emailWrapper = (title: string, content: string, statusText: string) => `
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f4f5; padding: 40px 20px; margin: 0;">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <div style="background-color: #18181b; padding: 30px 40px; text-align: center;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.5px;">SyncRetreat</h1>
+        </div>
+        <div style="padding: 40px; color: #3f3f46; font-size: 16px; line-height: 1.6;">
+          <h2 style="color: #18181b; font-size: 20px; margin-top: 0; margin-bottom: 20px;">${title}</h2>
+          ${content}
+          <div style="margin-top: 30px; display: inline-block; padding: 6px 12px; background-color: #f4f4f5; border-radius: 6px; font-size: 12px; font-weight: 600; color: #52525b; text-transform: uppercase; letter-spacing: 0.5px;">
+            Status: ${statusText}
+          </div>
+        </div>
+        <div style="padding: 20px 40px; text-align: center; background-color: #fafafa; border-top: 1px solid #f4f4f5; color: #a1a1aa; font-size: 14px;">
+          &copy; ${new Date().getFullYear()} SyncRetreat. All rights reserved.<br>
+          High-altitude deep work for engineers.
+        </div>
+      </div>
+    </div>
+  `;
+
   const htmlMap: Record<string, string> = {
-    'welcome': `
-      <div style="font-family: 'Courier New', monospace; color: #111; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0;">
-        <h2 style="text-transform: uppercase; font-size: 18px; letter-spacing: 2px; border-bottom: 1px solid #111; padding-bottom: 10px;">> SYNC_RETREAT: PERIMETER ACCESS</h2>
-        <p style="font-size: 14px; line-height: 1.6;">Engineer \${name},</p>
-        <p style="font-size: 14px; line-height: 1.6;">You have joined the SyncRetreat network. You are now in the queue for upcoming deployment nodes.</p>
-        <p style="font-size: 14px; line-height: 1.6;">We build infrastructure for extreme output. Expect zero distractions, enterprise-grade routing, and absolute focus.</p>
-        <p style="font-size: 12px; color: #666; margin-top: 30px;">SYSTEM // STANDBY</p>
-      </div>
-    `,
+    'welcome': emailWrapper(
+      "Welcome to SyncRetreat",
+      `<p style="margin-bottom: 16px;">Hello ${name},</p>
+       <p style="margin-bottom: 16px;">Welcome to the SyncRetreat network. You are now officially in the queue for upcoming deployment nodes.</p>
+       <p style="margin-bottom: 16px;">We build infrastructure for extreme output. Expect zero distractions, enterprise-grade routing, and absolute focus during your stay.</p>`,
+      "STANDBY"
+    ),
 
-    'booking_confirmation': `
-      <div style="font-family: 'Courier New', monospace; color: #111; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0;">
-        <h2 style="text-transform: uppercase; font-size: 18px; letter-spacing: 2px; border-bottom: 1px solid #111; padding-bottom: 10px;">> ALLOCATION REQUEST: LOGGED</h2>
-        <p style="font-size: 14px; line-height: 1.6;">\${name},</p>
-        <p style="font-size: 14px; line-height: 1.6;">Your application for the upcoming 28-day sprint has been registered in our system.</p>
-        <p style="font-size: 14px; line-height: 1.6;">Our operations team is currently reviewing your profile to ensure alignment with the cohort's focus parameters. You will receive a status update within 24 hours.</p>
-        <p style="font-size: 12px; color: #666; margin-top: 30px;">STATUS // PENDING REVIEW</p>
-      </div>
-    `,
+    'booking_confirmation': emailWrapper(
+      "Application Received",
+      `<p style="margin-bottom: 16px;">Hello ${name},</p>
+       <p style="margin-bottom: 16px;">Your application for the upcoming 28-day sprint has been successfully registered in our system.</p>
+       <p style="margin-bottom: 16px;">Our operations team is currently reviewing your profile to ensure alignment with the cohort's focus parameters. You will receive a status update within 24 hours.</p>`,
+      "PENDING REVIEW"
+    ),
 
-    'payment_link': `
-      <div style="font-family: 'Courier New', monospace; color: #111; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0;">
-        <h2 style="text-transform: uppercase; font-size: 18px; letter-spacing: 2px; border-bottom: 1px solid #111; padding-bottom: 10px;">> NODE ALLOCATION: APPROVED</h2>
-        <p style="font-size: 14px; line-height: 1.6;">\${name},</p>
-        <p style="font-size: 14px; line-height: 1.6;">Your application has cleared the filter. We have reserved a physical workstation and living quarters for you.</p>
-        <p style="font-size: 14px; line-height: 1.6;">This seat allocation is valid for exactly <strong>48 hours</strong>. To lock your node and initialize logistics, secure the escrow deposit below.</p>
-        <p style="font-size: 12px; color: #666; margin-top: 30px;">ACTION // REQUIRED</p>
-      </div>
-    `,
+    'payment_link': emailWrapper(
+      "Application Approved",
+      `<p style="margin-bottom: 16px;">Congratulations ${name},</p>
+       <p style="margin-bottom: 16px;">Your application has cleared our review process. We have reserved a physical workstation and living quarters for you.</p>
+       <p style="margin-bottom: 16px;">This seat allocation is valid for exactly <strong>48 hours</strong>. To lock your node and initialize logistics, please secure the escrow deposit.</p>`,
+      "ACTION REQUIRED"
+    ),
 
-    'thank_you': `
-      <div style="font-family: 'Courier New', monospace; color: #111; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0;">
-        <h2 style="text-transform: uppercase; font-size: 18px; letter-spacing: 2px; border-bottom: 1px solid #111; padding-bottom: 10px;">> ESCROW SECURED. NODE CONFIRMED.</h2>
-        <p style="font-size: 14px; line-height: 1.6;">\${name},</p>
-        <p style="font-size: 14px; line-height: 1.6;">Your deposit is verified. You are officially locked in for the upcoming deep-work sprint.</p>
-        <p style="font-size: 14px; line-height: 1.6;">Within the next 7 days, you will receive your pre-deployment packet containing network configurations, altitude acclimatization protocols, and transit routing.</p>
-        <p style="font-size: 14px; line-height: 1.6;">Prepare your codebase. Ghost Mode initializes soon.</p>
-        <p style="font-size: 12px; color: #666; margin-top: 30px;">STATUS // LOCKED</p>
-      </div>
-    `,
+    'thank_you': emailWrapper(
+      "Escrow Secured & Node Confirmed",
+      `<p style="margin-bottom: 16px;">Hello ${name},</p>
+       <p style="margin-bottom: 16px;">Your deposit is verified. You are officially locked in for the upcoming deep-work sprint.</p>
+       <p style="margin-bottom: 16px;">Within the next 7 days, you will receive your pre-deployment packet containing network configurations, altitude acclimatization protocols, and transit routing.</p>
+       <p style="margin-bottom: 16px;">Prepare your codebase. It's time to build.</p>`,
+      "LOCKED"
+    ),
 
-    'abandoned_cart': `
-      <div style="font-family: 'Courier New', monospace; color: #111; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0;">
-        <h2 style="text-transform: uppercase; font-size: 18px; letter-spacing: 2px; border-bottom: 1px solid #111; padding-bottom: 10px;">> INCOMPLETE PROTOCOL DETECTED</h2>
-        <p style="font-size: 14px; line-height: 1.6;">\${name},</p>
-        <p style="font-size: 14px; line-height: 1.6;">Our logs show you initiated an application for the upcoming sprint but did not complete the sequence.</p>
-        <p style="font-size: 14px; line-height: 1.6;">We operate on strict capacity limits. If you require absolute focus to ship your next release, finalize your allocation request immediately. Otherwise, the node will be released to the next operator in the queue.</p>
-        <p style="font-size: 12px; color: #666; margin-top: 30px;">STATUS // TIMEOUT IMMINENT</p>
-      </div>
-    `
+    'abandoned_cart': emailWrapper(
+      "Incomplete Application",
+      `<p style="margin-bottom: 16px;">Hello ${name},</p>
+       <p style="margin-bottom: 16px;">Our logs show you initiated an application for the upcoming sprint but did not complete the sequence.</p>
+       <p style="margin-bottom: 16px;">We operate on strict capacity limits. If you require absolute focus to ship your next release, please finalize your allocation request. Otherwise, the node will be released to the next operator in the queue.</p>`,
+      "TIMEOUT IMMINENT"
+    )
   };
 
   const emailBody = {

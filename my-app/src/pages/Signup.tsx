@@ -21,6 +21,7 @@ export default function Signup() {
           first_name: firstName,
           last_name: lastName,
         },
+        emailRedirectTo: `${window.location.origin}/account`,
       },
     });
     setLoading(false);
@@ -35,6 +36,9 @@ export default function Signup() {
   const handleGoogleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/account`,
+      },
     });
     if (error) {
       alert(error.message);
