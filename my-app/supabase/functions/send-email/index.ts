@@ -2,7 +2,19 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
+// CORS headers — allow requests from your production domain and localhost
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+
 serve(async (req) => {
+  // Handle CORS preflight (OPTIONS) request — browsers send this before the real POST
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { status: 200, headers: corsHeaders });
+  }
+
   const payload = await req.json();
 
   let to = "";
@@ -36,7 +48,14 @@ serve(async (req) => {
     }
   }
 
-  // 3. Abandoned Cart (from cron job)
+  // 3. Direct call from admin dashboard
+  else if (payload.to && payload.name && payload.type) {
+    to = payload.to;
+    name = payload.name;
+    emailType = payload.type;
+  }
+
+  // 4. Abandoned Cart (from cron job)
   else if (payload.type === 'ABANDONED_CART') {
     to = payload.email;
     name = payload.name;
@@ -45,16 +64,22 @@ serve(async (req) => {
 
   // If none of our conditions match, don't send an email
   if (!emailType) {
-    return new Response(JSON.stringify({ message: "No email action required." }), { status: 200 });
+    return new Response(
+      JSON.stringify({ message: "No email action required." }),
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 
-  // NOTE: You will want to replace these basic strings with your beautiful HTML templates!
   const subjectMap: Record<string, string> = {
     'welcome': "Welcome to SyncRetreat!",
     'booking_confirmation': "We received your application",
+    'confirmation': "We received your application",
     'payment_link': "Your application is approved! (Payment Link Inside)",
+    'approved': "Your application is approved! (Payment Link Inside)",
     'thank_you': "Payment Complete - Your SyncRetreat Itinerary",
-    'abandoned_cart': "Did you forget something? Complete your SyncRetreat application."
+    'rejected': "Update on your SyncRetreat application",
+    'final_payment': "Final payment reminder - SyncRetreat",
+    'abandoned_cart': "Did you forget something? Complete your SyncRetreat application.",
   };
 
   const emailWrapper = (title: string, content: string, statusText: string) => `
@@ -95,7 +120,23 @@ serve(async (req) => {
       "PENDING REVIEW"
     ),
 
+    'confirmation': emailWrapper(
+      "Application Received",
+      `<p style="margin-bottom: 16px;">Hello ${name},</p>
+       <p style="margin-bottom: 16px;">Your application for the upcoming 28-day sprint has been successfully registered in our system.</p>
+       <p style="margin-bottom: 16px;">Our operations team is currently reviewing your profile to ensure alignment with the cohort's focus parameters. You will receive a status update within 24 hours.</p>`,
+      "PENDING REVIEW"
+    ),
+
     'payment_link': emailWrapper(
+      "Application Approved",
+      `<p style="margin-bottom: 16px;">Congratulations ${name},</p>
+       <p style="margin-bottom: 16px;">Your application has cleared our review process. We have reserved a physical workstation and living quarters for you.</p>
+       <p style="margin-bottom: 16px;">This seat allocation is valid for exactly <strong>48 hours</strong>. To lock your node and initialize logistics, please secure the escrow deposit.</p>`,
+      "ACTION REQUIRED"
+    ),
+
+    'approved': emailWrapper(
       "Application Approved",
       `<p style="margin-bottom: 16px;">Congratulations ${name},</p>
        <p style="margin-bottom: 16px;">Your application has cleared our review process. We have reserved a physical workstation and living quarters for you.</p>
@@ -112,6 +153,22 @@ serve(async (req) => {
       "LOCKED"
     ),
 
+    'rejected': emailWrapper(
+      "Application Update",
+      `<p style="margin-bottom: 16px;">Hello ${name},</p>
+       <p style="margin-bottom: 16px;">Thank you for your interest in SyncRetreat. After careful review, we are unable to offer you a spot in the current cohort.</p>
+       <p style="margin-bottom: 16px;">We appreciate your application and encourage you to apply for a future retreat.</p>`,
+      "NOT SELECTED"
+    ),
+
+    'final_payment': emailWrapper(
+      "Final Payment Reminder",
+      `<p style="margin-bottom: 16px;">Hello ${name},</p>
+       <p style="margin-bottom: 16px;">This is a reminder that your final payment for the SyncRetreat is due soon.</p>
+       <p style="margin-bottom: 16px;">Please complete your payment at the earliest to secure your spot.</p>`,
+      "PAYMENT DUE"
+    ),
+
     'abandoned_cart': emailWrapper(
       "Incomplete Application",
       `<p style="margin-bottom: 16px;">Hello ${name},</p>
@@ -122,7 +179,7 @@ serve(async (req) => {
   };
 
   const emailBody = {
-    from: "SyncRetreat <contact@syncretreat.com>", // Update with your actual verified sender domain
+    from: "SyncRetreat <contact@syncretreat.com>",
     to: [to],
     subject: subjectMap[emailType] || "Update from SyncRetreat",
     html: htmlMap[emailType] || `<p>System alert for ${name}.</p>`,
@@ -138,5 +195,8 @@ serve(async (req) => {
   });
 
   const resData = await res.json();
-  return new Response(JSON.stringify(resData), { status: 200 });
+  return new Response(
+    JSON.stringify(resData),
+    { status: res.ok ? 200 : 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+  );
 });
