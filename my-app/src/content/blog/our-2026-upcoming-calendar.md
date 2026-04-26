@@ -4,6 +4,7 @@ date: "March 19, 2026"
 author: "Syncretreat"
 category: "Announcement"
 image: "/Calendar.png"
+objectFit: "contain"
 excerpt: "A short summary that appears on the blog listing page."
 ---
 

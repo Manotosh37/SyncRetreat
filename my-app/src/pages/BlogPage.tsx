@@ -23,6 +23,7 @@ const blogs = Object.keys(blogFiles).map((path) => {
     author: data.author || "SyncRetreat",
     image: data.image || "",
     category: data.category || "Announcement",
+    objectFit: data.objectFit || "cover",
   };
 });
 
@@ -63,11 +64,11 @@ export default function BlogPage() {
               className="group"
             >
               <Link to={`/blog/${blog.slug}`} className="block">
-                <div className="relative rounded-4xl overflow-hidden mb-8 aspect-4/3 bg-white shadow-2xl shadow-slate-200 border border-white">
+                <div className="relative rounded-4xl overflow-hidden mb-8 aspect-4/3 bg-slate-50 shadow-2xl shadow-slate-200 border border-white">
                   <img
                     src={blog.image}
                     alt={blog.title}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    className={`w-full h-full transition-transform duration-1000 group-hover:scale-110 ${blog.objectFit === "contain" ? "object-contain p-4" : "object-cover"}`}
                   />
                   <div className="absolute top-6 left-6">
                     <span className="px-4 py-1.5 bg-white/90 backdrop-blur-md text-slate-900 text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">

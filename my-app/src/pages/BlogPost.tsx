@@ -12,6 +12,7 @@ interface BlogData {
   author: string;
   category: string;
   image: string;
+  objectFit?: string;
   content: string;
 }
 
@@ -40,14 +41,15 @@ export default function BlogPost() {
         const text = (await loader()) as string;
         const { data, content } = matter(text);
 
-        setBlog({
-          title: data.title,
-          date: data.date,
-          author: data.author,
-          category: data.category,
-          image: data.image,
-          content: content,
-        });
+          setBlog({
+            title: data.title,
+            date: data.date,
+            author: data.author,
+            category: data.category,
+            image: data.image,
+            objectFit: data.objectFit,
+            content: content,
+          });
       } catch (error) {
         console.error("Error loading blog post:", error);
         setBlog(null);
@@ -146,18 +148,17 @@ export default function BlogPost() {
         </motion.div>
       </div>
 
-      {/* Featured Image */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="max-w-6xl mx-auto px-6 mb-16"
       >
-        <div className="aspect-21/9 rounded-3xl overflow-hidden shadow-2xl shadow-emerald-900/10 border border-white">
+        <div className="aspect-21/9 rounded-3xl overflow-hidden bg-slate-50 shadow-2xl shadow-emerald-900/10 border border-white">
           <img
             src={blog.image}
             alt={blog.title}
-            className="w-full h-full object-cover"
+            className={`w-full h-full ${blog.objectFit === "contain" ? "object-contain p-4 md:p-12" : "object-cover"}`}
           />
         </div>
       </motion.div>
