@@ -81,7 +81,7 @@ export default function FeaturesSection() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section className="relative overflow-hidden bg-[#fefbf7] py-28 text-slate-900">
+    <section className="relative overflow-hidden bg-[#fefbf7] py-20 md:py-28 text-slate-900">
       {/* Background */}
       <div
         className="absolute inset-0 opacity-40 pointer-events-none"
@@ -97,7 +97,7 @@ export default function FeaturesSection() {
 
       <div className="relative w-full z-10">
         <div className="mx-auto max-w-4xl text-center px-4">
-          <h2 className="text-4xl font-bold tracking-tight md:text-6xl text-slate-900">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900">
             <span>What SyncRetreat provides, </span>
             <br />
             <span className="text-emerald-700">for optimal productivity!</span>
@@ -119,7 +119,7 @@ export default function FeaturesSection() {
                 key={i}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
-                className={`group relative h-105 overflow-hidden border border-slate-200 bg-black transition-all duration-500 cursor-pointer ${
+                className={`group relative min-h-[420px] md:h-105 overflow-hidden border border-slate-200 bg-black transition-all duration-500 cursor-pointer ${
                   active
                     ? "scale-[1.03] z-20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]"
                     : "scale-100 z-10 shadow-sm"

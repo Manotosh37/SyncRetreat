@@ -115,7 +115,7 @@ export default function BlogPost() {
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] mb-8">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 leading-[1.1] mb-8">
             {blog.title}
           </h1>
 
@@ -154,7 +154,7 @@ export default function BlogPost() {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="max-w-6xl mx-auto px-6 mb-16"
       >
-        <div className="aspect-21/9 rounded-3xl overflow-hidden bg-slate-50 shadow-2xl shadow-emerald-900/10 border border-white">
+        <div className="aspect-video sm:aspect-21/9 rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-50 shadow-2xl shadow-emerald-900/10 border border-white">
           <img
             src={blog.image}
             alt={blog.title}
@@ -169,7 +169,7 @@ export default function BlogPost() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="prose prose-lg prose-slate max-w-none 
+          className="prose prose-base sm:prose-lg prose-slate max-w-none 
             prose-headings:text-slate-900 prose-headings:font-black 
             prose-p:text-slate-600 prose-p:leading-relaxed prose-p:font-medium
             prose-strong:text-slate-900 prose-strong:font-bold

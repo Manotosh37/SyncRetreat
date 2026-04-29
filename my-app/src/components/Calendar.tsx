@@ -70,8 +70,8 @@ export default function DestinationCards() {
 
   return (
     <section className="relative z-10 -mt-16 overflow-hidden bg-[#fefbf7] rounded-t-[48px] shadow-[0_-20px_40px_-10px_rgba(0,0,0,0.5)] px-4 pt-32 pb-28 text-slate-900">
-      <div className="max-w-500 w-full px-2 lg:px-8 mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 text-center tracking-tight">
+      <div className="max-w-7xl w-full px-4 lg:px-8 mx-auto">
+        <h2 className="text-3xl sm:text-5xl font-bold text-slate-900 mb-4 text-center tracking-tight">
           Upcoming. <span className="text-emerald-700">Retreat Calendar</span>
         </h2>
         <p className="text-center text-slate-600 mb-16 text-lg max-w-xl mx-auto font-medium">
@@ -91,7 +91,7 @@ export default function DestinationCards() {
                   !isDisabled ? "cursor-pointer" : "cursor-not-allowed"
                 }`}
                 style={{
-                  height: 520,
+                  minHeight: 480,
                   borderColor: active ? item.accent : "#e2e8f0",
                   boxShadow: active
                     ? `0 24px 60px -20px ${item.accent}`

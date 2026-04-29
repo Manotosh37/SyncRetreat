@@ -298,7 +298,7 @@ export default function Navbar() {
             >
               Home
             </Link>
-            <div className="text-white border-b border-white/10 pb-2 mb-2">
+            <div className="text-emerald-500 text-xs font-black uppercase tracking-widest border-b border-white/10 pb-2 mb-2">
               Destinations
             </div>
             <Link
@@ -345,12 +345,14 @@ export default function Navbar() {
               About
             </Link>
 
-            <button
-              onClick={scrollToForm}
-              className="w-full mt-4 bg-emerald-600 text-white px-6 py-3 rounded-full font-bold hover:bg-emerald-500 transition-colors shadow-md shadow-emerald-900/20"
-            >
-              Apply Now
-            </button>
+            <div className="border-t border-white/10 pt-4 mt-2">
+              <button
+                onClick={scrollToForm}
+                className="w-full bg-emerald-600 text-white px-6 py-4 rounded-xl font-black text-lg hover:bg-emerald-500 transition-all active:scale-95 shadow-lg shadow-emerald-900/40"
+              >
+                APPLY NOW
+              </button>
+            </div>
           </div>
         </div>
       )}

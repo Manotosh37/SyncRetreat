@@ -1,7 +1,7 @@
 ---
 title: "Why India, Is The Most Underrated Digital Nomad Destination"
 date: "April 1, 2026"
-author: "SyncRetreat"
+author: "SyncRetreat Team"
 category: "Travel"
 image: "https://images.moneycontrol.com/static-mcnews/2025/09/20250912054726_13.jpg"
 objectFit: "contain"

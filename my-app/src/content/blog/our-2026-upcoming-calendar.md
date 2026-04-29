@@ -1,7 +1,7 @@
 ---
 title: "Our 2026 Upcoming Calendar"
 date: "March 19, 2026"
-author: "Syncretreat"
+author: "SyncRetreat Team"
 category: "Announcement"
 image: "/Calendar.png"
 objectFit: "contain"

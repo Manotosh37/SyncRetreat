@@ -43,7 +43,7 @@ export default function Hero() {
       <div className="flex flex-col lg:flex-row w-full min-h-screen">
         {/* Left Pane: Brand Identity */}
         <motion.div
-          className="w-full lg:w-5/12 p-12 lg:p-24 flex flex-col justify-center items-start z-10 pt-32 lg:pt-20 bg-[#F2EDC2]"
+          className="w-full lg:w-5/12 px-6 py-20 lg:p-24 flex flex-col justify-center items-start z-10 pt-32 lg:pt-20 bg-[#F2EDC2]"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -62,7 +62,7 @@ export default function Hero() {
             </div>
 
             <div>
-              <h1 className="text-6xl md:text-8xl font-black tracking-tight text-slate-900 mb-8 leading-[0.9]">
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 mb-8 leading-[0.9]">
                 SYNC
                 <br />
                 RETREAT<span className="text-emerald-600">.</span>
@@ -94,11 +94,11 @@ export default function Hero() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="relative z-20 p-12 lg:p-24 flex flex-col justify-center max-w-3xl"
+            className="relative z-20 px-6 py-20 lg:p-24 flex flex-col justify-center max-w-3xl"
           >
             <motion.div variants={itemVariants} className="space-y-8">
               {/* Modern Headline */}
-              <h2 className="text-5xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
+              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
                 Remote work, <br />
                 <span className="text-emerald-400">reimagined.</span>
               </h2>
@@ -120,8 +120,8 @@ export default function Hero() {
                   className="group px-12 py-6 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-full flex items-center justify-center gap-4 transition-all duration-300 shadow-2xl shadow-green-500/20"
                   onClick={scrollToForm}
                 >
-                  <span className="text-xl tracking-wide">GET STARTED</span>
-                  <ChevronRight className="w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" />
+                  <span className="text-lg sm:text-xl tracking-wide">GET STARTED</span>
+                  <ChevronRight className="w-5 h-5 sm:w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" />
                 </motion.button>
               </motion.div>
             </motion.div>
