@@ -38,38 +38,38 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen bg-[#FEFBF7] text-slate-900 font-sans flex overflow-hidden">
+    <section className="relative bg-[#FEFBF7] text-slate-900 font-sans overflow-hidden">
       {/* Split layout: Left for Brand, Right for Message */}
-      <div className="flex flex-col lg:flex-row w-full min-h-screen">
+      <div className="flex flex-col lg:flex-row w-full">
         {/* Left Pane: Brand Identity */}
         <motion.div
-          className="w-full lg:w-5/12 px-6 py-20 lg:p-24 flex flex-col justify-center items-start z-10 pt-32 lg:pt-20 bg-[#F2EDC2]"
+          className="w-full lg:w-5/12 px-6 pt-24 pb-8 lg:p-24 lg:pt-20 flex flex-col justify-center items-start z-10 bg-[#F2EDC2]"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           <motion.div
             variants={itemVariants}
-            className="flex flex-col items-start space-y-12"
+            className="flex flex-col items-start space-y-6 lg:space-y-12"
           >
             <div className="relative">
               <img
                 src="/Sync.png"
                 alt="SyncRetreat Logo"
-                className="w-48 h-auto relative z-10 mix-blend-multiply"
+                className="w-28 lg:w-48 h-auto relative z-10 mix-blend-multiply"
               />
               <div className="absolute -top-4 -left-4 w-12 h-12 bg-emerald-500/10 rounded-full blur-xl" />
             </div>
 
             <div>
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 mb-8 leading-[0.9]">
+              <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tight text-slate-900 mb-4 lg:mb-8 leading-[0.9]">
                 SYNC
                 <br />
                 RETREAT<span className="text-emerald-600">.</span>
               </h1>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-0.5 bg-slate-900" />
-                <p className="text-lg md:text-xl font-bold text-slate-800 uppercase tracking-widest">
+              <div className="flex items-center gap-3">
+                <div className="w-8 lg:w-12 h-0.5 bg-slate-900" />
+                <p className="text-sm lg:text-xl font-bold text-slate-800 uppercase tracking-widest">
                   Deep work & Explore cultures
                 </p>
               </div>
@@ -78,7 +78,7 @@ export default function Hero() {
         </motion.div>
 
         {/* Right Pane: Video Background + New Content */}
-        <div className="relative w-full lg:w-7/12 flex flex-col justify-center overflow-hidden">
+        <div className="relative w-full lg:w-7/12 min-h-[60vh] lg:min-h-screen flex flex-col justify-center overflow-hidden">
           {/* Background Video */}
           <video
             autoPlay
@@ -94,17 +94,17 @@ export default function Hero() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="relative z-20 px-6 py-20 lg:p-24 flex flex-col justify-center max-w-3xl"
+            className="relative z-20 px-6 py-10 lg:p-24 flex flex-col justify-center max-w-3xl"
           >
-            <motion.div variants={itemVariants} className="space-y-8">
+            <motion.div variants={itemVariants} className="space-y-4 lg:space-y-8">
               {/* Modern Headline */}
-              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
+              <h2 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
                 Remote work, <br />
                 <span className="text-emerald-400">reimagined.</span>
               </h2>
 
               {/* Requested Text */}
-              <p className="text-xl lg:text-2xl text-slate-200 leading-relaxed font-medium">
+              <p className="text-base lg:text-2xl text-slate-200 leading-relaxed font-medium">
                 We design exceptional 28-days journeys for digital nomads,
                 bringing together a community of like-minded professionals.
                 Whether you work fully remotely or can step away from the office
@@ -113,15 +113,15 @@ export default function Hero() {
               </p>
 
               {/* Action Button */}
-              <motion.div className="pt-8">
+              <motion.div className="pt-2 lg:pt-8">
                 <motion.button
                   whileHover={{ scale: 1.05, x: 10 }}
                   whileTap={{ scale: 0.95 }}
-                  className="group px-12 py-6 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-full flex items-center justify-center gap-4 transition-all duration-300 shadow-2xl shadow-green-500/20"
+                  className="group px-8 py-4 lg:px-12 lg:py-6 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-full flex items-center justify-center gap-3 transition-all duration-300 shadow-2xl shadow-green-500/20"
                   onClick={scrollToForm}
                 >
-                  <span className="text-lg sm:text-xl tracking-wide">GET STARTED</span>
-                  <ChevronRight className="w-5 h-5 sm:w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" />
+                  <span className="text-base lg:text-xl tracking-wide">GET STARTED</span>
+                  <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
                 </motion.button>
               </motion.div>
             </motion.div>

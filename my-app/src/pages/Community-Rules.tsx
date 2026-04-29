@@ -30,7 +30,7 @@ export default function Community() {
                         2. Infrastructure Integrity
                     </h2>
                     <p className="text-slate-600 mb-4 leading-relaxed">
-                        In the Himalayas, bandwidth is a premium asset. Our Dual-WAN and Starlink failover systems are designed for professional engineering and operational requirements.
+                        In the Himalayas, bandwidth is a premium asset. Our Dual-WAN and multi-ISP failover systems are designed for professional engineering and operational requirements.
                     </p>
                     <ul className="list-disc list-inside text-slate-600 space-y-3 ml-4 leading-relaxed">
                         <li><span className="font-bold text-slate-900">Bandwidth Prioritization:</span> Infrastructure is strictly for work. High-bandwidth recreational consumption (e.g., torrenting, 4K streaming, massive non-work-related downloads) during core operational hours is strictly prohibited.</li>

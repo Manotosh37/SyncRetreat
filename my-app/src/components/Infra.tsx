@@ -12,7 +12,7 @@ const features = [
   {
     icon: Wifi,
     title: "Connectivity",
-    highlight: "Dual-Line Fiber (150 Mbps) + Starlink Backup",
+    highlight: "Dual-Line Fiber (300 Mbps)",
     description:
       "Enterprise-grade redundancy. Zero downtime, even in the Himalayas.",
     image: "./connectivity.jpeg",
@@ -81,7 +81,7 @@ export default function FeaturesSection() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section className="relative overflow-hidden bg-[#fefbf7] py-20 md:py-28 text-slate-900">
+    <section className="relative overflow-hidden bg-[#fefbf7] py-14 md:py-28 text-slate-900">
       {/* Background */}
       <div
         className="absolute inset-0 opacity-40 pointer-events-none"
@@ -109,7 +109,7 @@ export default function FeaturesSection() {
         </div>
 
         {/* Full Bleed Grid - No padding on sides so it touches the edges */}
-        <div className="mt-16 grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 md:mt-16 grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {features.map((item, i) => {
             const active = hovered === i;
             const Icon = item.icon;
@@ -119,7 +119,7 @@ export default function FeaturesSection() {
                 key={i}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
-                className={`group relative min-h-[420px] md:h-105 overflow-hidden border border-slate-200 bg-black transition-all duration-500 cursor-pointer ${
+                className={`group relative min-h-105 md:h-105 overflow-hidden border border-slate-200 bg-black transition-all duration-500 cursor-pointer ${
                   active
                     ? "scale-[1.03] z-20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]"
                     : "scale-100 z-10 shadow-sm"

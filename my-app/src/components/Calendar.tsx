@@ -69,12 +69,12 @@ export default function DestinationCards() {
   };
 
   return (
-    <section className="relative z-10 -mt-16 overflow-hidden bg-[#fefbf7] rounded-t-[48px] shadow-[0_-20px_40px_-10px_rgba(0,0,0,0.5)] px-4 pt-32 pb-28 text-slate-900">
-      <div className="max-w-7xl w-full px-4 lg:px-8 mx-auto">
+    <section className="relative z-10 -mt-16 overflow-hidden bg-[#fefbf7] rounded-t-[48px] shadow-[0_-20px_40px_-10px_rgba(0,0,0,0.5)] px-2 md:px-6 pt-16 md:pt-24 pb-16 md:pb-28 text-slate-900">
+      <div className="max-w-screen-2xl w-full px- lg:px-2 mx-auto">
         <h2 className="text-3xl sm:text-5xl font-bold text-slate-900 mb-4 text-center tracking-tight">
           Upcoming. <span className="text-emerald-700">Retreat Calendar</span>
         </h2>
-        <p className="text-center text-slate-600 mb-16 text-lg max-w-xl mx-auto font-medium">
+        <p className="text-center text-slate-600 mb-8 md:mb-16 text-base md:text-lg max-w-xl mx-auto font-medium">
           Explore incredible locations. Immerse in a new culture while
           engineering remotely with absolute focus.
         </p>
@@ -91,7 +91,7 @@ export default function DestinationCards() {
                   !isDisabled ? "cursor-pointer" : "cursor-not-allowed"
                 }`}
                 style={{
-                  minHeight: 480,
+                  minHeight: "clamp(300px, 60vw, 480px)",
                   borderColor: active ? item.accent : "#e2e8f0",
                   boxShadow: active
                     ? `0 24px 60px -20px ${item.accent}`
@@ -111,15 +111,16 @@ export default function DestinationCards() {
                   }`}
                 />
 
-                {/* Light gradient overlay */}
+                {/* Dark gradient overlay so white text is readable */}
+                <div className="absolute inset-0 z-5 bg-linear-to-t from-black/70 via-black/10 to-transparent pointer-events-none" />
 
                 {/* Default state */}
                 <div
-                  className={`absolute bottom-0 left-0 right-0 z-10 p-6 transition-all duration-500 ${
+                  className={`absolute bottom-0 left-0 right-0 z-20 p-6 transition-all duration-500 ${
                     active ? "-translate-y-full opacity-0" : "opacity-100"
                   }`}
                 >
-                  <h3 className="text-3xl font-black text-white tracking-wide drop-shadow-sm">
+                  <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-wide drop-shadow-sm">
                     {item.title}
                   </h3>
                   <div className="flex gap-2 mt-3 flex-wrap">

@@ -32,11 +32,11 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="bg-[#fefbf7] py-24 px-6 md:px-12 border-t border-slate-200">
+    <section className="bg-[#fefbf7] py-14 md:py-24 px-6 md:px-12 border-t border-slate-200">
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
           {/* Image Column with Hover Effect */}
-          <div className="relative rounded-2xl overflow-hidden group shadow-lg h-100 md:h-full min-h-125">
+          <div className="relative rounded-2xl overflow-hidden group shadow-lg h-64 md:h-100 lg:min-h-125">
             <img
               src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=80"
               alt="SyncRetreat FAQs"

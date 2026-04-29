@@ -2,8 +2,10 @@
 @plugin "@tailwindcss/typography";
 
 @layer base {
-  html {
+  html, body {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   body {
@@ -11,5 +13,9 @@
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    overflow-x: hidden;
   }
 }

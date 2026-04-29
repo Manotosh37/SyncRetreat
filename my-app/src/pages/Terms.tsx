@@ -122,7 +122,7 @@ export default function Terms() {
                                 Dedicated operational workspaces outfitted with ergonomic setups.
                             </p>
                             <p>
-                                Enterprise-grade internet connectivity (Dual-WAN with Starlink failover) on a best-effort basis, acknowledging the extreme geographical location.
+                                Enterprise-grade internet connectivity (Dual-WAN with redundant ISP failover) on a best-effort basis, acknowledging the extreme geographical location.
                             </p>
                             <p>
                                 Processing and procurement of local Protected Area Permits (PAP) required for specific regional access within Ladakh.
@@ -143,7 +143,7 @@ export default function Terms() {
                                 <b className="text-slate-900">Force Majeure:</b> SyncRetreat is not liable for disruptions, internet outages, delays, or cancellations caused by acts of God, extreme weather, geopolitical instability, local government mandates, or civil unrest.
                             </p>
                             <p>
-                                <b className="text-slate-900">Best-Effort Infrastructure:</b> While we provide redundant connectivity (Starlink, Dual-WAN), the Client acknowledges that absolute 100% uptime cannot be guaranteed in Ladakh. SyncRetreat is not liable for lost revenue, missed deadlines, or business interruptions experienced by the Client.
+                                <b className="text-slate-900">Best-Effort Infrastructure:</b> While we provide redundant connectivity (Dual-WAN, multi-ISP failover), the Client acknowledges that absolute 100% uptime cannot be guaranteed in Ladakh. SyncRetreat is not liable for lost revenue, missed deadlines, or business interruptions experienced by the Client.
                             </p>
                         </div>
                     </section>

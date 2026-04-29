@@ -1,8 +1,8 @@
 export default function Community() {
   return (
-    <section className="bg-[#fefbf7] pt-28 pb-0 w-full overflow-hidden">
+    <section className="bg-[#fefbf7] pt-14 md:pt-28 pb-0 w-full overflow-hidden">
       {/* Text Content */}
-      <div className="max-w-4xl mx-auto px-6 text-center mb-16">
+      <div className="max-w-4xl mx-auto px-6 text-center mb-8 md:mb-16">
         <h2
           className="text-4xl md:text-5xl text-slate-900 mb-8 leading-tight font-light"
           style={{ fontFamily: "Georgia, serif" }}
@@ -34,7 +34,7 @@ export default function Community() {
       {/* Image & Testimonial Grid - Full Width */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 bg-white gap-2 p-2">
         {/* Top Left Image */}
-        <div className="w-full h-87.5 md:h-112.5">
+        <div className="w-full h-56 md:h-87.5 lg:h-112.5">
           <img
             src="./logistics.jpeg"
             alt="Community Coworking"
@@ -43,7 +43,7 @@ export default function Community() {
         </div>
 
         {/* Top Right Image */}
-        <div className="w-full h-87.5 md:h-112.5">
+        <div className="w-full h-56 md:h-87.5 lg:h-112.5">
           <img
             src="https://internationalyouthclub.org/wp-content/uploads/2024/06/1519633344_Ladakh-Home_11zon.jpg"
             className="w-full h-full object-cover"
@@ -51,7 +51,7 @@ export default function Community() {
         </div>
 
         {/* Bottom Left — Famous Quote */}
-        <div className="w-full h-87.5 md:h-112.5 bg-[#fefbf7] flex flex-col justify-center items-center px-10 py-12 text-center relative overflow-hidden">
+        <div className="w-full h-56 md:h-87.5 lg:h-112.5 bg-[#fefbf7] flex flex-col justify-center items-center px-10 py-12 text-center relative overflow-hidden">
           {/* Decorative large quotation mark */}
           <span
             className="absolute top-4 left-6 text-emerald-100 select-none pointer-events-none"
@@ -82,7 +82,7 @@ export default function Community() {
         </div>
 
         {/* Bottom Right Image */}
-        <div className="w-full h-87.5 md:h-112.5">
+        <div className="w-full h-56 md:h-87.5 lg:h-112.5">
           <img
             src="https://images.unsplash.com/photo-1697490251825-0d6f7f3f7254?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Adventure"

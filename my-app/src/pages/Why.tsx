@@ -33,14 +33,14 @@ const reasons = [
 
 export default function WhySyncRetreat() {
   return (
-    <section className="bg-[#FDFCF2] py-20 md:py-32 px-6 md:px-12 w-full overflow-hidden">
+    <section className="bg-[#FDFCF2] py-14 md:py-32 px-6 md:px-12 w-full overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
+          className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-16 gap-4 md:gap-6"
         >
           <div className="max-w-2xl">
             <h2 className="text-sm font-bold text-emerald-600 uppercase tracking-[0.3em] mb-6">
@@ -69,7 +69,7 @@ export default function WhySyncRetreat() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="flex flex-col group"
             >
-              <div className="overflow-hidden mb-8 aspect-4/5 bg-slate-100 rounded-2xl relative">
+              <div className="overflow-hidden mb-4 md:mb-8 aspect-4/3 md:aspect-4/5 bg-slate-100 rounded-2xl relative">
                 <img
                   src={item.image}
                   alt={item.title}
