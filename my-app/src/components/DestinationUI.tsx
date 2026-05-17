@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export const Card = ({ children }: { children: React.ReactNode }) => (
   <div className="group">{children}</div>
@@ -16,9 +17,11 @@ export interface ImgCardProps {
 export const ImgCard = ({ item, h = "h-56" }: ImgCardProps) => (
   <Card>
     <div className="overflow-hidden rounded-2xl mb-4 shadow-sm border border-slate-100">
-      <img
+      <Image
         src={item.image}
         alt={item.title}
+        width={800}
+        height={600}
         className={`w-full ${h} object-cover group-hover:scale-105 transition-transform duration-300`}
       />
     </div>
@@ -42,9 +45,11 @@ export interface PlaceCardProps {
 export const PlaceCard = ({ item }: PlaceCardProps) => (
   <Card>
     <div className="overflow-hidden rounded-2xl mb-4 shadow-sm border border-slate-100">
-      <img
+      <Image
         src={item.image}
         alt={item.title}
+        width={800}
+        height={600}
         className={`w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300`}
       />
     </div>

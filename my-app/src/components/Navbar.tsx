@@ -1,6 +1,8 @@
+"use client";
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown, User } from "lucide-react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../lib/AuthContext";
 import { supabase } from "../lib/supabase";
@@ -12,9 +14,9 @@ export default function Navbar() {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const { session } = useAuth();
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isHome = location.pathname === "/";
+  const router = useRouter();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +43,7 @@ export default function Navbar() {
         formElement.scrollIntoView({ behavior: "smooth" });
       }
     } else {
-      navigate("/?scrollTo=application-form");
+      router.push("/?scrollTo=application-form");
     }
   };
 
@@ -61,9 +63,9 @@ export default function Navbar() {
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 >
-                  <Link to="/" className="flex items-center gap-3 shrink-0">
+                  <Link href="/" className="flex items-center gap-3 shrink-0">
                     <img
-                      src="./logo2.png"
+                      src="/logo2.png"
                       alt="SyncRetreat"
                       className="w-auto h-8 brightness-0 invert"
                     />
@@ -79,7 +81,7 @@ export default function Navbar() {
           {/* Center: Navigation Links */}
           <div className="hidden md:flex items-center justify-center gap-8 text-sm font-bold text-slate-300 w-1/3">
             <Link
-              to="/"
+              href="/"
               className="hover:text-emerald-400 transition-colors duration-200"
             >
               Home
@@ -106,11 +108,11 @@ export default function Navbar() {
                   >
                     <div className="grid grid-cols-2 gap-4">
                       <Link
-                        to="/ladakh"
+                        href="/locations/ladakh"
                         className="relative h-40 rounded-xl overflow-hidden group shadow-sm border border-slate-100"
                       >
                         <img
-                          src="https://images.unsplash.com/photo-1600242466690-c1c04f081762?q=80&w=1470&auto=format&fit=crop"
+                          src="https://images.unsplash.com/photo-1600242466690-c1c04f081762?q=80&w=1470&auhref=format&fit=crop"
                           alt="Ladakh"
                           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
@@ -120,11 +122,11 @@ export default function Navbar() {
                         </span>
                       </Link>
                       <Link
-                        to="/goa"
+                        href="/locations/goa"
                         className="relative h-40 rounded-xl overflow-hidden group shadow-sm border border-slate-100"
                       >
                         <img
-                          src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=400&q=80"
+                          src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auhref=format&fit=crop&w=400&q=80"
                           alt="Goa"
                           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
@@ -140,25 +142,25 @@ export default function Navbar() {
             </div>
 
             {/* <Link
-              to="/testimonials"
+              href="/testimonials"
               className="hover:text-emerald-400 transition-colors duration-200"
             >
               Testimonials
             </Link> */}
             <Link
-              to="/blog"
+              href="/blog"
               className="hover:text-emerald-400 transition-colors duration-200"
             >
               Blog
             </Link>
             <Link
-              to="/howitworks"
+              href="/howitworks"
               className="hover:text-emerald-400 transition-colors duration-200"
             >
               How it works
             </Link>
             <Link
-              to="/about"
+              href="/about"
               className="hover:text-emerald-400 transition-colors duration-200"
             >
               About
@@ -190,9 +192,9 @@ export default function Navbar() {
                   className="flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white p-1 pr-3 rounded-full transition-colors"
                 >
                   {session?.user.user_metadata.avatar_url ? (
-                    <img 
-                      src={session.user.user_metadata.avatar_url} 
-                      alt="Profile" 
+                    <img
+                      src={session.user.user_metadata.avatar_url}
+                      alt="Profile"
                       className="w-8 h-8 rounded-full object-cover border border-white/20"
                     />
                   ) : (
@@ -215,21 +217,21 @@ export default function Navbar() {
                       {session ? (
                         <>
                           <Link
-                            to="/bookings"
+                            href="/bookings"
                             onClick={() => setAccountMenuOpen(false)}
                             className="block px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 transition-colors"
                           >
                             Your Bookings
                           </Link>
                           <Link
-                            to="/refer"
+                            href="/refer"
                             onClick={() => setAccountMenuOpen(false)}
                             className="block px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 transition-colors"
                           >
                             Refer a Friend
                           </Link>
                           <Link
-                            to="/account"
+                            href="/account"
                             onClick={() => setAccountMenuOpen(false)}
                             className="block px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 transition-colors"
                           >
@@ -240,7 +242,7 @@ export default function Navbar() {
                             onClick={async () => {
                               await supabase.auth.signOut();
                               setAccountMenuOpen(false);
-                              navigate("/");
+                              router.push("/");
                             }}
                             className="w-full text-left px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-red-600 transition-colors"
                           >
@@ -250,14 +252,14 @@ export default function Navbar() {
                       ) : (
                         <>
                           <Link
-                            to="/login"
+                            href="/login"
                             onClick={() => setAccountMenuOpen(false)}
                             className="block px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 transition-colors"
                           >
                             Sign In
                           </Link>
                           <Link
-                            to="/signup"
+                            href="/signup"
                             onClick={() => setAccountMenuOpen(false)}
                             className="block px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 transition-colors"
                           >
@@ -292,7 +294,7 @@ export default function Navbar() {
         <div className="md:hidden bg-[#1A2421] border-t border-white/10 h-screen">
           <div className="px-6 py-6 flex flex-col gap-5 text-base font-bold text-slate-300">
             <Link
-              to="/"
+              href="/"
               onClick={() => setIsOpen(false)}
               className="hover:text-emerald-400 transition-colors"
             >
@@ -302,14 +304,14 @@ export default function Navbar() {
               Destinations
             </div>
             <Link
-              to="/ladakh"
+              href="/locations/ladakh"
               onClick={() => setIsOpen(false)}
               className="pl-4 hover:text-emerald-400 transition-colors"
             >
               Ladakh
             </Link>
             <Link
-              to="/goa"
+              href="/locations/goa"
               onClick={() => setIsOpen(false)}
               className="pl-4 hover:text-emerald-400 transition-colors"
             >
@@ -317,28 +319,28 @@ export default function Navbar() {
             </Link>
             <div className="border-t border-white/10 pt-4 mt-2"></div>
             {/* <Link
-              to="/testimonials"
+              href="/testimonials"
               onClick={() => setIsOpen(false)}
               className="hover:text-emerald-400 transition-colors"
             >
               Testimonials
             </Link> */}
             <Link
-              to="/blog"
+              href="/blog"
               onClick={() => setIsOpen(false)}
               className="hover:text-emerald-400 transition-colors"
             >
               Blog
             </Link>
             <Link
-              to="/howitworks"
+              href="/howitworks"
               onClick={() => setIsOpen(false)}
               className="hover:text-emerald-400 transition-colors"
             >
               How it works
             </Link>
             <Link
-              to="/about"
+              href="/about"
               onClick={() => setIsOpen(false)}
               className="hover:text-emerald-400 transition-colors"
             >

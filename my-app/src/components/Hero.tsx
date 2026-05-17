@@ -1,19 +1,22 @@
+"use client";
 import { motion, Variants } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useRouter, usePathname } from "next/navigation";
+
+import Image from "next/image";
 
 export default function Hero() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const scrollToForm = () => {
-    if (location.pathname === "/") {
+    if (pathname === "/") {
       const formElement = document.getElementById("application-form");
       if (formElement) {
         formElement.scrollIntoView({ behavior: "smooth" });
       }
     } else {
-      navigate("/?scrollTo=application-form");
+      router.push("/?scrollTo=application-form");
     }
   };
 
@@ -53,9 +56,11 @@ export default function Hero() {
             className="flex flex-col items-start space-y-6 lg:space-y-12"
           >
             <div className="relative">
-              <img
+              <Image
                 src="/Sync.png"
                 alt="SyncRetreat Logo"
+                width={192}
+                height={80}
                 className="w-28 lg:w-48 h-auto relative z-10 mix-blend-multiply"
               />
               <div className="absolute -top-4 -left-4 w-12 h-12 bg-emerald-500/10 rounded-full blur-xl" />
@@ -96,20 +101,22 @@ export default function Hero() {
             animate="visible"
             className="relative z-20 px-6 py-10 lg:p-24 flex flex-col justify-center max-w-3xl"
           >
-            <motion.div variants={itemVariants} className="space-y-4 lg:space-y-8">
+            <motion.div
+              variants={itemVariants}
+              className="space-y-4 lg:space-y-8"
+            >
               {/* Modern Headline */}
               <h2 className="text-3xl sm:text-5xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
-                Remote work, <br />
-                <span className="text-emerald-400">reimagined.</span>
+                Tech-focused <br />
+                <span className="text-emerald-400">co-living.</span>
               </h2>
 
               {/* Requested Text */}
               <p className="text-base lg:text-2xl text-slate-200 leading-relaxed font-medium">
-                We design exceptional 28-days journeys for digital nomads,
-                bringing together a community of like-minded professionals.
-                Whether you work fully remotely or can step away from the office
-                for a while, join us to explore the world and create a better
-                balance between work and life.
+                We build high-speed internet digital nomad retreats in Ladakh
+                and Goa. Join our exclusive co-living spaces designed strictly
+                for software developers, remote professionals, and remote
+                founders who want to ship products while exploring the world.
               </p>
 
               {/* Action Button */}
@@ -120,7 +127,9 @@ export default function Hero() {
                   className="group px-8 py-4 lg:px-12 lg:py-6 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-full flex items-center justify-center gap-3 transition-all duration-300 shadow-2xl shadow-green-500/20"
                   onClick={scrollToForm}
                 >
-                  <span className="text-base lg:text-xl tracking-wide">GET STARTED</span>
+                  <span className="text-base lg:text-xl tracking-wide">
+                    GET STARTED
+                  </span>
                   <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
                 </motion.button>
               </motion.div>

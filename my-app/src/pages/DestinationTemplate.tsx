@@ -1,5 +1,7 @@
+"use client";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter as useNavigate } from 'next/navigation';
+
 import { Check, X, FileText, Download } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { supabase } from "../lib/supabase";

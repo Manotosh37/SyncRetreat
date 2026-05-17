@@ -1,5 +1,7 @@
+"use client";
 import React from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { usePathname as useLocation } from 'next/navigation';
+
 import { useAuth } from "../lib/AuthContext";
 
 interface PublicRouteProps {

@@ -1,4 +1,6 @@
+"use client";
 import { useState } from "react";
+import Link from "next/link";
 import {
   BsTwitter,
   BsInstagram,
@@ -114,13 +116,13 @@ export default function Footer() {
           {/* Links */}
           <div className="flex flex-wrap gap-6 md:gap-8 items-center text-sm font-medium text-slate-400">
             {links.map(({ label, href }) => (
-              <a
+              <Link
                 key={label}
                 href={href}
                 className="hover:text-emerald-400 transition-colors"
               >
                 {label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>

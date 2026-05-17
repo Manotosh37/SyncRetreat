@@ -1,12 +1,15 @@
+"use client";
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const listings = [
   {
     title: "Ladakh",
     description:
       "15°C mountain air, zero urban noise, and absolute isolation. Engineered strictly for uninterrupted product shipping with enterprise-grade Dual-WAN infrastructure.",
-    image: "./ladakhImg.png",
+    image: "/ladakhImg.png",
     tags: [
       "Deep Work",
       "Cold Desert",
@@ -17,7 +20,7 @@ const listings = [
     price: 1499,
     originalPrice: 1799,
     currency: "$",
-    route: "/ladakh",
+    route: "/locations/ladakh",
     cta: "See the dates",
     duration: "/28 days",
     accent: "rgba(3, 105, 161, 0.55)", // sky-700
@@ -26,7 +29,7 @@ const listings = [
     title: "Goa",
     description:
       "A fully managed, private compound designed to insulate you from the coastal distractions. High-speed fiber, silent deep-work zones, and elite peer proximity.",
-    image: "./goaImg.png",
+    image: "/goaImg.png",
     tags: [
       "Private Compound",
       "Coastal Isolation",
@@ -36,7 +39,7 @@ const listings = [
     ],
     price: 1799,
     currency: "$",
-    route: "/goa",
+    route: "/locations/goa",
     cta: "Upcoming…",
     duration: "",
     accent: "rgba(4, 120, 87, 0.55)", // emerald-700
@@ -45,7 +48,7 @@ const listings = [
     title: "Coming Soon…",
     description:
       "We are currently auditing and stress-testing new global locations. Only properties that pass our strict criteria for absolute isolation and network uptime will be deployed.",
-    image: "./cSImg.jpeg",
+    image: "/cSImg.jpeg",
     tags: ["Vetting in Progress", "Infrastructure Audit", "Next Chapter"],
     price: "1599 – 1999",
     currency: "$",
@@ -58,14 +61,15 @@ const listings = [
 
 export default function DestinationCards() {
   const [hovered, setHovered] = useState<number | null>(null);
+  const router = useRouter();
 
   const handleCardClick = (route: string) => {
-    if (route !== "#") window.location.href = route;
+    if (route !== "#") router.push(route);
   };
 
   const handleButtonClick = (e: React.MouseEvent, route: string) => {
     e.stopPropagation();
-    if (route !== "#") window.location.href = route;
+    if (route !== "#") router.push(route);
   };
 
   return (
@@ -102,11 +106,12 @@ export default function DestinationCards() {
                 onClick={() => handleCardClick(item.route)}
               >
                 {/* Background Image */}
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
-                  loading="lazy"
-                  className={`absolute inset-0 z-0 w-full h-full object-cover transition-all duration-700 ${
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className={`z-0 object-cover transition-all duration-700 ${
                     active ? "scale-105 opacity-100" : "scale-100 opacity-90"
                   }`}
                 />

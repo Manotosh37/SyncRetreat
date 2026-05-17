@@ -1,4 +1,6 @@
+"use client";
 import { useState } from "react";
+import Image from "next/image";
 import {
   Wifi,
   Armchair,
@@ -15,7 +17,7 @@ const features = [
     highlight: "Dual-Line Fiber (300 Mbps)",
     description:
       "Enterprise-grade redundancy. Zero downtime, even in the Himalayas.",
-    image: "./connectivity.jpeg",
+    image: "/connectivity.jpeg",
     accent: "rgba(3, 105, 161, 0.55)", // sky-700
     accentSoft: "rgba(3, 105, 161, 0.1)",
     accentText: "#0369a1",
@@ -26,7 +28,7 @@ const features = [
     highlight: "Modern Tier Ergonomic Chairs",
     description:
       "8-hour work sessions without back pain. Premium desks with mountain views.",
-    image: "./comfert.jpeg",
+    image: "/comfert.jpeg",
     accent: "rgba(4, 120, 87, 0.55)", // emerald-700
     accentSoft: "rgba(4, 120, 87, 0.1)",
     accentText: "#047857",
@@ -37,7 +39,7 @@ const features = [
     highlight: "Oxygen Enrichment & 24/7 Medical Support",
     description:
       "Acclimatization support, oxygen concentrators, on-call medical staff.",
-    image: "./health.jpeg",
+    image: "/health.jpeg",
     accent: "rgba(126, 34, 206, 0.55)", // purple-700
     accentSoft: "rgba(126, 34, 206, 0.1)",
     accentText: "#7e22ce",
@@ -48,7 +50,7 @@ const features = [
     highlight: "Curated Group of Senior Engineers & Remote Workers",
     description:
       "No tourists. No backpackers. Just focused builders shipping products.",
-    image: "./community.jpeg",
+    image: "/community.jpeg",
     accent: "rgba(190, 24, 93, 0.55)", // pink-700
     accentSoft: "rgba(190, 24, 93, 0.1)",
     accentText: "#be185d",
@@ -59,7 +61,7 @@ const features = [
     highlight: "Curated Himalayan expeditions during your downtime.",
     description:
       "Pre-planned group trips to Pangong Lake, Nubra Valley, and Khardung La. We handle the permits, drivers, and logistics.",
-    image: "./weekend.jpeg",
+    image: "/weekend.jpeg",
     accent: "rgba(194, 65, 12, 0.55)", // orange-700
     accentSoft: "rgba(194, 65, 12, 0.1)",
     accentText: "#c2410c",
@@ -70,7 +72,7 @@ const features = [
     highlight: "Complete Logistics",
     description:
       "All permits, accommodation, and local coordination handled. You focus on shipping.",
-    image: "./logistics.jpeg",
+    image: "/logistics.jpeg",
     accent: "rgba(21, 128, 61, 0.55)", // green-700
     accentSoft: "rgba(21, 128, 61, 0.1)",
     accentText: "#15803d",
@@ -129,11 +131,12 @@ export default function FeaturesSection() {
                 }}
               >
                 {/* Background image */}
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
-                  loading="lazy"
-                  className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className={`object-cover transition-all duration-700 ${
                     active ? "scale-110" : "scale-100"
                   }`}
                 />
