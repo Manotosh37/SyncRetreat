@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
-import { sendEmail } from "../lib/emailservice";
+import { supabase } from "../../lib/supabase";
+import { sendEmail } from "../../lib/emailservice";
 import {
   Mail,
   Check,
@@ -29,7 +29,7 @@ import {
   BarChart3,
   Clock,
 } from "lucide-react";
-import AdminLogin from "../components/admin/AdminLogin";
+import AdminLogin from "../../components/admin/AdminLogin";
 
 interface Booking {
   id: string;

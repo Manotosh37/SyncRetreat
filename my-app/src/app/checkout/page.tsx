@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { CalendarCheck, CheckCircle2, ArrowRight } from "lucide-react";
-import { useAuth } from "../lib/AuthContext";
+import { useAuth } from "../../lib/AuthContext";
 import Link from 'next/link';
 
 import Cal, { getCalApi } from "@calcom/embed-react";
