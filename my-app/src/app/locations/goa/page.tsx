@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "A private tech-focused co-living compound designed to insulate you from coastal distractions. Join software engineers and remote professionals for deep-work sprints in India.",
 };
 
-export const goaConfig: DestinationConfig = {
+const goaConfig: DestinationConfig = {
   id: "goa",
   name: "Goa",
   hero: {

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Join our 28-day high-speed internet digital nomad retreats in Ladakh. A tech-focused co-living space designed exclusively for software developers and remote professionals in the Himalayas.",
 };
 
-export const ladakhConfig: DestinationConfig = {
+const ladakhConfig: DestinationConfig = {
   id: "ladakh",
   name: "Ladakh",
   hero: {
