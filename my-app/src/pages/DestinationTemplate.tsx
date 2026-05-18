@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter as useNavigate } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { Check, X, FileText, Download } from "lucide-react";
 import Navbar from "../components/Navbar";
@@ -112,7 +112,7 @@ export default function DestinationTemplate({
   const [formData, setFormData] = useState(initialForm);
   const [draftId, setDraftId] = useState<string | null>(null);
   const [selectedBatch, setSelectedBatch] = useState<number>(1);
-  const navigate = useNavigate();
+  const router = useRouter();
   const { user } = useAuth();
 
   const selectedTrip =
@@ -211,12 +211,12 @@ export default function DestinationTemplate({
         setIsFormOpen(false);
         setSubmitStatus("idle");
 
-        const stateObj: any = { batch: selectedBatch };
+        const params = new URLSearchParams();
+        params.set("batch", String(selectedBatch));
         if (!config.pricing.isStatic && selectedTrip.price) {
-          stateObj.price = selectedTrip.price;
+          params.set("price", String(selectedTrip.price));
         }
-
-        navigate("/checkout", { state: stateObj });
+        router.push(`/checkout?${params.toString()}`);
       }, 1000);
     } catch (error) {
       console.error("Error:", error);
