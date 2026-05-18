@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { usePathname as useLocation } from 'next/navigation';
+import React, { useEffect } from "react";
+import { useRouter } from 'next/navigation';
 
 import { useAuth } from "../lib/AuthContext";
 
@@ -11,7 +11,15 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth();
-  const location = useLocation();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/login");
+    } else if (!isLoading && requireAdmin && user?.user_metadata?.role !== "admin") {
+      router.push("/");
+    }
+  }, [user, isLoading, requireAdmin, router]);
 
   if (isLoading) {
     return (
@@ -22,16 +30,11 @@ export default function ProtectedRoute({ children, requireAdmin = false }: Prote
   }
 
   if (!user) {
-    // Redirect them to the login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return null;
   }
 
   if (requireAdmin && user.user_metadata?.role !== "admin") {
-    // If route requires admin but user is not admin, redirect to home
-    return <Navigate to="/" replace />;
+    return null;
   }
 
   return <>{children}</>;

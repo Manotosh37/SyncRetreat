@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { usePathname as useLocation } from 'next/navigation';
+import React, { useEffect } from "react";
+import { useRouter } from 'next/navigation';
 
 import { useAuth } from "../lib/AuthContext";
 
@@ -10,7 +10,13 @@ interface PublicRouteProps {
 
 export default function PublicRoute({ children }: PublicRouteProps) {
   const { user, isLoading } = useAuth();
-  const location = useLocation();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      router.push("/account");
+    }
+  }, [user, isLoading, router]);
 
   if (isLoading) {
     return (
@@ -21,9 +27,7 @@ export default function PublicRoute({ children }: PublicRouteProps) {
   }
 
   if (user) {
-    // Redirect them to the account page if they are already logged in
-    const from = location.state?.from?.pathname || "/account";
-    return <Navigate to={from} replace />;
+    return null;
   }
 
   return <>{children}</>;
