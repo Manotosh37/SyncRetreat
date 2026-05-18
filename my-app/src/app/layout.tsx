@@ -22,8 +22,13 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL("https://syncretreat.com"),
   title: {
-    default: "SyncRetreat | Co-living & Retreats for Remote Software Engineers in India",
+    default: "SyncRetreat — Remote Work Retreats in India",
     template: "%s | SyncRetreat",
+  },
+  icons: {
+    icon: "/logo2.png",
+    shortcut: "/logo2.png",
+    apple: "/logo2.png",
   },
   description:
     "High-speed internet digital nomad retreats in Ladakh (Himalayas) and Goa. Enterprise-grade infrastructure, ergonomic co-working, and curated community for software developers and remote founders.",
