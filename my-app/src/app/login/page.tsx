@@ -22,7 +22,7 @@ export default function Login() {
     if (error) {
       alert(error.message);
     } else {
-      navigate("/account");
+      navigate.push("/account");
     }
   };
 
