@@ -7,9 +7,10 @@ import FaqSection from "../components/FaqSection";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tech-Focused Co-living in the Himalayas | SyncRetreat",
+  title:
+    "Remote Professional Co-living & Co-working in India and Himalayas | SyncRetreat",
   description:
-    "Join international technology professionals at our high-speed internet digital nomad retreats in India.",
+    "Premium remote professional co-living and co-working spaces in Ladakh Himalayas and Goa. High-speed internet, ergonomic workstations, and a curated community for remote professionals.",
 };
 
 export default function Home() {
