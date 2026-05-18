@@ -18,8 +18,8 @@ export async function generateStaticParams() {
     }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const filePath = path.join(process.cwd(), "src/content/blog", `${slug}.md`);
   
   if (!fs.existsSync(filePath)) {
@@ -35,8 +35,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BlogPost({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const blogDir = path.join(process.cwd(), "src/content/blog");
   const filePath = path.join(blogDir, `${slug}.md`);
 
