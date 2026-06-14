@@ -3,7 +3,7 @@ title: "Your Guide to Visas in India"
 date: "April 1, 2026"
 author: "SyncRetreat Team"
 category: "Visas"
-image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxM8Hwqu6ck0savQZAUGlpWL3bLCopclsM7w&s"
+image: "/images/visa-travel-india.png"
 excerpt: "Everything you need to know about getting a visa to visit India."
 ---
 

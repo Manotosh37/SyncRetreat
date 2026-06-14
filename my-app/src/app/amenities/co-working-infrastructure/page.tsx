@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Enterprise Co-working Infrastructure in the Himalayas | SyncRetreat",
   description:
     "Ergonomic co-working in India. SyncRetreat provides Dual-WAN internet, Herman Miller-tier ergonomics, and oxygen concentrators for high-altitude health.",
+  alternates: { canonical: "https://syncretreat.com/amenities/co-working-infrastructure" },
+  openGraph: {
+    title: "SyncRetreat Co-working Infrastructure — Uncompromising Specs",
+    description:
+      "Herman Miller ergonomics, 300Mbps Dual-WAN, oxygen concentrators, and UPS power in the Himalayas. Purpose-built for engineers who need to ship.",
+    url: "https://syncretreat.com/amenities/co-working-infrastructure",
+  },
 };
 
 export default function CoworkingInfrastructure() {

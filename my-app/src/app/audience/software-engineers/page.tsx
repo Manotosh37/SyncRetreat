@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Co-living for Software Engineers & Developers | SyncRetreat",
   description:
     "A strictly curated, high-speed internet digital nomad retreat for software engineers. Dual-WAN fiber, 300Mbps, and enterprise-grade networking in the Himalayas.",
+  alternates: { canonical: "https://syncretreat.com/audience/software-engineers" },
+  openGraph: {
+    title: "SyncRetreat for Software Engineers — Stop Gambling with Hotel Wi-Fi",
+    description:
+      "Dual-WAN 300Mbps fiber, 42ms to AWS Mumbai, UPS power, and zero backpackers. 28-day sprints in Ladakh for engineers who ship.",
+    url: "https://syncretreat.com/audience/software-engineers",
+  },
 };
 
 export default function SoftwareEngineers() {

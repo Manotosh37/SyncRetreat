@@ -6,6 +6,22 @@ export const metadata: Metadata = {
   title: "Enterprise Remote Work Infrastructure Specs | SyncRetreat",
   description:
     "Full technical specifications for SyncRetreat's dual-WAN network, failover architecture, cloud region latencies, and workspace ergonomics. Built for engineers who need reliable infrastructure.",
+  keywords: [
+    "dual wan remote work india",
+    "ladakh internet specs",
+    "pfsense failover india",
+    "aws mumbai latency ladakh",
+    "remote work infrastructure specs",
+    "enterprise co-working india",
+    "99.9 uptime remote retreat",
+  ],
+  alternates: { canonical: "https://syncretreat.com/infrastructure" },
+  openGraph: {
+    title: "SyncRetreat Infrastructure — Full Technical Specs",
+    description:
+      "Dual-WAN failover, 42ms to AWS Mumbai, 99.6% uptime, Wi-Fi 6, Herman Miller ergonomics. Every decision documented openly so engineers can make an informed choice.",
+    url: "https://syncretreat.com/infrastructure",
+  },
 };
 
 const LATENCY_DATA = [

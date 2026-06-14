@@ -13,22 +13,19 @@ const reasons = [
     title: "PLUG & PLAY INFRASTRUCTURE",
     description:
       "Rock-solid Wi-Fi, ergonomic setups, and backup power. Your productivity is our primary protocol.",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSPmf3di15_PTJcbu46HCwnxAcue_iYb7nlQ&s",
+    image: "/images/coworking-infrastructure.png",
   },
   {
     title: "PREMIUM STAYS, ICONIC VIEWS",
     description:
       "Hand-picked boutique properties in the world's most inspiring locations, fully managed for your comfort.",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr2P2xnOz5turfkk3kh3B-U3zWLdoBT3g9pg&s",
+    image: "/images/premium-villa-interior.png",
   },
   {
     title: "ROUTINE MEETS ADVENTURE",
     description:
       "Maintain your wellness routine with yoga and fitness, then explore cultures and hidden gems on your terms.",
-    image:
-      "https://adventure.com/wp-content/uploads/2018/12/Travel-routines-Stretching-at-the-end-of-a-day-in-the-Gobi-Photo-credit-Leon-McCarron.jpg",
+    image: "/images/routine-wellness-adventure.png",
   },
 ];
 

@@ -1,15 +1,48 @@
 import { Metadata } from "next";
 import FounderIntro from "../../components/FounderIntro";
+import Schema from "../../components/Schema";
+import { makePersonSchema, makeBreadcrumbSchema } from "../../lib/schemas";
 
 export const metadata: Metadata = {
   title: "Tech-Focused Co-Living for Remote Professionals | SyncRetreat About",
   description:
     "SyncRetreat is built by software engineers & remote professionals. We provide high-speed internet digital nomad retreats in the Himalayas and India for international technology professionals.",
+  keywords: [
+    "about syncretreat",
+    "remote work retreat founders",
+    "built by engineers",
+    "tech co-living india",
+    "syncretreat mission",
+    "software engineer retreat india",
+  ],
+  alternates: { canonical: "https://syncretreat.com/about" },
+  openGraph: {
+    title: "About SyncRetreat — Built by Engineers, for Engineers",
+    description:
+      "We are not a travel agency. SyncRetreat is a deep work infrastructure company founded by software engineers who couldn't find a reliable retreat. So we built one.",
+    url: "https://syncretreat.com/about",
+  },
 };
 
 export default function About() {
   return (
     <>
+      {/* Person schema — founder entity linked to the Organization */}
+      <Schema
+        schema={makePersonSchema({
+          name: "Darshan Chudasama",
+          jobTitle: "Founder, SyncRetreat",
+          url: "https://syncretreat.com/about",
+          image: "https://syncretreat.com/darshan-chudasama.jpg",
+        })}
+      />
+      {/* BreadcrumbList */}
+      <Schema
+        schema={makeBreadcrumbSchema([
+          { name: "Home", url: "https://syncretreat.com" },
+          { name: "About", url: "https://syncretreat.com/about" },
+        ])}
+      />
       <div className="bg-[#fefbf7] min-h-screen pt-24 px-4 pb-20">
         <div className="max-w-4xl mx-auto px-4 md:px-12">
           <h1 className="text-4xl md:text-5xl font-serif text-center text-slate-900 mb-10">

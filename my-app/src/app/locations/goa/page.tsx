@@ -7,6 +7,30 @@ export const metadata: Metadata = {
   title: "Co-living spaces for remote professionals in Goa | SyncRetreat",
   description:
     "A private tech-focused co-living compound designed to insulate you from coastal distractions. Join software engineers and remote professionals for deep-work sprints in India.",
+  keywords: [
+    "remote work retreat goa",
+    "co-living goa developers",
+    "digital nomad goa india",
+    "co-working goa fiber internet",
+    "software engineer retreat goa",
+    "work from goa 2026",
+    "goa remote work villa",
+  ],
+  alternates: { canonical: "https://syncretreat.com/locations/goa" },
+  openGraph: {
+    title: "SyncRetreat Goa — Coastal Deep Work Retreat for Engineers",
+    description:
+      "Private villa with pool, Dual-WAN fiber, chef meals, and curated beach weekends in Goa. 28-day co-living for software engineers. September 2026 cohort coming soon.",
+    url: "https://syncretreat.com/locations/goa",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1374&auto=format&fit=crop",
+        width: 1374,
+        height: 916,
+        alt: "SyncRetreat co-working retreat in Goa, India",
+      },
+    ],
+  },
 };
 
 const goaConfig: DestinationConfig = {
@@ -84,29 +108,25 @@ const goaConfig: DestinationConfig = {
   },
   places: [
     {
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxyMY9nzT392ujTaf96IMIal7XhbgQEfByWQ&s",
+      image: "/images/goa-beach.png",
       title: "Weekend 1:",
       day1: "Baga & Calangute beach sunrise walk. Explore Aguada Fort & the Portuguese bastions.",
       day2: "Anjuna flea market & sunset cocktails at Vagator cliffs.",
     },
     {
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEduuMhOfE00DaY707ofaSZp9s5F6OE_fblw&s",
+      image: "/images/goa-villa-pool.png",
       title: "Weekend 2:",
       day1: "Old Goa UNESCO churches — Basilica of Bom Jesus & Se Cathedral. Spice plantation lunch.",
       day2: "Backwater kayaking through Goa's mangrove trails. Return by 4 PM.",
     },
     {
-      image:
-        "https://sandeepachetan.com/wp-content/uploads/2013/10/tumblr_mltei6m8xe1s2js0yo1_1280.jpg",
+      image: "/images/ladakh-coworking-space.png",
       title: "Weekend 3:",
       day1: "Early trek to Dudhsagar Falls — Goa's 310-metre cascade deep in the Western Ghats.",
       day2: "South Goa: pristine sands of Palolem & Agonda. Seafood feast on the shore.",
     },
     {
-      image:
-        "https://static2.tripoto.com/media/filter/tst/img/209403/TripDocument/1453141486_z_w12fu.jpeg",
+      image: "/images/routine-wellness-adventure.png",
       title: "Weekend 4:",
       day1: "Sunrise at Arambol & dolphin-spotting boat ride along the coastline.",
       day2: "Sleep in. Farewell bonfire & BBQ on the villa terrace. Pack & decompress.",
@@ -151,30 +171,68 @@ const goaConfig: DestinationConfig = {
 };
 
 import Schema from "../../../components/Schema";
+import { makeEventSchema, makeBreadcrumbSchema } from "../../../lib/schemas";
+
+const GOA_URL = "https://syncretreat.com/locations/goa";
+
+const goaGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    // ── LodgingBusiness ─────────────────────────────────────────────────────
+    {
+      "@type": ["LodgingBusiness", "LocalBusiness"],
+      "@id": "https://syncretreat.com/#business-goa",
+      name: "SyncRetreat Goa",
+      description:
+        "28-day coastal tech-focused co-living retreat in Goa with enterprise-grade Dual-WAN fiber internet, ergonomic workstations, private villa accommodation, and chef-prepared meals for software engineers and remote professionals.",
+      url: GOA_URL,
+      image: goaConfig.hero.image,
+      priceRange: "$$$",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Goa",
+        addressRegion: "Goa",
+        addressCountry: "IN",
+      },
+      geo: { "@type": "GeoCoordinates", latitude: 15.2993, longitude: 74.124 },
+      amenityFeature: [
+        { "@type": "LocationFeatureSpecification", name: "Co-working Space", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Dual-WAN Fiber 300 Mbps", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Private Villa Pool", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Private Ensuite Room", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Chef-Prepared Meals", value: true },
+      ],
+      parentOrganization: { "@id": "https://syncretreat.com/#organization" },
+    },
+
+    // ── Event: September 2026 Cohort ────────────────────────────────────────
+    makeEventSchema({
+      inGraph: true,
+      name: "SyncRetreat Goa — September 2026 Coastal Sprint (28 Days)",
+      description:
+        "28-day coastal deep work retreat in Goa, India. Enterprise-grade Dual-WAN internet, ergonomic workstations, private villa with pool, chef-prepared meals, and curated beach excursions for software engineers and remote professionals.",
+      startDate: "2026-09-01",
+      endDate: "2026-09-28",
+      locationName: "SyncRetreat Goa Villa",
+      locationLocality: "Goa",
+      locationRegion: "Goa",
+      url: GOA_URL,
+      price: 1799,
+      availability: "PreOrder",
+    }),
+
+    // ── BreadcrumbList ──────────────────────────────────────────────────────
+    makeBreadcrumbSchema([
+      { name: "Home", url: "https://syncretreat.com" },
+      { name: "Goa Retreat", url: GOA_URL },
+    ]),
+  ],
+};
 
 export default function Goa() {
   return (
     <>
-      <Schema
-        schema={{
-          "@context": "https://schema.org",
-          "@type": "LodgingBusiness",
-          "name": "SyncRetreat Goa",
-          "description": "A private tech-focused co-living compound designed to insulate you from coastal distractions.",
-          "image": goaConfig.hero.image,
-          "priceRange": "$$$",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Goa",
-            "addressRegion": "Goa",
-            "addressCountry": "IN"
-          },
-          "amenityFeature": [
-            { "@type": "LocationFeatureSpecification", "name": "Co-working Space", "value": "True" },
-            { "@type": "LocationFeatureSpecification", "name": "Dual-WAN Fiber 300Mbps", "value": "True" }
-          ]
-        }}
-      />
+      <Schema schema={goaGraph} />
       <DestinationTemplate config={goaConfig} />
     </>
   );

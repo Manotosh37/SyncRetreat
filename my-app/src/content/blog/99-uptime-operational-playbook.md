@@ -7,6 +7,10 @@ image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1470&au
 excerpt: "A public operational document covering every failure mode, our mitigation strategy, and our real-world uptime track record. Built so engineers can make an informed decision before booking."
 ---
 
+Most "remote work retreats" treat internet access as an afterthought. They buy a consumer-grade router, plug it into a single ISP, and cross their fingers. If a storm hits or a local transformer blows, you are offline for three days.
+
+When we set out to build **SyncRetreat**, we knew this approach was fundamentally broken. Our audience consists of funded founders, DevOps engineers, and senior developers who cannot afford to drop an SSH connection during a production deployment.
+
 This document is our operational playbook. We publish it openly because the engineers we host make their decision to join based on infrastructure, not marketing.
 
 **Claimed uptime: 99.9% network availability during retreat months (July–August).**

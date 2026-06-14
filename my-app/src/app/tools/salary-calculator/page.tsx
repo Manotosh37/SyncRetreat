@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Remote Salary Arbitrage Calculator — India vs. SF/London | SyncRetreat",
   description:
     "Calculate how far your software engineering salary goes in Ladakh and Goa vs. San Francisco, London, or New York. Free tool for remote workers planning to work from India.",
+  alternates: { canonical: "https://syncretreat.com/tools/salary-calculator" },
+  openGraph: {
+    title: "Remote Salary Arbitrage Calculator — India vs. Your City",
+    description:
+      "Keep your US or EU salary. Work from India. See exactly how much more you can save — free calculator for remote engineers.",
+    url: "https://syncretreat.com/tools/salary-calculator",
+  },
 };
 
 export default function SalaryCalculatorPage() {

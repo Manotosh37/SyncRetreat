@@ -7,6 +7,21 @@ import path from "path";
 export const metadata = {
   title: "Insights for International Technology Professionals | SyncRetreat Blog",
   description: "Read about our high-speed internet digital nomad retreats in Ladakh and tech-focused co-living spaces for software developers in India.",
+  keywords: [
+    "remote work blog india",
+    "digital nomad ladakh blog",
+    "remote work infrastructure articles",
+    "vpn ladakh",
+    "internet uptime remote work",
+    "work from india tips",
+  ],
+  alternates: { canonical: "https://syncretreat.com/blog" },
+  openGraph: {
+    title: "SyncRetreat Blog — Insights on Remote Work & Deep Focus",
+    description:
+      "Infrastructure deep-dives, visa guides, VPN benchmarks, and stories from our retreats in Ladakh and Goa. Written by engineers, for engineers.",
+    url: "https://syncretreat.com/blog",
+  },
 };
 
 export default function BlogPage() {
@@ -39,14 +54,14 @@ export default function BlogPage() {
   return (
     <div className="pt-40 pb-24 bg-[#FDFCF2] min-h-screen px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-20 text-center max-w-3xl mx-auto animate-slide-in">
+        <div className="mb-20 text-center max-w-5xl mx-auto animate-slide-in">
           <h2 className="text-sm font-bold text-emerald-600 uppercase tracking-[0.3em] mb-6">
             Insights & Stories
           </h2>
           <h1 className="text-5xl md:text-8xl font-black text-slate-900 mb-8 leading-[0.9] tracking-tight">
             SyncRetreat <span className="text-emerald-600">Blog.</span>
           </h1>
-          <p className="text-xl text-slate-600 font-medium leading-relaxed">
+          <p className="text-xl text-slate-600 font-medium leading-relaxed max-w-2xl mx-auto">
             Explorations into the intersection of remote work, deep focus, and
             the pursuit of a well-lived life.
           </p>

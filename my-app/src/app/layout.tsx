@@ -35,31 +35,20 @@ export const metadata: Metadata = {
   },
   description:
     "High-speed internet digital nomad retreats in Ladakh (Himalayas) and Goa. Enterprise-grade infrastructure, ergonomic co-working, and curated community for software developers and remote founders.",
-  keywords: [
-    "remote work India",
-    "digital nomad retreat Ladakh",
-    "co-living India developers",
-    "remote work Himalayas",
-    "tech retreat India",
-    "software engineer retreat",
-    "co-working Goa",
-    "high speed internet remote work",
-  ],
+  // keywords are set per-page — no global fallback to avoid identical tags site-wide
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://syncretreat.com",
     siteName: "SyncRetreat",
-    title:
-      "SyncRetreat — Enterprise Remote Work Infrastructure in Ladakh & Goa",
-    description:
-      "Tech-focused co-living retreats in India with 300 Mbps fiber, Herman Miller desks, and UPS-backed power. Built for engineers who ship.",
+    // title and url are intentionally omitted here.
+    // Every page exports its own openGraph.title and openGraph.url.
+    // These are the brand-level fallback fields only.
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "SyncRetreat co-working retreat in Ladakh",
+        alt: "SyncRetreat — remote work retreats in India",
       },
     ],
   },

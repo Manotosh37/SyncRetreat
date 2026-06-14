@@ -4,6 +4,31 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: "High-Speed Internet Digital Nomad Retreats in Ladakh | SyncRetreat",
   description: "Join our 28-day high-speed internet digital nomad retreats in Ladakh. A tech-focused co-living space designed exclusively for software developers and remote professionals in the Himalayas.",
+  keywords: [
+    "digital nomad retreat ladakh",
+    "remote work ladakh 2026",
+    "co-living leh ladakh",
+    "high speed internet ladakh",
+    "software engineer retreat himalayas",
+    "ladakh remote work august 2026",
+    "tech retreat leh india",
+    "work from ladakh",
+  ],
+  alternates: { canonical: "https://syncretreat.com/locations/ladakh" },
+  openGraph: {
+    title: "SyncRetreat Ladakh — 28-Day Deep Work Sprint in the Himalayas",
+    description:
+      "Dual-WAN 300 Mbps fiber at 11,500 ft. Private villa, chef meals, and curated Himalayan weekends. August 2026 cohort now open. From $1,499.",
+    url: "https://syncretreat.com/locations/ladakh",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1600242466690-c1c04f081762?q=80&w=1470&auto=format&fit=crop",
+        width: 1470,
+        height: 980,
+        alt: "SyncRetreat co-working retreat in Leh, Ladakh",
+      },
+    ],
+  },
 };
 
 const ladakhConfig: DestinationConfig = {
@@ -15,8 +40,8 @@ const ladakhConfig: DestinationConfig = {
     subtitle: "High Altitude Retreat",
     title: "LADAKH.",
     locationText: "Leh, India",
-    dateRangeText: "6 Jul – 27 Jul & 3 Aug – 31 Aug, 2026",
-    sprintText: "21-Day and 28-Day Infrastructure Sprints.",
+    dateRangeText: "3 Aug – 31 Aug, 2026",
+    sprintText: "28-Day Infrastructure Sprint.",
   },
   about: {
     heading: "Discover the Most Beautiful Region in the Himalayas",
@@ -101,8 +126,7 @@ const ladakhConfig: DestinationConfig = {
       day2: "106-foot Maitreya Buddha at Diskit. Back by 3 PM.",
     },
     {
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7IXjTKCvo8hReTEv1x5PrLXbQMsM5ZCfFZA&s",
+      image: "/images/ladakh-himalayas-view.png",
       title: "Weekend 4:",
       day1: "5 AM to Pangong Lake via Chang La Pass—10 hour extreme strike.",
       day2: "Sleep in. Farewell BBQ on villa terrace, pack & decompress.",
@@ -118,23 +142,14 @@ const ladakhConfig: DestinationConfig = {
   },
   trips: [
     {
-      fromDate: "JULY 06",
-      toDate: "JULY 27",
-      tripNumber: "01",
-      status: "AVAILABLE",
-      batchId: 1,
-      price: 1199,
-      originalPrice: 1499,
-      spotsLeft: 4,
-    },
-    {
       fromDate: "AUGUST 03",
       toDate: "AUGUST 31",
-      tripNumber: "02",
+      tripNumber: "01",
       status: "AVAILABLE",
       batchId: 2,
       price: 1499,
       originalPrice: 1799,
+      spotsLeft: 4,
     },
   ],
   documents: [
@@ -149,36 +164,73 @@ const ladakhConfig: DestinationConfig = {
     },
   ],
   formDestinationOptions: [
-    "Ladakh - July 06 to July 27",
     "Ladakh - August 03 to August 31",
   ],
 };
 
 import Schema from "../../../components/Schema";
+import { makeEventSchema, makeBreadcrumbSchema } from "../../../lib/schemas";
+
+const LADAKH_URL = "https://syncretreat.com/locations/ladakh";
+
+const ladakhGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    // ── LodgingBusiness (enhanced) ──────────────────────────────────────────
+    {
+      "@type": ["LodgingBusiness", "LocalBusiness"],
+      "@id": "https://syncretreat.com/#business-ladakh",
+      name: "SyncRetreat Ladakh",
+      description:
+        "28-day tech-focused co-living retreat in Leh, Ladakh with enterprise-grade dual-WAN fiber internet, ergonomic workstations, UPS-backed power, and chef-prepared meals for software developers and remote founders.",
+      url: LADAKH_URL,
+      image: ladakhConfig.hero.image,
+      priceRange: "$$$",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Leh",
+        addressRegion: "Ladakh",
+        addressCountry: "IN",
+      },
+      geo: { "@type": "GeoCoordinates", latitude: 34.1642, longitude: 77.5849 },
+      amenityFeature: [
+        { "@type": "LocationFeatureSpecification", name: "Co-working Space", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Dual-WAN Fiber 300 Mbps", value: true },
+        { "@type": "LocationFeatureSpecification", name: "UPS Power Backup", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Private Ensuite Room", value: true },
+        { "@type": "LocationFeatureSpecification", name: "Chef-Prepared Meals", value: true },
+      ],
+      parentOrganization: { "@id": "https://syncretreat.com/#organization" },
+    },
+
+    // ── Event: August 2026 Sprint ───────────────────────────────────────────
+    makeEventSchema({
+      inGraph: true,
+      name: "SyncRetreat Ladakh — August 2026 Sprint (28 Days)",
+      description:
+        "28-day deep work infrastructure sprint in Leh, Ladakh. Enterprise-grade Dual-WAN internet, ergonomic workstations, private accommodation, chef-prepared meals, and curated weekend Himalayan expeditions for software engineers and remote founders.",
+      startDate: "2026-08-03",
+      endDate: "2026-08-31",
+      locationName: "SyncRetreat Ladakh Villa",
+      locationLocality: "Leh",
+      locationRegion: "Ladakh",
+      url: LADAKH_URL,
+      price: 1499,
+      availability: "InStock",
+    }),
+
+    // ── BreadcrumbList ──────────────────────────────────────────────────────
+    makeBreadcrumbSchema([
+      { name: "Home", url: "https://syncretreat.com" },
+      { name: "Ladakh Retreat", url: LADAKH_URL },
+    ]),
+  ],
+};
 
 export default function Ladakh() {
   return (
     <>
-      <Schema
-        schema={{
-          "@context": "https://schema.org",
-          "@type": "LodgingBusiness",
-          "name": "SyncRetreat Ladakh",
-          "description": "High-speed internet digital nomad retreats in Ladakh with enterprise-grade dual-WAN network.",
-          "image": ladakhConfig.hero.image,
-          "priceRange": "$$$",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Leh",
-            "addressRegion": "Ladakh",
-            "addressCountry": "IN"
-          },
-          "amenityFeature": [
-            { "@type": "LocationFeatureSpecification", "name": "Co-working Space", "value": "True" },
-            { "@type": "LocationFeatureSpecification", "name": "Dual-WAN Fiber 300Mbps", "value": "True" }
-          ]
-        }}
-      />
+      <Schema schema={ladakhGraph} />
       <DestinationTemplate config={ladakhConfig} />
     </>
   );

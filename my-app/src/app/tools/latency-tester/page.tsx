@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Himalayan Internet Latency Tester — Remote Work Diagnostics | SyncRetreat",
   description:
     "Test your current connection latency to global endpoints and compare it with SyncRetreat's dual-WAN fiber nodes in Ladakh (Leh) and Goa. Built for remote software developers.",
+  alternates: { canonical: "https://syncretreat.com/tools/latency-tester" },
+  openGraph: {
+    title: "Himalayan Internet Latency Tester — Free Remote Work Diagnostic",
+    description:
+      "See how your current connection compares to SyncRetreat's Ladakh fiber node. 42ms to AWS Mumbai. Free browser tool.",
+    url: "https://syncretreat.com/tools/latency-tester",
+  },
 };
 
 export default function LatencyTesterPage() {

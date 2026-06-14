@@ -5,6 +5,13 @@ import Schema from "../../../components/Schema";
 export const metadata: Metadata = {
   title: "India Digital Nomad Visa Eligibility Checker | SyncRetreat",
   description: "Check your eligibility for working remotely in India. A free tool to calculate if you qualify for the India e-Tourist visa as a digital nomad or remote worker.",
+  alternates: { canonical: "https://syncretreat.com/tools/visa-checker" },
+  openGraph: {
+    title: "India Visa Eligibility Checker for Remote Workers — Free Tool",
+    description:
+      "India has no official digital nomad visa. Use our free checker to find exactly which e-Tourist visa you need and how long you can legally stay.",
+    url: "https://syncretreat.com/tools/visa-checker",
+  },
 };
 
 export default function VisaCheckerPage() {

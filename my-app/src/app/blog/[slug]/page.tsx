@@ -6,6 +6,8 @@ import { ArrowLeft, Calendar, User, Tag, Clock } from "lucide-react";
 import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
+import Schema from "../../../components/Schema";
+import { makeArticleSchema, makeBreadcrumbSchema } from "../../../lib/schemas";
 
 export async function generateStaticParams() {
   const blogDir = path.join(process.cwd(), "src/content/blog");
@@ -29,10 +31,50 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const text = fs.readFileSync(filePath, "utf8");
   const { data } = matter(text);
 
+  const fallbackKeywords: Record<string, string[]> = {
+    Infrastructure: ["remote work infrastructure india", "dual wan ladakh", "internet uptime remote retreat"],
+    "Future of Work": ["future of remote work", "remote work trends 2026", "digital nomad lifestyle"],
+    Announcement: ["syncretreat 2026", "remote work retreat announcement", "ladakh retreat dates"],
+    Lifestyle: ["remote work lifestyle india", "digital nomad india", "deep work retreat"],
+    Community: ["remote work community india", "co-living engineers india", "networking founders retreat"],
+  };
+  const keywords: string[] =
+    Array.isArray(data.tags) && data.tags.length > 0
+      ? data.tags
+      : fallbackKeywords[data.category as string] ?? ["remote work retreat india", "digital nomad ladakh"];
+
   return {
     title: `${data.title || 'Insights'} | SyncRetreat Tech Co-living`,
     description: data.excerpt || "Insights from our high-speed internet digital nomad retreats in the Himalayas and India.",
+    keywords,
+    alternates: { canonical: `https://syncretreat.com/blog/${slug}` },
+    openGraph: {
+      title: data.title || "SyncRetreat Blog",
+      description: data.excerpt || "Insights from our high-speed internet digital nomad retreats in the Himalayas and India.",
+      url: `https://syncretreat.com/blog/${slug}`,
+      type: "article",
+      ...(data.image
+        ? {
+            images: [
+              {
+                url: data.image.startsWith("http")
+                  ? data.image
+                  : `https://syncretreat.com${data.image}`,
+                width: 1200,
+                height: 630,
+                alt: data.title || "SyncRetreat Blog",
+              },
+            ],
+          }
+        : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: data.title || "SyncRetreat Blog",
+      description: data.excerpt || "Insights from our retreats in the Himalayas.",
+    },
   };
+
 }
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
@@ -59,6 +101,25 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   return (
     <article className="min-h-screen bg-[#FDFCF2] pt-32 pb-24 animate-slide-in">
+      {/* Article structured data */}
+      <Schema
+        schema={makeArticleSchema({
+          title: blog.title,
+          excerpt: data.excerpt || blog.title,
+          date: blog.date,
+          author: blog.author,
+          image: blog.image,
+          slug,
+        })}
+      />
+      {/* Breadcrumb: Home → Blog → Post Title */}
+      <Schema
+        schema={makeBreadcrumbSchema([
+          { name: "Home", url: "https://syncretreat.com" },
+          { name: "Blog", url: "https://syncretreat.com/blog" },
+          { name: blog.title, url: `https://syncretreat.com/blog/${slug}` },
+        ])}
+      />
       {/* Hero Section */}
       <div className="max-w-4xl mx-auto px-6">
         <div>
