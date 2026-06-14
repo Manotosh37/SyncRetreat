@@ -11,11 +11,15 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const router = useRouter();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg("");
+    setSuccessMsg("");
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -29,14 +33,15 @@ export default function Signup() {
     });
     setLoading(false);
     if (error) {
-      alert(error.message);
+      setErrorMsg(error.message);
     } else {
-      alert("Signup successful! Check your email to confirm your account.");
-      router.push("/login");
+      setSuccessMsg("Signup successful! Please check your email to confirm your account.");
+      // Optional: automatically redirect after a few seconds, or let them click the email link.
     }
   };
 
   const handleGoogleLogin = async () => {
+    setErrorMsg("");
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -44,7 +49,7 @@ export default function Signup() {
       },
     });
     if (error) {
-      alert(error.message);
+      setErrorMsg(error.message);
     }
   };
 
@@ -66,6 +71,18 @@ export default function Signup() {
           <p className="text-slate-600 mb-8 font-medium">
             Join us and explore the benefits!
           </p>
+
+          {errorMsg && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm font-medium">
+              {errorMsg}
+            </div>
+          )}
+          
+          {successMsg && (
+            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-lg text-sm font-medium">
+              {successMsg}
+            </div>
+          )}
 
           <form onSubmit={handleSignup} className="space-y-5">
             <div className="grid grid-cols-2 gap-4">

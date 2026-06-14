@@ -21,9 +21,11 @@ const listings = [
     originalPrice: 1799,
     currency: "$",
     route: "/locations/ladakh",
-    cta: "See the dates",
+    cta: "Apply Now",
     duration: "/28 days",
     accent: "rgba(3, 105, 161, 0.55)", // sky-700
+    spotsLeft: 4,
+    deadline: "14 days",
   },
   {
     title: "Goa",
@@ -73,8 +75,8 @@ export default function DestinationCards() {
   };
 
   return (
-    <section className="relative z-10 -mt-16 overflow-hidden bg-[#fefbf7] rounded-t-[48px] shadow-[0_-20px_40px_-10px_rgba(0,0,0,0.5)] px-2 md:px-6 pt-16 md:pt-24 pb-16 md:pb-28 text-slate-900">
-      <div className="max-w-screen-2xl w-full px- lg:px-2 mx-auto">
+    <section className="relative z-10 bg-[#fefbf7] border-t border-slate-200 px-2 md:px-6 py-16 md:py-24 text-slate-900">
+      <div className="max-w-screen-2xl w-full px-4 lg:px-2 mx-auto">
         <h2 className="text-3xl sm:text-5xl font-bold text-slate-900 mb-4 text-center tracking-tight">
           Upcoming. <span className="text-emerald-700">Retreat Calendar</span>
         </h2>
@@ -138,6 +140,28 @@ export default function DestinationCards() {
                       </span>
                     ))}
                   </div>
+
+                  {/* Scarcity & Urgency Indicators in Default State */}
+                  {(item as any).spotsLeft || (item as any).deadline ? (
+                    <div className="flex flex-col gap-2 mt-4 bg-white/90 backdrop-blur-md p-3 rounded-xl border border-white/50 shadow-lg">
+                      {(item as any).spotsLeft && (
+                        <div className="flex items-center gap-2">
+                          <div className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
+                          <span className="text-[13px] font-black text-red-700 uppercase tracking-wide">
+                            Only {(item as any).spotsLeft} spots remaining
+                          </span>
+                        </div>
+                      )}
+                      {(item as any).deadline && (
+                        <div className="flex items-center gap-2">
+                          <div className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
+                          <span className="text-[13px] font-black text-orange-700 uppercase tracking-wide">
+                            Applications close in {(item as any).deadline}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  ) : null}
                 </div>
 
                 {/* Hover state */}
@@ -215,6 +239,30 @@ export default function DestinationCards() {
               </div>
             );
           })}
+        </div>
+
+        {/* Application Timeline */}
+        <div className="mt-16 max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
+          <h3 className="text-center text-xl font-bold text-slate-900 mb-8">How to Join</h3>
+          <div className="flex flex-col md:flex-row gap-6 md:gap-4 justify-between items-start md:items-center relative">
+            <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 -z-10 -translate-y-1/2" />
+            
+            {[
+              { step: "1", title: "Apply", desc: "Submit a 2-minute application" },
+              { step: "2", title: "Vibe Check", desc: "Quick 10-min call with founders" },
+              { step: "3", title: "Pack Bags", desc: "Secure your spot & travel" }
+            ].map((s, i) => (
+              <div key={i} className="flex flex-row md:flex-col items-center gap-4 md:gap-3 bg-white px-2">
+                <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 font-black flex items-center justify-center border-4 border-white shadow-sm shrink-0">
+                  {s.step}
+                </div>
+                <div className="md:text-center">
+                  <h4 className="font-bold text-slate-900">{s.title}</h4>
+                  <p className="text-sm font-medium text-slate-500">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

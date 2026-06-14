@@ -125,6 +125,7 @@ const ladakhConfig: DestinationConfig = {
       batchId: 1,
       price: 1199,
       originalPrice: 1499,
+      spotsLeft: 4,
     },
     {
       fromDate: "AUGUST 03",

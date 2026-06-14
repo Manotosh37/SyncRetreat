@@ -10,12 +10,17 @@ import {
   Youtube,
   Loader2,
   CheckCircle2,
+  LogOut
 } from "lucide-react";
+import ProtectedRoute from "../../components/ProtectedRoute";
+import { useRouter } from "next/navigation";
 
 export default function Account() {
   const { user, isLoading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   // Form state
   const [formData, setFormData] = useState({
@@ -72,7 +77,8 @@ export default function Account() {
       }
 
       // Automated Welcome Email
-      if (!meta.welcome_sent) {
+      if (!meta.welcome_sent && !sessionStorage.getItem('welcome_sending')) {
+        sessionStorage.setItem('welcome_sending', 'true'); // Prevent double fire in strict mode
         sendEmail({
           to: user.email!,
           name: initialData.firstName || "SyncRetreat Member",
@@ -82,11 +88,18 @@ export default function Account() {
             supabase.auth.updateUser({
               data: { welcome_sent: true },
             });
+          } else {
+            sessionStorage.removeItem('welcome_sending');
           }
         });
       }
     }
   }, [user]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push("/");
+  };
 
 
   const handleChange = (
@@ -119,8 +132,8 @@ export default function Account() {
 
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
-    } catch (error: any) {
-      alert(error.message);
+    } catch (err: any) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -134,24 +147,9 @@ export default function Account() {
     );
   }
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#fefbf7] px-6">
-        <h2 className="text-2xl font-serif text-slate-900 mb-4">
-          Please sign in to view your account
-        </h2>
-        <a
-          href="/login"
-          className="bg-emerald-600 text-white px-8 py-3 rounded-full font-bold hover:bg-emerald-500 transition-all"
-        >
-          Sign In
-        </a>
-      </div>
-    );
-  }
-
   return (
-    <div className="bg-[#fefbf7] min-h-screen pt-32 pb-24 px-6">
+    <ProtectedRoute>
+      <div className="bg-[#fefbf7] min-h-screen pt-32 pb-24 px-6">
       <div className="max-w-3xl mx-auto">
         <div className="bg-white rounded-4xl shadow-xl shadow-slate-200/50 border border-slate-200/60 overflow-hidden">
           <div className="p-8 md:p-12">
@@ -166,6 +164,12 @@ export default function Account() {
                 </div>
               )}
             </div>
+
+            {error && (
+              <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm font-medium">
+                {error}
+              </div>
+            )}
 
             <form onSubmit={handleSave} className="space-y-12">
 
@@ -303,11 +307,19 @@ export default function Account() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex justify-end pt-8">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-8 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={handleSignOut}
+                  className="text-slate-500 hover:text-red-600 font-bold flex items-center gap-2 px-4 py-2 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-slate-900 text-white px-10 py-4 rounded-full font-bold hover:bg-slate-800 transition-all flex items-center gap-2 shadow-lg shadow-slate-900/10 disabled:bg-slate-400"
+                  className="w-full sm:w-auto bg-slate-900 text-white px-10 py-4 rounded-full font-bold hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-lg shadow-slate-900/10 disabled:bg-slate-400"
                 >
                   {loading && <Loader2 className="w-5 h-5 animate-spin" />}
                   {loading ? "Saving Changes..." : "Save Changes"}
@@ -318,5 +330,6 @@ export default function Account() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

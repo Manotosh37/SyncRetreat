@@ -83,7 +83,7 @@ export default function FeaturesSection() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section className="relative overflow-hidden bg-[#fefbf7] py-14 md:py-28 text-slate-900">
+    <section className="relative overflow-hidden bg-[#fefbf7] py-14 md:py-28 text-slate-900 border-t border-slate-200">
       {/* Background */}
       <div
         className="absolute inset-0 opacity-40 pointer-events-none"

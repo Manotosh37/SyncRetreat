@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import FounderIntro from "../../components/FounderIntro";
 
 export const metadata: Metadata = {
   title: "Tech-Focused Co-Living for Remote Professionals | SyncRetreat About",
@@ -70,6 +71,7 @@ export default function About() {
           </section>
         </div>
       </div>
+      <FounderIntro />
     </>
   );
 }

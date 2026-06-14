@@ -201,7 +201,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <head>
         {/* Preconnect to critical third-party origins */}
         <link rel="preconnect" href="https://images.unsplash.com" />

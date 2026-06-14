@@ -63,6 +63,8 @@ export interface DestinationConfig {
     batchId: number;
     price?: number;
     originalPrice?: number;
+    spotsLeft?: number;
+    deadline?: string;
   }[];
 
   documents: {
@@ -328,6 +330,47 @@ export default function DestinationTemplate({
               <p className="text-slate-500 font-medium text-sm mb-6">
                 Deposit Only
               </p>
+
+              <h4 className="font-bold text-slate-900 uppercase tracking-wide mb-4">
+                Choose Your Date
+              </h4>
+              <div className="flex flex-col gap-3 mb-6">
+                {config.trips.map((trip, i) => (
+                  <div
+                    key={i}
+                    className={`cursor-pointer transition-all p-3 rounded-xl border-2 ${
+                      selectedBatch === trip.batchId
+                        ? "border-emerald-500 bg-emerald-50"
+                        : "border-slate-200 hover:border-emerald-300 bg-white"
+                    }`}
+                    onClick={() => setSelectedBatch(trip.batchId)}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="text-sm font-bold text-slate-900">
+                          {trip.fromDate} - {trip.toDate}
+                        </p>
+                        {trip.spotsLeft ? (
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
+                            <p className="text-[10px] font-black uppercase text-red-600 tracking-wide">
+                              ONLY {trip.spotsLeft} SPOTS LEFT
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="text-[10px] font-bold uppercase text-emerald-600 mt-0.5">
+                            {trip.status}
+                          </p>
+                        )}
+                      </div>
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedBatch === trip.batchId ? 'border-emerald-500' : 'border-slate-300'}`}>
+                        {selectedBatch === trip.batchId && <div className="w-2 h-2 bg-emerald-500 rounded-full" />}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               <h4 className="font-bold text-slate-900 uppercase tracking-wide mb-4">
                 Included
               </h4>
@@ -431,77 +474,25 @@ export default function DestinationTemplate({
       </Section>
 
       <Section>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-slate-900 mb-10">
-              Choose Your Date
-            </h3>
-            <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-8">
-              <div className="grid grid-cols-2 gap-8 mb-8">
-                {config.trips.map((trip, i) => (
-                  <div
-                    key={i}
-                    className={`cursor-pointer transition-all p-4 rounded-xl border-2 ${
-                      selectedBatch === trip.batchId
-                        ? "border-emerald-500 bg-emerald-50"
-                        : "border-transparent hover:bg-slate-50"
-                    }`}
-                    onClick={() => setSelectedBatch(trip.batchId)}
-                  >
-                    <div className="flex gap-4 mb-4">
-                      <div>
-                        <p className="text-xs text-slate-500 font-bold uppercase">
-                          From
-                        </p>
-                        <p className="text-lg font-bold text-slate-900">
-                          {trip.fromDate}
-                        </p>
-                      </div>
-                      <div className="border-l border-slate-200 pl-4">
-                        <p className="text-xs text-slate-500 font-bold uppercase">
-                          To
-                        </p>
-                        <p className="text-lg font-bold text-slate-900">
-                          {trip.toDate}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <p className="text-4xl font-bold text-slate-900">
-                        {trip.tripNumber}
-                      </p>
-                      <span className="px-3 py-2 rounded-md text-xs font-bold uppercase bg-emerald-50 text-emerald-600 border border-emerald-100">
-                        {trip.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <button onClick={openForm} className={BTN_CLASS}>
-                Book Now
-              </button>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-slate-900 mb-10">
-              Important Documents
-            </h3>
-            <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-8 space-y-4">
-              {config.documents.map((doc, i) => (
-                <a
-                  key={i}
-                  href={`/documents/${doc.file}`}
-                  download
-                  className="flex items-center justify-between w-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold py-4 px-6 rounded-xl transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <FileText className="w-5 h-5 text-emerald-600" />
-                    <span className="text-sm">{doc.name}</span>
-                  </div>
-                  <Download className="w-5 h-5 text-slate-400" />
-                </a>
-              ))}
-            </div>
+        <div className="max-w-3xl mx-auto">
+          <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-slate-900 mb-10 text-center">
+            Important Documents
+          </h3>
+          <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-8 space-y-4">
+            {config.documents.map((doc, i) => (
+              <a
+                key={i}
+                href={`/documents/${doc.file}`}
+                download
+                className="flex items-center justify-between w-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold py-4 px-6 rounded-xl transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-emerald-600 shrink-0" />
+                  <span className="text-sm">{doc.name}</span>
+                </div>
+                <Download className="w-5 h-5 text-slate-400 shrink-0" />
+              </a>
+            ))}
           </div>
         </div>
       </Section>

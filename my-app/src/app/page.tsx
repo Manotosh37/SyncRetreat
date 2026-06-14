@@ -1,8 +1,8 @@
 import Hero from "../components/Hero";
-import Infra from "../components/Infra";
 import Form from "../components/Calendar";
-import Why from "../components/Why";
-import CommunitySection from "../components/CommunitySection";
+import Infra from "../components/Infra";
+import DayInTheLife from "../components/DayInTheLife";
+import FounderIntro from "../components/FounderIntro";
 import FaqSection from "../components/FaqSection";
 import { Metadata } from "next";
 
@@ -17,12 +17,12 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <FounderIntro />
       <div id="application-form">
         <Form />
       </div>
-      <Why />
-      <CommunitySection />
       <Infra />
+      <DayInTheLife />
       <FaqSection />
     </>
   );

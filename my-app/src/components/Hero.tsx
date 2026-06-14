@@ -128,7 +128,7 @@ export default function Hero() {
                   onClick={scrollToForm}
                 >
                   <span className="text-base lg:text-xl tracking-wide">
-                    GET STARTED
+                    APPLY FOR YOUR SPOT
                   </span>
                   <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
                 </motion.button>

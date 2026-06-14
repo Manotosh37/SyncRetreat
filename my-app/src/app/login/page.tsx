@@ -9,24 +9,27 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg("");
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     setLoading(false);
     if (error) {
-      alert(error.message);
+      setErrorMsg(error.message);
     } else {
       router.push("/account");
     }
   };
 
   const handleGoogleLogin = async () => {
+    setErrorMsg("");
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -34,7 +37,7 @@ export default function Login() {
       },
     });
     if (error) {
-      alert(error.message);
+      setErrorMsg(error.message);
     }
   };
 
@@ -53,6 +56,12 @@ export default function Login() {
           <h1 className="text-4xl font-serif text-slate-900 mb-8">
             Login to your account
           </h1>
+
+          {errorMsg && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm font-medium">
+              {errorMsg}
+            </div>
+          )}
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
@@ -82,12 +91,12 @@ export default function Login() {
                 required
               />
               <div className="mt-2 text-right">
-                <a
-                  href="#"
+                <Link
+                  href="/reset-password"
                   className="text-sm text-slate-500 hover:text-emerald-600"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
             </div>
 
