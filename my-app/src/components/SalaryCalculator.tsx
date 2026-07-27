@@ -23,9 +23,9 @@ const INDIA_LOCATIONS = [
     highlight: true,
   },
   {
-    name: "Goa, India",
+    name: "Varkala, Kerala, India",
     costIndex: 0.12,
-    desc: "Coastal living, vibrant community",
+    desc: "Coastal living, serene clifftop community",
     tag: "SyncRetreat Location",
     highlight: true,
   },

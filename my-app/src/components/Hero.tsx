@@ -114,7 +114,7 @@ export default function Hero() {
               {/* Requested Text */}
               <p className="text-base lg:text-2xl text-slate-200 leading-relaxed font-medium">
                 We build high-speed internet digital nomad retreats in Ladakh
-                and Goa. Join our exclusive co-living spaces designed strictly
+                and Varkala. Join our exclusive co-living spaces designed strictly
                 for software developers, remote professionals, and remote
                 founders who want to ship products while exploring the world.
               </p>

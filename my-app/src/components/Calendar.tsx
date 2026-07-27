@@ -6,6 +6,25 @@ import Image from "next/image";
 
 const listings = [
   {
+    title: "Varkala",
+    description:
+      "A cliff-top retreat on the Arabian Sea in Kerala. Private compound, pristine beaches, high-speed fiber, and curated deep-work sprints in coastal tranquility.",
+    image: "/varkalaCalpic.png",
+    tags: [
+      "Cliff-Top Villa",
+      "Arabian Sea",
+      "Kerala Coast",
+      "Beach Access",
+      "India",
+    ],
+    price: 1799,
+    currency: "$",
+    route: "/locations/varkala",
+    cta: "Oct 10th, 2025",
+    duration: "/28 days",
+    accent: "rgba(4, 120, 87, 0.55)", // emerald-700
+  },
+  {
     title: "Ladakh",
     description:
       "15°C mountain air, zero urban noise, and absolute isolation. Engineered strictly for uninterrupted product shipping with enterprise-grade Dual-WAN infrastructure.",
@@ -23,28 +42,7 @@ const listings = [
     route: "/locations/ladakh",
     cta: "Apply Now",
     duration: "/28 days",
-    accent: "rgba(3, 105, 161, 0.55)", // sky-700
-    spotsLeft: 4,
-    deadline: "14 days",
-  },
-  {
-    title: "Goa",
-    description:
-      "A fully managed, private compound designed to insulate you from the coastal distractions. High-speed fiber, silent deep-work zones, and elite peer proximity.",
-    image: "/goaImg.png",
-    tags: [
-      "Private Compound",
-      "Coastal Isolation",
-      "Focus Sprints",
-      "Beach Life",
-      "India",
-    ],
-    price: 1799,
-    currency: "$",
-    route: "/locations/goa",
-    cta: "Upcoming…",
-    duration: "",
-    accent: "rgba(4, 120, 87, 0.55)", // emerald-700
+    accent: "rgba(3, 105, 161, 0.55)", // sky-700 
   },
   {
     title: "Coming Soon…",

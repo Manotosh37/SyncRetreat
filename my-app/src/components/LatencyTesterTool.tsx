@@ -15,7 +15,7 @@ interface LatencyResult {
   url: string;
   current: number | null;
   ladakh: number;
-  goa: number;
+  varkala: number;
   status: "idle" | "testing" | "success" | "error";
 }
 
@@ -27,7 +27,7 @@ export default function LatencyTesterTool() {
       url: "https://cloudflare.com/cdn-cgi/trace",
       current: null,
       ladakh: 18,
-      goa: 12,
+      varkala: 12,
       status: "idle",
     },
     {
@@ -35,7 +35,7 @@ export default function LatencyTesterTool() {
       url: "https://dynamodb.ap-south-1.amazonaws.com",
       current: null,
       ladakh: 42,
-      goa: 28,
+      varkala: 28,
       status: "idle",
     },
     {
@@ -43,7 +43,7 @@ export default function LatencyTesterTool() {
       url: "https://dynamodb.us-east-1.amazonaws.com",
       current: null,
       ladakh: 210,
-      goa: 200,
+      varkala: 200,
       status: "idle",
     },
     {
@@ -51,7 +51,7 @@ export default function LatencyTesterTool() {
       url: "https://github.com",
       current: null,
       ladakh: 55,
-      goa: 40,
+      varkala: 40,
       status: "idle",
     },
   ]);
@@ -159,7 +159,7 @@ export default function LatencyTesterTool() {
               Ladakh Node
             </div>
             <div className="col-span-2 text-center text-slate-300">
-              Goa Node
+              Varkala Node
             </div>
           </div>
 
@@ -175,7 +175,7 @@ export default function LatencyTesterTool() {
                       : "Click Run";
 
               const isLadakhBetter = r.current !== null && r.ladakh < r.current;
-              const isGoaBetter = r.current !== null && r.goa < r.current;
+              const isVarkalaBetter = r.current !== null && r.varkala < r.current;
 
               return (
                 <div
@@ -217,12 +217,12 @@ export default function LatencyTesterTool() {
                   <div className="col-span-2 text-center">
                     <span
                       className={`text-sm font-bold block ${
-                        isGoaBetter ? "text-emerald-500" : "text-slate-400"
+                        isVarkalaBetter ? "text-emerald-500" : "text-slate-400"
                       }`}
                     >
-                      {r.goa} ms
+                      {r.varkala} ms
                     </span>
-                    {isGoaBetter && (
+                    {isVarkalaBetter && (
                       <span className="text-[9px] font-black text-emerald-500/80 uppercase block">
                         Faster
                       </span>
@@ -283,7 +283,7 @@ export default function LatencyTesterTool() {
             Stop trading performance for location.
           </h3>
           <p className="text-slate-300 font-medium">
-            Fully managed tech-focused workspaces in Goa & the Himalayas.
+            Fully managed tech-focused workspaces in Varkala & the Himalayas.
           </p>
         </div>
         <Link

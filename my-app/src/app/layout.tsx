@@ -184,6 +184,8 @@ const ORGANIZATION_SCHEMA = {
   ],
 };
 
+import LayoutContent from "../components/LayoutContent";
+
 export default function RootLayout({
   children,
 }: {
@@ -204,11 +206,7 @@ export default function RootLayout({
       </head>
       <body>
         <AuthProvider>
-          <div className="min-h-screen bg-[#fefbf7]">
-            <Navbar />
-            {children}
-            <Footer />
-          </div>
+          <LayoutContent>{children}</LayoutContent>
         </AuthProvider>
       </body>
     </html>

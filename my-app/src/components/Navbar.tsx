@@ -122,17 +122,17 @@ export default function Navbar() {
                         </span>
                       </Link>
                       <Link
-                        href="/locations/goa"
+                        href="/locations/varkala"
                         className="relative h-40 rounded-xl overflow-hidden group shadow-sm border border-slate-100"
                       >
                         <img
                           src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auhref=format&fit=crop&w=400&q=80"
-                          alt="Goa"
+                          alt="Varkala"
                           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
                         <span className="absolute inset-0 flex items-center justify-center text-white font-black text-3xl tracking-widest uppercase drop-shadow-lg">
-                          Goa
+                          Varkala
                         </span>
                       </Link>
                     </div>
@@ -311,11 +311,11 @@ export default function Navbar() {
               Ladakh
             </Link>
             <Link
-              href="/locations/goa"
+              href="/locations/varkala"
               onClick={() => setIsOpen(false)}
               className="pl-4 hover:text-emerald-400 transition-colors"
             >
-              Goa
+              Varkala
             </Link>
             <div className="border-t border-white/10 pt-4 mt-2"></div>
             {/* <Link

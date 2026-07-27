@@ -50,7 +50,7 @@ export default function DayInTheLife() {
             The Routine
           </h2>
           <h2 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">
-            A Day in the Life
+            Your Day @ SyncRetreat
           </h2>
           <p className="text-slate-600 font-medium text-lg max-w-2xl mx-auto">
             We handle the logistics so you can focus on building, networking, and experiencing the world.

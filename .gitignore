@@ -1,8 +1,0 @@
-node_modules/
-my-app/.next/
-my-app/dist/
-my-app/out/
-.env
-.env.*
-*.log
-.DS_Store
