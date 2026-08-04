@@ -240,7 +240,9 @@ export default function Navbar() {
                           <div className="border-t border-slate-100 my-1"></div>
                           <button
                             onClick={async () => {
-                              await supabase.auth.signOut();
+                              if (supabase) {
+                                await supabase.auth.signOut();
+                              }
                               setAccountMenuOpen(false);
                               router.push("/");
                             }}

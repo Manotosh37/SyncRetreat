@@ -128,6 +128,8 @@ export default function DestinationTemplate({
   };
 
   const handleEmailBlur = async () => {
+    if (!supabase) return;
+    
     if (formData.email && formData.email.includes("@")) {
       if (!draftId) {
         // Create a draft booking
@@ -168,6 +170,12 @@ export default function DestinationTemplate({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!supabase) {
+      alert("Database service is not available. Please try again later.");
+      return;
+    }
+    
     if (!formData.undertaking) {
       alert("Please accept the undertaking to continue.");
       return;

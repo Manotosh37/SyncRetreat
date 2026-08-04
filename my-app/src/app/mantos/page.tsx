@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabase";
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { sendEmail } from "../../lib/emailservice";
 import {
   Mail,
@@ -94,8 +95,14 @@ export default function Admin() {
   };
 
   const fetchBookings = async () => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+    
+    const db = supabase as SupabaseClient;
     try {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("bookings")
         .select("*")
         .order("created_at", { ascending: false });
@@ -110,12 +117,18 @@ export default function Admin() {
   };
 
   const fetchUsers = async () => {
+    if (!supabase) {
+      setUsersLoading(false);
+      return;
+    }
+    
+    const db = supabase as SupabaseClient;
     setUsersLoading(true);
     try {
       const {
         data: { users },
         error,
-      } = await supabase.auth.admin.listUsers();
+      } = await db.auth.admin.listUsers();
       if (error) throw error;
       setUsers(users || []);
     } catch (error: any) {
@@ -208,9 +221,15 @@ export default function Admin() {
   };
 
   const handleApprove = async (booking: Booking) => {
+    if (!supabase) {
+      showToast("error", "Database not available");
+      return;
+    }
+    
+    const db = supabase as SupabaseClient;
     setActionState(booking.id, "approve");
     try {
-      const { error: updateError } = await supabase
+      const { error: updateError } = await db
         .from("bookings")
         .update({ status: "approved" })
         .eq("id", booking.id);
@@ -246,9 +265,15 @@ export default function Admin() {
   };
 
   const handleReject = async (booking: Booking) => {
+    if (!supabase) {
+      showToast("error", "Database not available");
+      return;
+    }
+    
+    const db = supabase as SupabaseClient;
     setActionState(booking.id, "reject");
     try {
-      const { error: updateError } = await supabase
+      const { error: updateError } = await db
         .from("bookings")
         .update({ status: "rejected" })
         .eq("id", booking.id);
@@ -280,9 +305,15 @@ export default function Admin() {
   };
 
   const handleMarkPaid = async (booking: Booking) => {
+    if (!supabase) {
+      showToast("error", "Database not available");
+      return;
+    }
+    
+    const db = supabase as SupabaseClient;
     setActionState(booking.id, "paid");
     try {
-      const { error: updateError } = await supabase
+      const { error: updateError } = await db
         .from("bookings")
         .update({ payment_status: "paid" })
         .eq("id", booking.id);
@@ -318,9 +349,15 @@ export default function Admin() {
   };
 
   const handleMarkUnpaid = async (booking: Booking) => {
+    if (!supabase) {
+      showToast("error", "Database not available");
+      return;
+    }
+    
+    const db = supabase as SupabaseClient;
     setActionState(booking.id, "unpaid");
     try {
-      const { error } = await supabase
+      const { error } = await db
         .from("bookings")
         .update({ payment_status: "unpaid" })
         .eq("id", booking.id);
@@ -340,9 +377,15 @@ export default function Admin() {
     if (!window.confirm("CRITICAL: Delete this application permanently?"))
       return;
 
+    if (!supabase) {
+      showToast("error", "Database not available");
+      return;
+    }
+
+    const db = supabase as SupabaseClient;
     setIsDeleting(id);
     try {
-      const { error } = await supabase.from("bookings").delete().eq("id", id);
+      const { error } = await db.from("bookings").delete().eq("id", id);
       if (error) throw error;
 
       showToast("success", "Application deleted successfully.");

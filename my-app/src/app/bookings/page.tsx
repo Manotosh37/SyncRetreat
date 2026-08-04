@@ -13,7 +13,7 @@ export default function Bookings() {
 
   useEffect(() => {
     async function fetchBookings() {
-      if (user) {
+      if (user && supabase) {
         try {
           const { data, error } = await supabase
             .from('bookings')

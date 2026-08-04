@@ -84,7 +84,7 @@ export default function Account() {
           name: initialData.firstName || "SyncRetreat Member",
           type: "welcome",
         }).then((res) => {
-          if (res.success) {
+          if (res.success && supabase) {
             supabase.auth.updateUser({
               data: { welcome_sent: true },
             });
@@ -97,7 +97,9 @@ export default function Account() {
   }, [user]);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
     router.push("/");
   };
 
@@ -111,6 +113,12 @@ export default function Account() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!supabase) {
+      setSuccess(false);
+      return;
+    }
+    
     setLoading(true);
     setSuccess(false);
 

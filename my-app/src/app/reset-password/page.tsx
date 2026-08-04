@@ -11,6 +11,12 @@ export default function ResetPassword() {
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!supabase) {
+      setErrorMsg("Authentication service is not available");
+      return;
+    }
+    
     setLoading(true);
     setErrorMsg("");
     setSuccessMsg("");

@@ -47,6 +47,13 @@ export default function Footer() {
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
+    
+    if (!supabase) {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 3000);
+      return;
+    }
+    
     setStatus("loading");
     try {
       const { error } = await supabase
