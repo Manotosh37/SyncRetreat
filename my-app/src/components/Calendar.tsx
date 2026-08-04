@@ -44,19 +44,7 @@ const listings = [
     duration: "/28 days",
     accent: "rgba(3, 105, 161, 0.55)", // sky-700 
   },
-  {
-    title: "Coming Soon…",
-    description:
-      "We are currently auditing and stress-testing new global locations. Only properties that pass our strict criteria for absolute isolation and network uptime will be deployed.",
-    image: "/cSImg.jpeg",
-    tags: ["Vetting in Progress", "Infrastructure Audit", "Next Chapter"],
-    price: "1599 – 1999",
-    currency: "$",
-    route: "#",
-    cta: "Coming Soon…",
-    duration: "",
-    accent: "rgba(126, 34, 206, 0.55)", // purple-700
-  },
+
 ];
 
 export default function DestinationCards() {
@@ -83,7 +71,7 @@ export default function DestinationCards() {
           engineering remotely with absolute focus.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {listings.map((item, i) => {
             const active = hovered === i;
             const isDisabled = item.route === "#";

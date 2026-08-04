@@ -22,8 +22,14 @@ export default function WaitlistPage() {
         body: JSON.stringify({ name, email }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Submission failed');
+        // Show specific error message from API
+        console.error('Submission error:', data.error);
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 3000);
+        return;
       }
 
       setStatus('success');
@@ -46,7 +52,7 @@ export default function WaitlistPage() {
         <span className="logo-text">SyncRetreat</span>
       </a>
 
-      {/* ── LEFT — STORY ── */}
+      {/* ── RIGHT — STORY ── */}
       <section className="story" aria-label="Our story">
         <div className="story-inner">
           <div className="eyebrow">
@@ -107,7 +113,7 @@ export default function WaitlistPage() {
               <div className="avatar avatar-1">M</div>
               <div className="avatar avatar-2">Z</div>
             </div>
-            <span className="founders-label">Manotosh & Zakee, Founders · age 21</span>
+            <span className="founders-label">Manotosh & Zakee, Founders</span>
           </div>
         </div>
 
@@ -129,7 +135,7 @@ export default function WaitlistPage() {
         </div>
       </section>
 
-      {/* ── RIGHT — FORM ── */}
+      {/* ── LEFT — FORM ── */}
       <section className="form-side" aria-label="Join the waitlist">
         <div className="form-inner">
           <div className="form-tag">Early access</div>
@@ -272,12 +278,13 @@ export default function WaitlistPage() {
         /* ── LEFT STORY ── */
         .story {
           position: relative;
-          width: 55%;
+          width: 45%;
           min-height: 100vh;
           background: #1C3A2A;
           overflow: hidden;
           display: flex;
           align-items: stretch;
+          order: 2;
         }
 
         .story-inner {
@@ -487,13 +494,14 @@ export default function WaitlistPage() {
 
         /* ── RIGHT FORM ── */
         .form-side {
-          width: 45%;
+          width: 55%;
           min-height: 100vh;
           background: #FAF7F2;
           display: flex;
           align-items: center;
           justify-content: center;
           padding: 64px 48px;
+          order: 1;
         }
 
         .form-inner {

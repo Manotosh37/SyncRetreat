@@ -1,3 +1,4 @@
+import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -21,42 +22,39 @@ export async function POST(request: Request) {
       );
     }
 
-    const SHEET_ID = '1tippFlpk8z703jjHDgYrE_XoWOVX89JFCGyEZ3RquHM';
-    const SHEET_NAME = 'Waitlist';
+    // Check if Supabase is configured
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    // Use Google Apps Script Web App or Sheet.best
-    // For now, we'll use a simple fetch to Google Sheets via a deployment URL
-    // You'll need to set up a Google Apps Script web app (instructions below)
-    
-    const SCRIPT_URL = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
-
-    if (!SCRIPT_URL) {
-      console.error('Google Script URL not configured');
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.error('Supabase credentials not configured');
       return NextResponse.json(
-        { error: 'Configuration error' },
+        { error: 'Database not configured. Please contact support.' },
         { status: 500 }
       );
     }
 
-    const timestamp = new Date().toISOString();
+    // Initialize Supabase client
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    const response = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        timestamp,
-      }),
-    });
+    // Insert into waitlist table
+    const { data, error } = await supabase
+      .from('waitlist')
+      .insert([{ name, email }])
+      .select();
 
-    if (!response.ok) {
-      throw new Error('Failed to submit to Google Sheets');
+    if (error) {
+      // Handle duplicate email error
+      if (error.code === '23505') {
+        return NextResponse.json(
+          { error: 'This email is already on the waitlist' },
+          { status: 409 }
+        );
+      }
+      throw error;
     }
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json({ success: true, data }, { status: 200 });
   } catch (error) {
     console.error('Waitlist submission error:', error);
     return NextResponse.json(

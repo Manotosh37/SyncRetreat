@@ -25,6 +25,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Skip if Supabase is not configured
+    if (!supabase) {
+      setIsLoading(false);
+      return;
+    }
+
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       if (error) {
         console.error("Error getting session:", error);
