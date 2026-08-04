@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import FounderIntro from "../../components/FounderIntro";
 import Schema from "../../components/Schema";
 import { makePersonSchema, makeBreadcrumbSchema } from "../../lib/schemas";
 
@@ -104,7 +103,6 @@ export default function About() {
           </section>
         </div>
       </div>
-      <FounderIntro />
     </>
   );
 }

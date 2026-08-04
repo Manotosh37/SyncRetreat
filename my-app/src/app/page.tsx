@@ -2,7 +2,6 @@ import Hero from "../components/Hero";
 import Form from "../components/Calendar";
 import Infra from "../components/Infra";
 import DayInTheLife from "../components/DayInTheLife";
-import FounderIntro from "../components/FounderIntro";
 import FaqSection from "../components/FaqSection";
 import Schema from "../components/Schema";
 import { makeFAQSchema } from "../lib/schemas";
@@ -61,7 +60,6 @@ export default function Home() {
     <>
       <Schema schema={makeFAQSchema(homepageFaqs)} />
       <Hero />
-      <FounderIntro />
       <div id="application-form">
         <Form />
       </div>
