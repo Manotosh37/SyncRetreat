@@ -65,7 +65,7 @@ export default function Account() {
         (googleFirstName && !meta.first_name) ||
         (googleAvatar && !meta.avatar_url);
 
-      if (shouldAutoSave) {
+      if (shouldAutoSave && supabase) {
         supabase.auth.updateUser({
           data: {
             first_name: initialData.firstName,
