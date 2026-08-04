@@ -92,7 +92,7 @@ export default function Hero() {
         </motion.div>
 
         {/* Right Pane: Video Background + New Content */}
-        <div className="relative w-full lg:w-7/12 min-h-[60vh] lg:min-h-screen flex flex-col justify-center overflow-hidden">
+        <div className="relative w-full lg:w-7/12 min-h-[60vh] lg:min-h-screen flex flex-col justify-center overflow-hidden bg-slate-900">
           {/* Background Video */}
           <video
             autoPlay
@@ -101,6 +101,10 @@ export default function Hero() {
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0 grayscale-20 brightness-[0.7]"
             src="/video1.mp4"
+            onError={(e) => {
+              console.error('Video failed to load');
+              e.currentTarget.style.display = 'none';
+            }}
           />
 
           {/* Right Pane Content */}
