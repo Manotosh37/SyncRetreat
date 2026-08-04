@@ -78,6 +78,15 @@ export default function Hero() {
                   Deep work & Explore cultures
                 </p>
               </div>
+              <a 
+                href="https://chat.whatsapp.com/K8OntEo4WTkAfX2iGA9Io9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 text-sm lg:text-base font-semibold text-emerald-700 hover:text-emerald-600 transition-colors group"
+              >
+                <span>Join our community</span>
+                <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
             </div>
           </motion.div>
         </motion.div>

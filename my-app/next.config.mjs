@@ -35,6 +35,8 @@ const nextConfig = {
       { protocol: 'https', hostname: 'encrypted-tbn0.gstatic.com' },
       { protocol: 'https', hostname: 'sandeepachetan.com' },
       { protocol: 'https', hostname: 'static2.tripoto.com' },
+      { protocol: 'https', hostname: 'images.exoticamp.com' },
+      { protocol: 'https', hostname: 'gos3.ibcdn.com' },
     ],
   },
 

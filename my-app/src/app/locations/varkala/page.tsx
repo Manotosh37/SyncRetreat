@@ -38,7 +38,7 @@ const varkalaConfig: DestinationConfig = {
   name: "Varkala",
   hero: {
     image:
-      "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1610817201767-793a9130ce07?q=80&w=1362&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     subtitle: "Coastal Focus Retreat",
     title: "VARKALA.",
     locationText: "Varkala, Kerala, India",
@@ -108,25 +108,25 @@ const varkalaConfig: DestinationConfig = {
   },
   places: [
     {
-      image: "/images/goa-beach.png",
+      image: "https://images.unsplash.com/photo-1704499684060-87426b560ed1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8TXVucm9lJTIwSXNsYW5kfGVufDB8fDB8fHww",
       title: "Weekend 1:",
       day1: "Varkala Cliff sunrise walk. Explore Janardhana Swamy Temple & ancient cliff pathways.",
       day2: "Black Beach exploration & sunset at Papanasam Beach with healing mineral springs.",
     },
     {
-      image: "/images/goa-villa-pool.png",
+      image: "https://media.istockphoto.com/id/1153257538/photo/jatayu-earth-center-india-hd-photo.webp?s=2048x2048&w=is&k=20&c=rdXDGi4fZAvxMTumBdZ5y0bD4MBUQRfb86Z-A4i07ho=",
       title: "Weekend 2:",
       day1: "Backwater kayaking through Kerala's serene waterways. Traditional Kerala lunch at a village homestay.",
       day2: "Anjengo Fort & lighthouse visit. Return by 4 PM for sunset yoga at the villa.",
     },
     {
-      image: "/images/ladakh-coworking-space.png",
+      image: "https://images.exoticamp.com/vendors/images/profile/28_20241105T133322558Z.jpg",
       title: "Weekend 3:",
       day1: "Early morning trek to Kappil Beach & backwater confluence — a hidden gem of Kerala.",
       day2: "Ayurvedic spa day & traditional Kerala massage. Fresh seafood feast by the cliff.",
     },
     {
-      image: "/images/routine-wellness-adventure.png",
+      image: "https://gos3.ibcdn.com/6118fd66-8733-4a0f-8249-2c1bdeebfde0.jpg",
       title: "Weekend 4:",
       day1: "Sunrise at Odayam Beach & dolphin-spotting boat ride along the Arabian Sea.",
       day2: "Sleep in. Farewell bonfire & BBQ on the villa terrace. Pack & decompress.",
@@ -135,9 +135,9 @@ const varkalaConfig: DestinationConfig = {
   homestays: {
     sectionTitle: "Our Home in Varkala",
     images: [
-      "https://a0.muscache.com/im/pictures/hosting/Hosting-1642846358182877619/original/d55cbed4-3970-48c3-87e9-d2ffc46d1576.jpeg?im_w=720",
-      "https://a0.muscache.com/im/pictures/hosting/Hosting-1642846358182877619/original/2964bf55-199e-4297-a149-6cbac0154bc6.jpeg?im_w=720",
-      "https://a0.muscache.com/im/pictures/hosting/Hosting-1642846358182877619/original/6431440e-0f99-4038-b0bf-5b83656e7671.jpeg?im_w=720",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-551094297923713506/original/d1d05a23-aacd-4fc6-8351-d22411919687.jpeg?im_w=720",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1312214754840539482/original/cf51db88-b25a-4fe3-8962-0b72fb328e72.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-1312214754840539482/original/01f9fe67-9128-4192-a7e2-dd3453af1b36.jpeg?im_w=720",
     ],
   },
   trips: [
