@@ -42,6 +42,14 @@ export default function Hero() {
 
   return (
     <section className="relative bg-[#FEFBF7] text-slate-900 font-sans overflow-hidden">
+      {/* Skip to main content link for keyboard navigation */}
+      <a 
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded"
+      >
+        Skip to main content
+      </a>
+
       {/* Split layout: Left for Brand, Right for Message */}
       <div className="flex flex-col lg:flex-row w-full">
         {/* Left Pane: Brand Identity */}
@@ -101,6 +109,8 @@ export default function Hero() {
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0 grayscale-20 brightness-[0.7]"
             src="/video1.mp4"
+            aria-label="SyncRetreat promotional video"
+            title="Remote work retreat experience"
             onError={(e) => {
               console.error('Video failed to load');
               e.currentTarget.style.display = 'none';
@@ -137,8 +147,14 @@ export default function Hero() {
                 <motion.button
                   whileHover={{ scale: 1.05, x: 10 }}
                   whileTap={{ scale: 0.95 }}
-                  className="group px-8 py-4 lg:px-12 lg:py-6 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-full flex items-center justify-center gap-3 transition-all duration-300 shadow-2xl shadow-green-500/20"
-                  onClick={scrollToForm}
+                  className="group px-8 py-4 lg:px-12 lg:py-6 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-full flex items-center justify-center gap-3 transition-all duration-300 shadow-2xl shadow-green-500/20 min-h-[44px] touch-manipulation focus:ring-4 focus:ring-emerald-500/50 focus:outline-none"
+                  onClick={() => {
+                    if ('vibrate' in navigator) {
+                      navigator.vibrate(10);
+                    }
+                    scrollToForm();
+                  }}
+                  aria-label="Apply for your spot at SyncRetreat"
                 >
                   <span className="text-base lg:text-xl tracking-wide">
                     APPLY FOR YOUR SPOT

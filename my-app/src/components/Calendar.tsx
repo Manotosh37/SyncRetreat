@@ -18,6 +18,7 @@ const listings = [
       "India",
     ],
     price: 1799,
+    originalPrice: 2100, 
     currency: "$",
     route: "/locations/varkala",
     cta: "Oct 10th, 2025",
@@ -40,24 +41,42 @@ const listings = [
     originalPrice: 1799,
     currency: "$",
     route: "/locations/ladakh",
-    cta: "Apply Now",
+    cta: "TBA",
     duration: "/28 days",
-    accent: "rgba(3, 105, 161, 0.55)", // sky-700 
+    accent: "rgba(216, 42, 19, 0.67)", // sky-700 
   },
 
 ];
 
 export default function DestinationCards() {
   const [hovered, setHovered] = useState<number | null>(null);
+  const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>({});
   const router = useRouter();
 
   const handleCardClick = (route: string) => {
-    if (route !== "#") router.push(route);
+    if (route !== "#") {
+      if ('vibrate' in navigator) {
+        navigator.vibrate(10);
+      }
+      router.push(route);
+    }
   };
 
   const handleButtonClick = (e: React.MouseEvent, route: string) => {
     e.stopPropagation();
-    if (route !== "#") router.push(route);
+    if (route !== "#") {
+      if ('vibrate' in navigator) {
+        navigator.vibrate(10);
+      }
+      router.push(route);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, route: string) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleCardClick(route);
+    }
   };
 
   return (
@@ -75,6 +94,7 @@ export default function DestinationCards() {
           {listings.map((item, i) => {
             const active = hovered === i;
             const isDisabled = item.route === "#";
+            const loaded = imageLoaded[i];
 
             return (
               <div
@@ -92,16 +112,29 @@ export default function DestinationCards() {
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
                 onClick={() => handleCardClick(item.route)}
+                onKeyDown={(e) => handleKeyDown(e, item.route)}
+                role="button"
+                tabIndex={0}
+                aria-label={`View ${item.title} retreat details. Price: ${item.currency}${item.price} for ${item.duration}`}
               >
+                {/* Loading skeleton for image */}
+                {!loaded && (
+                  <div className="absolute inset-0 z-5 animate-pulse bg-slate-200">
+                    <div className="h-full w-full bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200" />
+                  </div>
+                )}
+
                 {/* Background Image */}
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className={`z-0 object-cover transition-all duration-700 ${
                     active ? "scale-105 opacity-100" : "scale-100 opacity-90"
-                  }`}
+                  } ${loaded ? 'opacity-100' : 'opacity-0'}`}
+                  loading={i < 2 ? "eager" : "lazy"}
+                  onLoad={() => setImageLoaded(prev => ({ ...prev, [i]: true }))}
                 />
 
                 {/* Dark gradient overlay so white text is readable */}
@@ -212,11 +245,12 @@ export default function DestinationCards() {
 
                     <button
                       onClick={(e) => handleButtonClick(e, item.route)}
-                      className={`relative z-30 inline-flex items-center gap-1.5 text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-sm ${
+                      className={`relative z-30 inline-flex items-center gap-1.5 text-sm font-bold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-sm min-h-[44px] touch-manipulation focus:ring-4 focus:outline-none ${
                         isDisabled
                           ? "bg-slate-200 text-slate-500 cursor-not-allowed"
-                          : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-600/20"
+                          : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-600/20 hover:scale-105 active:scale-95 focus:ring-emerald-500/50"
                       }`}
+                      aria-label={`View details for ${item.title} - ${item.cta}`}
                     >
                       {item.cta} <ChevronRight size={15} />
                     </button>

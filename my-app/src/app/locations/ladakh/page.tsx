@@ -83,7 +83,7 @@ const ladakhConfig: DestinationConfig = {
     ],
   },
   pricing: {
-    deposit: 199,
+    deposit: 299,
     included: [
       "Private airport transfers",
       "Private transportation",
@@ -145,11 +145,10 @@ const ladakhConfig: DestinationConfig = {
       fromDate: "AUGUST 03",
       toDate: "AUGUST 31",
       tripNumber: "01",
-      status: "AVAILABLE",
+      status: "DONE",
       batchId: 2,
       price: 1499,
       originalPrice: 1799,
-      spotsLeft: 4,
     },
   ],
   documents: [

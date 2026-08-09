@@ -72,6 +72,7 @@ export interface DestinationConfig {
 }
 
 import { BookingForm } from "../components/BookingForm";
+import { PremiumBookingForm } from "../components/PremiumBookingForm";
 import { Card, ImgCard, PlaceCard, Section } from "../components/DestinationUI";
 
 // ============= MAIN TEMPLATE =============
@@ -236,18 +237,10 @@ export default function DestinationTemplate({
 
   return (
     <>
-      <BookingForm
+      <PremiumBookingForm
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
-        onSubmit={handleSubmit}
-        formData={formData}
-        handleInputChange={handleInputChange}
-        handleEmailBlur={handleEmailBlur}
-        isSubmitting={isSubmitting}
-        submitStatus={submitStatus}
-        showCustomCode={showCustomCode}
-        setShowCustomCode={setShowCustomCode}
-        formFields={formFields}
+        destination={config.name}
       />
       <div className="fixed top-0 left-0 right-0 z-50">
         <Navbar />

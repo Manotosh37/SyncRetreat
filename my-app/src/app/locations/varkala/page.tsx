@@ -103,8 +103,8 @@ const varkalaConfig: DestinationConfig = {
       "Meals outside provided schedule",
       "Personal expenses",
     ],
-    isStatic: true,
-    staticOriginal: 1799,
+    isStatic: false,
+    staticOriginal: 1700,
   },
   places: [
     {
@@ -147,6 +147,8 @@ const varkalaConfig: DestinationConfig = {
       tripNumber: "01",
       status: "10th 2026",
       batchId: 1,
+      price: 1799,
+      originalPrice: 2100,
     },
     {
       fromDate: "NOVEMBER",

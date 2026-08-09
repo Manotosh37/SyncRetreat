@@ -92,7 +92,11 @@ export default function Navbar() {
               onMouseEnter={() => setDestinationsOpen(true)}
               onMouseLeave={() => setDestinationsOpen(false)}
             >
-              <button className="hover:text-emerald-400 transition-colors flex items-center gap-1">
+              <button 
+                className="hover:text-emerald-400 transition-colors flex items-center gap-1"
+                aria-expanded={destinationsOpen}
+                aria-haspopup="menu"
+              >
                 <span>Locations</span>
                 <ChevronDown className="w-4 h-4" />
               </button>
@@ -105,6 +109,11 @@ export default function Navbar() {
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
                     className="absolute top-[80%] left-1/2 -translate-x-1/2 mt-2 w-150 bg-white border border-slate-200 rounded-2xl shadow-2xl p-4 z-50"
+                    role="menu"
+                    aria-label="Location selection"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Escape') setDestinationsOpen(false);
+                    }}
                   >
                     <div className="grid grid-cols-2 gap-4">
                       <Link
@@ -278,7 +287,10 @@ export default function Navbar() {
             <div className="md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-slate-300 hover:text-emerald-400 transition-colors"
+                className="text-slate-300 hover:text-emerald-400 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
+                aria-controls="mobile-menu"
               >
                 {isOpen ? (
                   <X className="w-6 h-6" />
@@ -293,7 +305,14 @@ export default function Navbar() {
 
       {/* Mobile Menu Expansion */}
       {isOpen && (
-        <div className="md:hidden bg-[#1A2421] border-t border-white/10 h-screen">
+        <motion.div 
+          id="mobile-menu"
+          className="md:hidden bg-[#1A2421] border-t border-white/10 h-screen"
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          exit={{ x: '100%' }}
+          transition={{ type: 'spring', damping: 20 }}
+        >
           <div className="px-6 py-6 flex flex-col gap-5 text-base font-bold text-slate-300">
             <Link
               href="/"
@@ -352,13 +371,13 @@ export default function Navbar() {
             <div className="border-t border-white/10 pt-4 mt-2">
               <button
                 onClick={scrollToForm}
-                className="w-full bg-emerald-600 text-white px-6 py-4 rounded-xl font-black text-lg hover:bg-emerald-500 transition-all active:scale-95 shadow-lg shadow-emerald-900/40"
+                className="w-full bg-emerald-600 text-white px-6 py-4 rounded-xl font-black text-lg hover:bg-emerald-500 transition-all active:scale-95 shadow-lg shadow-emerald-900/40 min-h-[44px] touch-manipulation"
               >
                 APPLY NOW
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </nav>
   );
