@@ -34,6 +34,7 @@ export const metadata: Metadata = {
 const ladakhConfig: DestinationConfig = {
   id: "ladakh",
   name: "Ladakh",
+  isCompleted: true, // Retreat is done
   hero: {
     image:
       "https://images.unsplash.com/photo-1600242466690-c1c04f081762?q=80&w=1470&auto=format&fit=crop",

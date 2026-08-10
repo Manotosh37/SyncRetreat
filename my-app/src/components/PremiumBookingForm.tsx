@@ -1,348 +1,55 @@
 "use client";
 import React, { useState } from "react";
-import { X, ChevronRight, ChevronLeft, Check, Sparkles } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "sonner";
-import { supabase } from "../lib/supabase";
-import { useAuth } from "../lib/AuthContext";
-import { useRouter } from "next/navigation";
+import { X, Calendar, CheckCircle, Info } from "lucide-react";
+import { motion } from "framer-motion";
+import { RazorpayButton } from "./RazorpayButton";
 
-interface StepProps {
-  formData: any;
-  onChange: (field: string, value: any) => void;
-  onNext?: () => void;
-  onBack?: () => void;
-  isFirst: boolean;
-  isLast: boolean;
-  errors?: Record<string, string>;
-}
-
-const Step1: React.FC<StepProps> = ({ formData, onChange, onNext, errors }) => {
-  const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-
-  const canProceed = formData.name?.trim() && formData.email?.trim() && validateEmail(formData.email);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-6"
-    >
-      <div className="text-center mb-8">
-        <Sparkles className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
-        <h3 className="text-2xl font-bold text-slate-900 mb-2">Let's get started</h3>
-        <p className="text-slate-600">Tell us a bit about yourself</p>
-      </div>
-
-      <div>
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={formData.name || ""}
-          onChange={(e) => onChange("name", e.target.value)}
-          className={`w-full px-6 py-4 text-lg border-2 rounded-xl focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all ${
-            errors?.name ? "border-red-500" : "border-slate-200 focus:border-emerald-500"
-          }`}
-          autoFocus
-        />
-        {errors?.name && <p className="text-xs text-red-600 mt-1">{errors.name}</p>}
-      </div>
-
-      <div>
-        <input
-          type="email"
-          placeholder="Email Address"
-          value={formData.email || ""}
-          onChange={(e) => onChange("email", e.target.value)}
-          className={`w-full px-6 py-4 text-lg border-2 rounded-xl focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all ${
-            errors?.email ? "border-red-500" : "border-slate-200 focus:border-emerald-500"
-          }`}
-        />
-        {errors?.email && <p className="text-xs text-red-600 mt-1">{errors.email}</p>}
-      </div>
-
-      <button
-        onClick={onNext}
-        disabled={!canProceed}
-        className="w-full bg-emerald-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20"
-      >
-        Continue <ChevronRight className="w-5 h-5" />
-      </button>
-    </motion.div>
-  );
-};
-
-const Step2: React.FC<StepProps> = ({ formData, onChange, onNext, onBack }) => (
-  <motion.div
-    initial={{ opacity: 0, x: 20 }}
-    animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: -20 }}
-    className="space-y-6"
-  >
-    <div className="text-center mb-8">
-      <h3 className="text-2xl font-bold text-slate-900 mb-2">Contact details</h3>
-      <p className="text-slate-600">How can we reach you?</p>
-    </div>
-
-    <div className="flex gap-3">
-      <select
-        value={formData.countryCode || "+91"}
-        onChange={(e) => onChange("countryCode", e.target.value)}
-        className="w-28 px-4 py-4 text-lg border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all bg-white"
-      >
-        <option value="+1">🇺🇸 +1</option>
-        <option value="+44">🇬🇧 +44</option>
-        <option value="+91">🇮🇳 +91</option>
-        <option value="+61">🇦🇺 +61</option>
-      </select>
-      <input
-        type="tel"
-        placeholder="Phone Number"
-        value={formData.phone || ""}
-        onChange={(e) => onChange("phone", e.target.value)}
-        className="flex-1 px-6 py-4 text-lg border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all"
-      />
-    </div>
-
-    <div className="flex gap-3">
-      <button
-        onClick={onBack}
-        className="px-6 py-4 border-2 border-slate-200 rounded-xl font-semibold hover:bg-slate-50 transition-all flex items-center gap-2"
-      >
-        <ChevronLeft className="w-5 h-5" /> Back
-      </button>
-      <button
-        onClick={onNext}
-        disabled={!formData.phone}
-        className="flex-1 bg-emerald-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20"
-      >
-        Continue <ChevronRight className="w-5 h-5" />
-      </button>
-    </div>
-  </motion.div>
-);
-
-const Step3: React.FC<StepProps> = ({ formData, onChange, onNext, onBack }) => (
-  <motion.div
-    initial={{ opacity: 0, x: 20 }}
-    animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: -20 }}
-    className="space-y-6"
-  >
-    <div className="text-center mb-8">
-      <h3 className="text-2xl font-bold text-slate-900 mb-2">Your profession</h3>
-      <p className="text-slate-600">What do you do?</p>
-    </div>
-
-    <div className="grid grid-cols-2 gap-3">
-      {["Software Engineer", "Product Manager", "Designer", "Founder", "Freelancer", "Other"].map((role) => (
-        <button
-          key={role}
-          onClick={() => onChange("role", role)}
-          className={`px-6 py-4 border-2 rounded-xl font-semibold transition-all ${
-            formData.role === role
-              ? "border-emerald-600 bg-emerald-50 text-emerald-900"
-              : "border-slate-200 hover:border-slate-300"
-          }`}
-        >
-          {role}
-        </button>
-      ))}
-    </div>
-
-    <div className="flex gap-3">
-      <button
-        onClick={onBack}
-        className="px-6 py-4 border-2 border-slate-200 rounded-xl font-semibold hover:bg-slate-50 transition-all flex items-center gap-2"
-      >
-        <ChevronLeft className="w-5 h-5" /> Back
-      </button>
-      <button
-        onClick={onNext}
-        disabled={!formData.role}
-        className="flex-1 bg-emerald-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20"
-      >
-        Continue <ChevronRight className="w-5 h-5" />
-      </button>
-    </div>
-  </motion.div>
-);
-
-const Step4: React.FC<StepProps & { onSubmit: () => void; isSubmitting: boolean }> = ({
-  formData,
-  onChange,
-  onBack,
-  onSubmit,
-  isSubmitting,
-}) => (
-  <motion.div
-    initial={{ opacity: 0, x: 20 }}
-    animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: -20 }}
-    className="space-y-6"
-  >
-    <div className="text-center mb-8">
-      <h3 className="text-2xl font-bold text-slate-900 mb-2">Almost there!</h3>
-      <p className="text-slate-600">Which retreat interests you?</p>
-    </div>
-
-    <div className="space-y-3">
-      {[
-        { value: "Varkala", label: "Varkala - Beach & Culture", desc: "$1,799/28 days" },
-        { value: "Ladakh", label: "Ladakh - Mountains & Focus", desc: "$1,499/28 days" },
-        { value: "Both", label: "Both Locations", desc: "Flexible dates" },
-      ].map((option) => (
-        <button
-          key={option.value}
-          onClick={() => onChange("location", option.value)}
-          className={`w-full px-6 py-4 border-2 rounded-xl text-left transition-all ${
-            formData.location === option.value
-              ? "border-emerald-600 bg-emerald-50"
-              : "border-slate-200 hover:border-slate-300"
-          }`}
-        >
-          <div className="font-bold text-slate-900">{option.label}</div>
-          <div className="text-sm text-slate-600">{option.desc}</div>
-        </button>
-      ))}
-    </div>
-
-    <div className="p-4 bg-slate-50 rounded-xl">
-      <label className="flex items-start gap-3 cursor-pointer">
-        <input
-          type="checkbox"
-          checked={formData.undertaking || false}
-          onChange={(e) => onChange("undertaking", e.target.checked)}
-          className="mt-1 w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-        />
-        <span className="text-sm text-slate-700">
-          I understand this is a co-living community, not a job application
-        </span>
-      </label>
-    </div>
-
-    <div className="flex gap-3">
-      <button
-        onClick={onBack}
-        className="px-6 py-4 border-2 border-slate-200 rounded-xl font-semibold hover:bg-slate-50 transition-all flex items-center gap-2"
-      >
-        <ChevronLeft className="w-5 h-5" /> Back
-      </button>
-      <button
-        onClick={onSubmit}
-        disabled={!formData.location || !formData.undertaking || isSubmitting}
-        className="flex-1 bg-emerald-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20"
-      >
-        {isSubmitting ? "Submitting..." : "Submit Application"} <Check className="w-5 h-5" />
-      </button>
-    </div>
-  </motion.div>
-);
-
-interface PremiumBookingFormProps {
+interface DepositBookingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  destination?: string;
+  destination: string;
+  totalPrice: number;
+  depositAmount: number;
 }
 
-export const PremiumBookingForm: React.FC<PremiumBookingFormProps> = ({
+export const DepositBookingModal: React.FC<DepositBookingModalProps> = ({
   isOpen,
   onClose,
   destination,
+  totalPrice,
+  depositAmount,
 }) => {
-  const [step, setStep] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { user } = useAuth();
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    countryCode: "+91",
-    role: "",
-    location: destination || "",
-    undertaking: false,
-  });
-
-  const handleChange = (field: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = async () => {
-    if (!supabase) {
-      toast.error("Database unavailable", {
-        description: "Please try again later.",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      const payload = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        country_code: formData.countryCode,
-        destination: formData.location,
-        work_designation: formData.role,
-        undertaking: formData.undertaking,
-        user_id: user?.id || null,
-        status: "pending",
-        payment_status: "unpaid",
-        created_at: new Date().toISOString(),
-      };
-
-      const { error } = await supabase.from("bookings").insert([payload]);
-      
-      if (error) throw error;
-
-      toast.success("Application submitted!", {
-        description: "We'll review and get back to you within 24 hours.",
-      });
-      
-      onClose();
-      setStep(1);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        countryCode: "+91",
-        role: "",
-        location: "",
-        undertaking: false,
-      });
-
-      // Optional: redirect to checkout or bookings
-      // router.push('/bookings');
-    } catch (error) {
-      console.error("Submission error:", error);
-      toast.error("Submission failed", {
-        description: "Please try again or contact support.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const [selectedDate, setSelectedDate] = useState("October 10, 2025");
+  const remainingAmount = totalPrice - depositAmount;
 
   if (!isOpen) return null;
 
-  const steps = [
-    <Step1 key="1" formData={formData} onChange={handleChange} onNext={() => setStep(2)} onBack={() => {}} isFirst isLast={false} />,
-    <Step2 key="2" formData={formData} onChange={handleChange} onNext={() => setStep(3)} onBack={() => setStep(1)} isFirst={false} isLast={false} />,
-    <Step3 key="3" formData={formData} onChange={handleChange} onNext={() => setStep(4)} onBack={() => setStep(2)} isFirst={false} isLast={false} />,
-    <Step4 key="4" formData={formData} onChange={handleChange} onBack={() => setStep(3)} onSubmit={handleSubmit} isSubmitting={isSubmitting} isFirst={false} isLast />,
+  const included = [
+    "Private airport transfers",
+    "Private transportation during retreat",
+    "Private ensuite accommodation",
+    "Co-working space with high-speed internet",
+    "Welcome dinner & farewell dinner",
+    "Weekend adventure excursions",
+    "Community events & workshops",
+  ];
+
+  const notIncluded = [
+    "International flights to India",
+    "Travel insurance",
+    "Personal expenses",
+    "Additional meals not specified",
+    "Visa fees",
   ];
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-3xl w-full max-w-md relative shadow-2xl"
+        className="bg-white rounded-3xl w-full max-w-lg relative shadow-2xl my-8"
       >
+        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors z-10"
@@ -351,22 +58,113 @@ export const PremiumBookingForm: React.FC<PremiumBookingFormProps> = ({
           <X className="w-6 h-6" />
         </button>
 
-        {/* Progress Bar */}
-        <div className="px-8 pt-8 pb-6">
-          <div className="flex gap-2">
-            {[1, 2, 3, 4].map((s) => (
-              <div
-                key={s}
-                className={`h-1.5 flex-1 rounded-full transition-all ${
-                  s <= step ? "bg-emerald-600" : "bg-slate-200"
-                }`}
-              />
-            ))}
+        <div className="p-8">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-slate-900 mb-2">
+              Reserve Your Workspace
+            </h2>
+            <p className="text-slate-600">Secure your spot with a deposit</p>
           </div>
-        </div>
 
-        <div className="px-8 pb-8">
-          <AnimatePresence mode="wait">{steps[step - 1]}</AnimatePresence>
+          {/* Pricing Card */}
+          <div className="bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl p-6 text-white mb-6">
+            <div className="text-center mb-4">
+              <div className="text-5xl font-black mb-2">
+                ${depositAmount}
+              </div>
+              <p className="text-emerald-100 font-semibold">DEPOSIT TODAY</p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-emerald-100">Total Trip Price</span>
+                <span className="font-bold">${totalPrice}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-emerald-100">Pay Today</span>
+                <span className="font-bold">${depositAmount}</span>
+              </div>
+              <div className="border-t border-white/20 pt-2 flex justify-between">
+                <span className="text-emerald-100">Remaining</span>
+                <span className="font-bold text-lg">${remainingAmount}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Date Selection */}
+          <div className="mb-6">
+            <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
+              Choose Your Date
+            </label>
+            <div className="relative">
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <select
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all font-semibold"
+              >
+                <option>October 10, 2025</option>
+                <option>November 15, 2025</option>
+                <option>December 20, 2025</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Included Section */}
+          <div className="mb-6">
+            <h3 className="text-sm font-bold text-slate-700 mb-3 uppercase tracking-wide">
+              Included
+            </h3>
+            <div className="space-y-2">
+              {included.slice(0, 4).map((item, i) => (
+                <div key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                  <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <span>{item}</span>
+                </div>
+              ))}
+              <button className="text-sm text-emerald-600 font-semibold hover:text-emerald-700 transition-colors">
+                + {included.length - 4} more included
+              </button>
+            </div>
+          </div>
+
+          {/* Not Included Section */}
+          <div className="mb-6">
+            <h3 className="text-sm font-bold text-slate-700 mb-3 uppercase tracking-wide">
+              Not Included
+            </h3>
+            <div className="space-y-2">
+              {notIncluded.slice(0, 3).map((item, i) => (
+                <div key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                  <X className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Info Box */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+            <div className="flex gap-3">
+              <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+              <div className="text-sm text-blue-900">
+                <p className="font-semibold mb-1">Payment Schedule</p>
+                <p>Final payment of ${remainingAmount} due 30 days before retreat start date</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Button */}
+          <RazorpayButton
+            amount={depositAmount}
+            destination={destination}
+            onSuccess={(details) => console.log("Deposit paid:", details)}
+          />
+
+          <p className="text-xs text-center text-slate-500 mt-4">
+            Secure payment powered by Razorpay • Your deposit is fully refundable up to 60 days before the retreat
+          </p>
         </div>
       </motion.div>
     </div>

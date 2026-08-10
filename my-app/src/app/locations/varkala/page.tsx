@@ -42,8 +42,8 @@ const varkalaConfig: DestinationConfig = {
     subtitle: "Coastal Focus Retreat",
     title: "VARKALA.",
     locationText: "Varkala, Kerala, India",
-    dateRangeText: "Coming Soon — October 2025",
-    sprintText: "28 Days long stays.",
+    dateRangeText: "Starting 10th October 2025",
+    sprintText: "28 Days stays.",
   },
   about: {
     heading: "Discover Kerala's Most Serene Clifftop Escape",
@@ -142,17 +142,17 @@ const varkalaConfig: DestinationConfig = {
   },
   trips: [
     {
-      fromDate: "OCTOBER",
-      toDate: "2025",
+      fromDate: "October",
+      toDate: "2026",
       tripNumber: "01",
-      status: "10th 2026",
+      status: "10th October",
       batchId: 1,
       price: 1799,
       originalPrice: 2100,
     },
     {
       fromDate: "NOVEMBER",
-      toDate: "2025",
+      toDate: "2026",
       tripNumber: "02",
       status: "TBA",
       batchId: 2,
@@ -169,7 +169,7 @@ const varkalaConfig: DestinationConfig = {
       file: "SyncRetreat_Alignment_Protocol.pdf",
     },
   ],
-  formDestinationOptions: ["Varkala - October 2025"],
+  formDestinationOptions: ["Varkala - August 2025"],
 };
 
 import Schema from "../../../components/Schema";

@@ -21,7 +21,7 @@ const listings = [
     originalPrice: 2100, 
     currency: "$",
     route: "/locations/varkala",
-    cta: "Oct 10th, 2025",
+    cta: "Oct 10th, 2026",
     duration: "/28 days",
     accent: "rgba(4, 120, 87, 0.55)", // emerald-700
   },

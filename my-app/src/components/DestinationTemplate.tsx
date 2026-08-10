@@ -1,24 +1,17 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter as useNavigate } from 'next/navigation';
-
 import * as Icons from "lucide-react";
 import { Check, X, FileText, Download } from "lucide-react";
 import Image from "next/image";
 import Navbar from "./Navbar";
-import { supabase } from "../lib/supabase";
-import { useAuth } from "../lib/AuthContext";
 import {
-  COUNTRY_CODES,
-  BASE_FORM_FIELDS,
-  INPUT_CLASS,
-  BTN_CLASS,
   COMMUNITY,
 } from "../lib/shared-constants";
 
 export interface DestinationConfig {
   id: string; // e.g., "ladakh", "goa"
   name: string; // e.g., "Ladakh", "Goa"
+  isCompleted?: boolean; // If true, retreat is done and booking is disabled
 
   hero: {
     image: string;
@@ -75,8 +68,7 @@ export interface DestinationConfig {
   formDestinationOptions: string[];
 }
 
-import { BookingForm } from "./BookingForm";
-import { PremiumBookingForm } from "./PremiumBookingForm";
+import { DepositBookingCard } from "./DepositBookingCard";
 import { Card, ImgCard, PlaceCard, Section } from "./DestinationUI";
 
 // ============= MAIN TEMPLATE =============
@@ -86,166 +78,13 @@ export default function DestinationTemplate({
 }: {
   config: DestinationConfig;
 }) {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showCustomCode, setShowCustomCode] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
-
-  // Construct Form Fields for this specific destination
-  const formFields = [
-    ...BASE_FORM_FIELDS.slice(0, 4), // name, age, email, phone
-    {
-      name: "destination",
-      label: "Destination",
-      type: "select",
-      required: true,
-      help: "Which trip?",
-      options: config.formDestinationOptions,
-    },
-    ...BASE_FORM_FIELDS.slice(4), // the rest
-  ];
-
-  // Build INITIAL_FORM
-  const initialForm = Object.fromEntries([
-    ...formFields.map((f) => [f.name, ""]),
-    ["countryCode", "+44"],
-    ["undertaking", false],
-  ]);
-
-  const [formData, setFormData] = useState(initialForm);
-  const [draftId, setDraftId] = useState<string | null>(null);
   const [selectedBatch, setSelectedBatch] = useState<number>(1);
-  const navigate = useNavigate();
-  const { user } = useAuth();
 
   const selectedTrip =
     config.trips.find((t) => t.batchId === selectedBatch) || config.trips[0];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const target = e.target as HTMLInputElement;
-    const { name, value, type, checked } = target;
-    setFormData((prev: any) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleEmailBlur = async () => {
-    if (!supabase) return;
-    
-    if (formData.email && formData.email.includes("@")) {
-      if (!draftId) {
-        // Create a draft booking
-        const { data, error } = await supabase.from("bookings").insert([{
-          email: formData.email,
-          name: formData.name,
-          destination: formData.destination,
-          status: "draft",
-          payment_status: "unpaid",
-          user_id: user?.id,
-        }]).select().single();
-        
-        if (data && !error) {
-          setDraftId(data.id);
-        }
-      } else {
-        // Update existing draft silently
-        await supabase.from("bookings").update({
-          email: formData.email,
-          name: formData.name,
-        }).eq("id", draftId);
-      }
-    }
-  };
-
-  const openForm = () => {
-    // Attempt to match the destination string automatically based on selectedBatch
-    const targetOption =
-      config.formDestinationOptions[selectedBatch - 1] ||
-      config.formDestinationOptions[0];
-
-    setFormData({
-      ...initialForm,
-      destination: targetOption || "",
-    });
-    setIsFormOpen(true);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!supabase) {
-      alert("Database service is not available. Please try again later.");
-      return;
-    }
-    
-    if (!formData.undertaking) {
-      alert("Please accept the undertaking to continue.");
-      return;
-    }
-    setIsSubmitting(true);
-    setSubmitStatus("idle");
-    try {
-      const payload = {
-        name: formData.name,
-        age: formData.age,
-        country: formData.country,
-        email: formData.email,
-        phone: formData.phone,
-        country_code: formData.countryCode,
-        destination: formData.destination,
-        remote_work: formData.remoteWork,
-        work_designation: formData.workDesignation,
-        intended_work: formData.intendedWork,
-        interests: formData.interests,
-        linkedin: formData.linkedin,
-        about_you: formData.aboutYou,
-        how_heard: formData.howHeard,
-        undertaking: formData.undertaking,
-        user_id: user?.id,
-        status: "pending",
-        payment_status: "unpaid",
-      };
-
-      if (draftId) {
-        const { error } = await supabase.from("bookings").update(payload).eq("id", draftId);
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.from("bookings").insert([payload]);
-        if (error) throw error;
-      }
-
-      setSubmitStatus("success");
-      setTimeout(() => {
-        setFormData(initialForm);
-        setDraftId(null);
-        setIsFormOpen(false);
-        setSubmitStatus("idle");
-
-        const params = new URLSearchParams({ batch: selectedBatch.toString() });
-        if (!config.pricing.isStatic && selectedTrip.price) {
-          params.append("price", selectedTrip.price.toString());
-        }
-
-        navigate.push(`/checkout?${params.toString()}`);
-      }, 1000);
-    } catch (error) {
-      console.error("Error:", error);
-      setSubmitStatus("error");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <>
-      <PremiumBookingForm
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        destination={config.name}
-      />
       <div className="fixed top-0 left-0 right-0 z-50">
         <Navbar />
       </div>
@@ -321,128 +160,12 @@ export default function DestinationTemplate({
             </div>
           </div>
           <div>
-            <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 sticky top-24">
-              <p className="text-sm uppercase tracking-wide text-slate-500 mb-2 font-semibold">
-                Reserve Your Workspace
-              </p>
-              <p className="text-3xl font-bold text-emerald-600">
-                ${config.pricing.deposit}
-              </p>
-              <p className="text-slate-500 font-medium text-sm mb-6">
-                Deposit Only
-              </p>
-
-              <h4 className="font-bold text-slate-900 uppercase tracking-wide mb-4">
-                Choose Your Date
-              </h4>
-              <div className="flex flex-col gap-3 mb-6">
-                {config.trips.map((trip, i) => (
-                  <div
-                    key={i}
-                    className={`cursor-pointer transition-all p-3 rounded-xl border-2 ${
-                      selectedBatch === trip.batchId
-                        ? "border-emerald-500 bg-emerald-50"
-                        : "border-slate-200 hover:border-emerald-300 bg-white"
-                    }`}
-                    onClick={() => setSelectedBatch(trip.batchId)}
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <p className="text-sm font-bold text-slate-900">
-                          {trip.fromDate} - {trip.toDate}
-                        </p>
-                        {trip.spotsLeft ? (
-                          <div className="flex items-center gap-1.5 mt-1">
-                            <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
-                            <p className="text-[10px] font-black uppercase text-red-600 tracking-wide">
-                              ONLY {trip.spotsLeft} SPOTS LEFT
-                            </p>
-                          </div>
-                        ) : (
-                          <p className="text-[10px] font-bold uppercase text-emerald-600 mt-0.5">
-                            {trip.status}
-                          </p>
-                        )}
-                      </div>
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedBatch === trip.batchId ? 'border-emerald-500' : 'border-slate-300'}`}>
-                        {selectedBatch === trip.batchId && <div className="w-2 h-2 bg-emerald-500 rounded-full" />}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <h4 className="font-bold text-slate-900 uppercase tracking-wide mb-4">
-                Included
-              </h4>
-              <ul className="space-y-2 mb-6">
-                {config.pricing.included.map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-2 text-sm text-slate-600 font-medium"
-                  >
-                    <Check className="w-4 h-4 text-emerald-600 mt-0.5 shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <h4 className="font-bold text-slate-900 uppercase tracking-wide mb-4">
-                Not Included
-              </h4>
-              <ul className="space-y-2 mb-6">
-                {config.pricing.notIncluded.map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-2 text-sm text-slate-600 font-medium"
-                  >
-                    <X className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              {config.pricing.isStatic ? (
-                <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-5 mb-6">
-                  <p className="text-sm text-emerald-800 font-bold uppercase tracking-wider mb-1">
-                    Total Price
-                  </p>
-                  <span className="text-5xl font-black text-emerald-600">
-                    ${config.pricing.staticOriginal}
-                  </span>
-                  <p className="text-xs text-slate-500 mt-2 font-medium">
-                    per person · 28-day stay
-                  </p>
-                </div>
-              ) : (
-                <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-5 mb-6 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-bl-lg shadow-sm">
-                    Save $
-                    {(selectedTrip?.originalPrice || 0) -
-                      (selectedTrip?.price || 0)}
-                  </div>
-                  <p className="text-sm text-emerald-800 font-bold uppercase tracking-wider mb-1">
-                    Total Price
-                  </p>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-xl text-slate-400 line-through decoration-slate-400 decoration-2 font-black">
-                      ${selectedTrip?.originalPrice}
-                    </span>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-5xl font-black text-emerald-600">
-                        ${selectedTrip?.price}
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-xs text-emerald-700 mt-3 font-bold uppercase tracking-wider bg-emerald-100 inline-block px-2 py-1 rounded">
-                    Founding Discount Applied!
-                  </p>
-                </div>
-              )}
-
-              <button onClick={openForm} className={BTN_CLASS}>
-                Book Now
-              </button>
-            </div>
+            <DepositBookingCard
+              destination={config.name}
+              totalPrice={config.pricing.isStatic ? config.pricing.staticOriginal || 1799 : selectedTrip?.price || 1799}
+              depositAmount={config.pricing.deposit}
+              isCompleted={config.isCompleted}
+            />
           </div>
         </div>
       </Section>
