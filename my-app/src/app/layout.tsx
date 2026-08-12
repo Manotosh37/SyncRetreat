@@ -63,7 +63,10 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
-  verification: { google: "" }, // add your Search Console token here
+  verification: {
+    google:
+      "google-site-verification=FFZP2dX3O-0YHqGFBx8al0m1HVXHKHJZpQ8HzdUwMHc", // <-- PASTE YOUR GSC TOKEN HERE
+  },
 };
 
 const ORGANIZATION_SCHEMA = {
@@ -84,7 +87,7 @@ const ORGANIZATION_SCHEMA = {
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: "hello@syncretreat.com",
+        email: "contact@syncretreat.com",
       },
     },
     {
@@ -193,7 +196,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${inter.variable} ${playfair.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Preconnect to critical third-party origins */}
         <link rel="preconnect" href="https://images.unsplash.com" />
