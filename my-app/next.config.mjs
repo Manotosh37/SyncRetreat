@@ -40,6 +40,23 @@ const nextConfig = {
     ],
   },
 
+  // 301 Permanent Redirect www.syncretreat.com -> syncretreat.com
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.syncretreat.com',
+          },
+        ],
+        destination: 'https://syncretreat.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
+
   // Strict Content-Security and performance headers
   async headers() {
     return [

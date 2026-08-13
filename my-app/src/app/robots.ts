@@ -8,6 +8,11 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/admin", "/account", "/checkout", "/login", "/signup"],
       },
+      // Explicitly invite AI crawlers
+      {
+        userAgent: ["GPTBot", "ChatGPT-User", "Google-Extended", "anthropic-ai", "PerplexityBot"],
+        allow: "/",
+      },
     ],
     sitemap: "https://syncretreat.com/sitemap.xml",
     host: "https://syncretreat.com",

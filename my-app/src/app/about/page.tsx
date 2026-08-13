@@ -49,6 +49,11 @@ export default function About() {
           </h1>
 
           <div className="text-slate-600 font-medium space-y-6 leading-relaxed text-[15px]">
+            <p className="text-lg font-bold text-slate-900">
+              SyncRetreat is a premium 28-day remote work and co-living retreat
+              in the Indian Himalayas, engineered specifically for remote
+              professionals and founders.
+            </p>
             <p>
               Most remote work retreats are built by travel agencies. They
               optimize for sightseeing, bonding circles, and crowded

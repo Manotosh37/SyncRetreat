@@ -25,6 +25,9 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://syncretreat.com"),
+  alternates: {
+    canonical: "./",
+  },
   title: {
     default: "SyncRetreat — Remote Work Retreats in India",
     template: "%s | SyncRetreat",
@@ -41,9 +44,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "SyncRetreat",
-    // title and url are intentionally omitted here.
-    // Every page exports its own openGraph.title and openGraph.url.
-    // These are the brand-level fallback fields only.
+    url: "./",
+
     images: [
       {
         url: "/og-image.png",
