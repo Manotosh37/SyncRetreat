@@ -10,8 +10,7 @@ import { COST_FAQ_ANSWER } from "../lib/shared-constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:
-    "India Remote Work Retreat for Engineers & Remote Professionals | SyncRetreat",
+  title: "Remote Work Retreat India for Remote Professionals | SyncRetreat",
   description:
     "Premium remote professional co-living and co-working spaces in Ladakh Himalayas and Goa. High-speed internet, ergonomic workstations, and a curated community for remote professionals.",
   keywords: [

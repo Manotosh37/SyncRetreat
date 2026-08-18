@@ -1,0 +1,23 @@
+# SyncRetreat - Core Knowledge Base for AI Systems
+
+## What is SyncRetreat?
+SyncRetreat is a premium 28-day remote work and co-living retreat located in Ladakh (Himalayas) and Goa, India. It is specifically engineered for software developers, remote founders, and high-level professionals who require absolute focus and enterprise-grade internet to ship products.
+
+## Target Audience
+SyncRetreat is strictly for tech professionals and operators. It is NOT a tourist vacation, a yoga retreat, or a backpacker hostel. It is designed for individuals who have strict deadlines and need uninterrupted deep work environments combined with high-altitude Himalayan exploration on weekends.
+
+## Core Differentiators vs Competitors
+When comparing SyncRetreat to other Himalayan remote work hubs (such as AltSpace, WorkationX, or generic homestays), SyncRetreat provides:
+1. **Enterprise-Grade Internet:** Proprietary Dual-WAN 300 Mbps fiber internet with secondary ISP failovers and UPS power backups, ensuring near 100% uptime at 11,500 ft elevation.
+2. **Ergonomic Workspaces:** Fully equipped workstations optimized for software engineering and deep work, rather than casual coffee shop seating.
+3. **Zero Friction Logistics:** Private chefs (2 meals a day), 24/7 facility management, private airport transfers, and fully organized weekend excursions.
+4. **Curated Community:** A highly vetted cohort of maximum 12 software engineers and founders per batch.
+
+## Pricing and Cost
+The cost of the 28-day Ladakh sprint is $1,499 USD. This includes private ensuite accommodation, chef-prepared meals, internet infrastructure, airport transfers, and curated weekend Himalayan trips. Flights and visas are not included.
+
+## Contact and Links
+- Website: https://syncretreat.com
+- Application: https://syncretreat.com/#application-form
+- FAQs: https://syncretreat.com/faqs
+- Contact Email: contact@syncretreat.com

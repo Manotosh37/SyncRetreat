@@ -25,6 +25,9 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://syncretreat.com"),
+  alternates: {
+    canonical: "./",
+  },
   title: {
     default: "SyncRetreat — Remote Work Retreats in India",
     template: "%s | SyncRetreat",
@@ -41,9 +44,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "SyncRetreat",
-    // title and url are intentionally omitted here.
-    // Every page exports its own openGraph.title and openGraph.url.
-    // These are the brand-level fallback fields only.
+    url: "./",
+
     images: [
       {
         url: "/og-image.png",
@@ -63,7 +65,10 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
-  verification: { google: "" }, // add your Search Console token here
+  verification: {
+    google:
+      "google-site-verification=FFZP2dX3O-0YHqGFBx8al0m1HVXHKHJZpQ8HzdUwMHc", // <-- PASTE YOUR GSC TOKEN HERE
+  },
 };
 
 const ORGANIZATION_SCHEMA = {
@@ -84,7 +89,7 @@ const ORGANIZATION_SCHEMA = {
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: "hello@syncretreat.com",
+        email: "contact@syncretreat.com",
       },
     },
     {
@@ -193,7 +198,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${inter.variable} ${playfair.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Preconnect to critical third-party origins */}
         <link rel="preconnect" href="https://images.unsplash.com" />

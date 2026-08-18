@@ -6,7 +6,7 @@ import FaqAccordion, { FaqSection } from "../../components/FaqAccordion";
 import { makeFAQSchema, makeBreadcrumbSchema } from "../../lib/schemas";
 
 export const metadata: Metadata = {
-  title: "India Remote Work Retreat FAQs — Cost, Internet & Visa | SyncRetreat",
+  title: "Frequently Asked Questions — Remote Work Retreat India",
   description:
     "Everything you need to know about SyncRetreat — visa requirements, pricing, internet infrastructure, and what to expect at our 28-day remote work retreat in Ladakh.",
   keywords: [
