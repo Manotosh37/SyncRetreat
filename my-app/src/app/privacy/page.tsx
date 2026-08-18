@@ -36,7 +36,7 @@ export default function Privacy() {
                     <ul className="list-disc list-inside text-slate-600 space-y-3 ml-4 leading-relaxed">
                         <li><span className="font-bold text-slate-900">Service Execution:</span> To reserve real estate, configure on-site infrastructure, and manage your 28-day allocation.</li>
                         <li><span className="font-bold text-slate-900">Legal Compliance:</span> To submit required documentation to the District Magistrate in Leh and relevant Indian border authorities to secure your PAP.</li>
-                        <li><span className="font-bold text-slate-900">Financial Processing:</span> To manage invoicing, track deposits, and execute the final $1,300 USD balance collection via Stripe/RazorpayX.</li>
+                        <li><span className="font-bold text-slate-900">Financial Processing:</span> To manage invoicing, track deposits, and execute remaining plan-balance collection via Stripe/RazorpayX.</li>
                         <li><span className="font-bold text-slate-900">Operational Communication:</span> To dispatch critical pre-arrival briefings, high-altitude health protocols, and logistical updates.</li>
                     </ul>
                 </section>

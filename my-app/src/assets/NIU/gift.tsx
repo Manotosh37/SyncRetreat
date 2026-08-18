@@ -21,7 +21,7 @@ const giftCards = [
   },
   {
     id: 4,
-    amount: 3000,
+    amount: 2999,
     description: 'Ultimate group experience',
     perks: ['14-day trip', 'Luxury accommodation', 'Premium meals & drinks', 'Personal guide & photographer', 'Full video production', 'Airport transfers']
   }

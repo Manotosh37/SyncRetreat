@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SyncRetreat Ladakh — 28-Day Deep Work Sprint in the Himalayas",
     description:
-      "Dual-WAN 300 Mbps fiber at 11,500 ft. Private villa, chef meals, and curated Himalayan weekends. August 2026 cohort now open. From $1,499.",
+      "Dual-WAN 300 Mbps fiber at 11,500 ft. Private villa, chef meals, and curated Himalayan weekends. August 2026 cohort now open. From $1,799.",
     url: "https://syncretreat.com/locations/ladakh",
     images: [
       {
@@ -148,8 +148,8 @@ const ladakhConfig: DestinationConfig = {
       tripNumber: "01",
       status: "DONE",
       batchId: 2,
-      price: 1499,
-      originalPrice: 1799,
+      price: 1799,
+      originalPrice: 2099,
     },
   ],
   documents: [
@@ -215,7 +215,7 @@ const ladakhGraph = {
       locationLocality: "Leh",
       locationRegion: "Ladakh",
       url: LADAKH_URL,
-      price: 1499,
+      price: 1799,
       availability: "InStock",
     }),
 

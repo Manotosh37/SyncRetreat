@@ -136,6 +136,86 @@ export const INPUT_CLASS =
 export const BTN_CLASS =
   "w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-full uppercase tracking-wide transition-colors cursor-pointer shadow-md shadow-emerald-900/20";
 
+export const PLAN_FEATURES = [
+  "Accommodation",
+  "Transport",
+  "2 Meals / day",
+  "Working Infra",
+  "Community",
+  "Legal docs.",
+  "Medical Support",
+];
+
+export const PRICING_PLANS = [
+  {
+    id: "14-day",
+    name: "14-Day Workation",
+    duration: "14 days",
+    audience: "Western",
+    price: "$1,199",
+    originalPrice: "$1,499",
+    discount: "$300",
+    pricePerDay: "$86/day",
+    priceNote: "",
+    cta: "Book Now",
+    status: "Active" as const,
+    featured: false,
+    link: "/locations/varkala",
+  },
+  {
+    id: "28-day",
+    name: "28-Day Workation",
+    duration: "28 days",
+    audience: "Western",
+    price: "$1,799",
+    originalPrice: "$2,099",
+    discount: "$300",
+    pricePerDay: "$64/day",
+    priceNote: "",
+    cta: "Book Now",
+    status: "Active" as const,
+    featured: true,
+    link: "/locations/varkala",
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise (B2B)",
+    duration: "Custom",
+    audience: "Startups & Corporates",
+    price: "Custom",
+    originalPrice: "",
+    discount: "",
+    pricePerDay: "",
+    priceNote: "Differential pricing for both",
+    cta: "Request Quote",
+    status: "Active" as const,
+    featured: false,
+    link: "/waitlist?plan=enterprise",
+  },
+];
+
+export const DEPOSIT_USD = 299;
+
+export const COST_FAQ_ANSWER =
+  "The 14-day Workation is $1,199 ($300 off $1,499) and the 28-day Workation is $1,799 ($300 off $2,099). Both include accommodation, transport, 2 meals/day, working infra, community, legal docs, and medical support. A $299 deposit secures your spot; the balance is due 30 days before start. Enterprise is custom; Yearly Pass pricing is TBD.";
+
+export const YEARLY_PASS = {
+  id: "yearly",
+  name: "The Yearly Pass",
+  subtitle: "Come back all year. One membership.",
+  duration: "Annual",
+  audience: "Repeat guests",
+  price: "TBD",
+  status: "Active" as const,
+  link: "/waitlist?plan=yearly",
+  perks: [
+    "Unlimited bookings across locations",
+    "Best rate, locked for 12 months",
+    "First access to new retreats",
+    "Member-only gatherings",
+  ],
+};
+
 export const COMMUNITY = [
   {
     image:

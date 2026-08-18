@@ -64,7 +64,10 @@ export const RazorpayButton: React.FC<RazorpayButtonProps> = ({
         }),
       });
 
-      if (!orderRes.ok) throw new Error("Failed to create order");
+      if (!orderRes.ok) {
+        const errorData = await orderRes.json();
+        throw new Error(errorData.error || "Failed to create order");
+      }
 
       const order = await orderRes.json();
 
@@ -133,7 +136,10 @@ export const RazorpayButton: React.FC<RazorpayButtonProps> = ({
       rzp.open();
     } catch (error) {
       console.error("Payment error:", error);
-      toast.error("Payment initiation failed");
+      const errorMessage = error instanceof Error ? error.message : "Payment initiation failed";
+      toast.error("Payment Error", {
+        description: errorMessage + ". Please contact support at hello@syncretreat.com",
+      });
       setLoading(false);
     }
   };

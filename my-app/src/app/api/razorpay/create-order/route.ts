@@ -10,8 +10,18 @@ export async function POST(request: NextRequest) {
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
     if (!keyId || !keySecret) {
-      console.error("Missing Razorpay credentials", { keyId: !!keyId, keySecret: !!keySecret });
-      throw new Error("Razorpay credentials not configured");
+      console.error("Missing Razorpay credentials", { 
+        keyId: !!keyId, 
+        keySecret: !!keySecret,
+        env: process.env.NODE_ENV 
+      });
+      return NextResponse.json(
+        { 
+          error: "Payment service not configured. Please contact support.",
+          details: "Missing Razorpay credentials"
+        },
+        { status: 500 }
+      );
     }
 
     const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
@@ -31,8 +41,18 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const error = await response.text();
-      console.error("Razorpay error:", error);
-      throw new Error("Razorpay API error");
+      console.error("Razorpay API error:", {
+        status: response.status,
+        statusText: response.statusText,
+        error: error,
+      });
+      return NextResponse.json(
+        { 
+          error: "Payment service error. Please try again or contact support.",
+          details: `Razorpay returned ${response.status}`
+        },
+        { status: 500 }
+      );
     }
 
     const order = await response.json();
@@ -40,7 +60,10 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Order creation error:", error);
     return NextResponse.json(
-      { error: "Failed to create order" },
+      { 
+        error: "Failed to create order. Please try again or contact support.",
+        details: error instanceof Error ? error.message : "Unknown error"
+      },
       { status: 500 }
     );
   }

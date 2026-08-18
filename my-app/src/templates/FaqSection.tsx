@@ -2,12 +2,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
+import { COST_FAQ_ANSWER } from "../lib/shared-constants";
 
 const importantFaqs = [
   {
     question: "What exactly is SyncRetreat?",
     answer:
-      "SyncRetreat is a 28-day, high-altitude deep work infrastructure camp located in Ladakh, India. It is engineered strictly for Western tech founders, CTOs, senior operators, and remote employees. We provide enterprise-grade workspace, uninterrupted internet, and local logistics so you can escape the European summer distractions and execute a month of absolute focus.",
+      "SyncRetreat is a 28-day, high-altitude deep work infrastructure camp located in Ladakh, India. It is engineered for tech founders, CTOs, senior operators, and remote employees. We provide enterprise-grade workspace, uninterrupted internet, and local logistics so you can escape the European summer distractions and execute a month of absolute focus.",
   },
   {
     question: "Who is this NOT for?",
@@ -17,7 +18,7 @@ const importantFaqs = [
   {
     question: "What is the total investment and what does it cover?",
     answer:
-      "The total cost is $1,499 USD. This covers your private accommodation in our premium Ladakhi villa for 28 days, your daily meals prepared by a private chef, 24/7 access to our Dual-WAN workspace, airport transfers from Leh (IXL), curated weekend trips, and all local government permits.",
+      COST_FAQ_ANSWER,
   },
   {
     question: "How can you guarantee internet in the Himalayas?",

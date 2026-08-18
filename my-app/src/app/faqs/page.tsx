@@ -56,12 +56,12 @@ const paymentFaqs = [
   {
     question: "What is the total investment and what does it cover?",
     answer:
-      "The total cost is $1,499 USD. This covers your private accommodation in our premium Ladakhi villa for 28 days, your daily meals prepared by a private chef, 24/7 access to our Dual-WAN workspace, airport transfers from Leh (IXL), curated weekend trips, and all local government permits.",
+      "The 14-day Workation is $1,199 ($300 off $1,499) and the 28-day Workation is $1,799 ($300 off $2,099). Both include accommodation, transport, 2 meals/day, working infra, community, legal docs, and medical support.",
   },
   {
     question: "What is the payment schedule?",
     answer:
-      "Upon application approval, a $199 non-refundable deposit is required via credit card (Stripe/Razorpay) to secure your spot. The remaining $1,300 balance is due 30 days prior to the cohort launch.",
+      "Upon application approval, a $299 deposit is required via credit card (Stripe/Razorpay) to secure your spot. The remaining balance ($900 for 14-day, $1,500 for 28-day) is due 30 days prior to the cohort launch.",
   },
   {
     question: "Can I expense this to my company?",
@@ -71,7 +71,7 @@ const paymentFaqs = [
   {
     question: "What is your cancellation policy?",
     answer:
-      "Because we secure premium real estate in advance, the $199 deposit is non-refundable. For the remaining balance, cancellations made 30 days before the retreat start date are eligible for a 50% refund. Cancellations made within 30 days of the start date are strictly non-refundable.",
+      "Because we secure premium real estate in advance, the $299 deposit is non-refundable. For the remaining balance, cancellations made 30 days before the retreat start date are eligible for a 50% refund. Cancellations made within 30 days of the start date are strictly non-refundable.",
   },
 ];
 

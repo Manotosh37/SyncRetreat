@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
+import { COST_FAQ_ANSWER } from "../lib/shared-constants";
 
 const importantFaqs = [
   {
@@ -17,7 +18,7 @@ const importantFaqs = [
   {
     question: "What is the total investment and what does it cover?",
     answer:
-      "The total cost is $1,499 USD. This covers your private accommodation in our premium Ladakhi villa for 28 days, your daily meals prepared by a private chef, 24/7 access to our Dual-WAN workspace, airport transfers from Leh (IXL), curated weekend trips, and all local government permits.",
+      COST_FAQ_ANSWER,
   },
   {
     question: "How can you guarantee internet in the Himalayas?",

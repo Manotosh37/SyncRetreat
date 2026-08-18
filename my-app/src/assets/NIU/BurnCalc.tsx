@@ -86,7 +86,7 @@ export default function BurnCalc() {
         <div className="bg-green-900/20 border border-green-800/50 p-4 rounded mt-4">
           <p className="text-green-400 text-sm">
             <strong>The SyncRetreat Cure:</strong> Deploying this pod to our
-            Himalayan Node costs ~${(engineers * 1500).toLocaleString()}. You
+            Himalayan Node costs ~${(engineers * 1799).toLocaleString()}. You
             achieve immediate ROI in week one by enforcing strict asynchronous
             Ghost Mode.
           </p>

@@ -10,7 +10,7 @@ export default function Qualification() {
   const engineeredFor = [
     "Funded founders and entrepreneurs with strict launch deadlines",
     "Remote professionals, designers, and creators requiring absolute focus",
-    "Operators who view $1,500 as an ROI-positive business investment for 28 days of uninterrupted execution",
+    "Operators who view $1,799 as an ROI-positive business investment for 28 days of uninterrupted execution",
   ];
 
   return (

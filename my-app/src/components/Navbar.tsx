@@ -150,6 +150,12 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
+            <Link
+              href="/pricing"
+              className="hover:text-emerald-400 transition-colors duration-200"
+            >
+              Pricing
+            </Link>
             {/* <Link
               href="/testimonials"
               className="hover:text-emerald-400 transition-colors duration-200"

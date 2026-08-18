@@ -69,7 +69,7 @@ export default function Admin() {
   );
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [paymentLink, setPaymentLink] = useState(
-    "https://paypal.me/syncretreat/1499USD",
+    "https://paypal.me/syncretreat/1799USD",
   );
   const [filter, setFilter] = useState<
     "all" | "pending" | "approved" | "rejected"
@@ -440,7 +440,7 @@ export default function Admin() {
     pending: bookings.filter((b) => b.status === "pending").length,
     approved: bookings.filter((b) => b.status === "approved").length,
     paid: bookings.filter((b) => b.payment_status === "paid").length,
-    revenue: bookings.filter((b) => b.payment_status === "paid").length * 1499,
+    revenue: bookings.filter((b) => b.payment_status === "paid").length * 1799,
   };
 
   const filteredBookings = bookings.filter((b) => {

@@ -83,7 +83,7 @@ export default function Community() {
                     </p>
                     <ul className="list-disc list-inside text-slate-600 space-y-3 ml-4 leading-relaxed">
                         <li><span className="font-bold text-slate-900">Immediate Removal:</span> Violation of these Community Rules gives SyncRetreat the unilateral right to terminate the Client's contract, revoke their infrastructure access, and expel them from the Camp immediately.</li>
-                        <li><span className="font-bold text-slate-900">No Refunds on Expulsion:</span> If a Client is expelled for violating the Community Rules, they forfeit their entire $1,500 USD payment. No refunds, partial or otherwise, will be issued.</li>
+                        <li><span className="font-bold text-slate-900">No Refunds on Expulsion:</span> If a Client is expelled for violating the Community Rules, they forfeit their entire plan payment. No refunds, partial or otherwise, will be issued.</li>
                     </ul>
                 </section>
             </div>

@@ -104,7 +104,7 @@ const varkalaConfig: DestinationConfig = {
       "Personal expenses",
     ],
     isStatic: false,
-    staticOriginal: 1700,
+    staticOriginal: 2099,
   },
   places: [
     {
@@ -148,7 +148,7 @@ const varkalaConfig: DestinationConfig = {
       status: "10th October",
       batchId: 1,
       price: 1799,
-      originalPrice: 2100,
+      originalPrice: 2099,
     },
     {
       fromDate: "NOVEMBER",

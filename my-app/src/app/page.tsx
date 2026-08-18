@@ -1,10 +1,12 @@
 import Hero from "../components/Hero";
 import Form from "../components/Calendar";
+import PricingPreview from "../components/PricingPreview";
 import Infra from "../components/Infra";
 import DayInTheLife from "../components/DayInTheLife";
 import FaqSection from "../components/FaqSection";
 import Schema from "../components/Schema";
 import { makeFAQSchema } from "../lib/schemas";
+import { COST_FAQ_ANSWER } from "../lib/shared-constants";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -47,7 +49,7 @@ export default function Home() {
     {
       question: "What is the total investment and what does it cover?",
       answer:
-        "The total cost is $1,499 USD. This covers your private accommodation in our premium Ladakhi villa for 28 days, your daily meals prepared by a private chef, 24/7 access to our Dual-WAN workspace, airport transfers from Leh (IXL), curated weekend trips, and all local government permits.",
+        COST_FAQ_ANSWER,
     },
     {
       question: "How can you guarantee internet in the Himalayas?",
@@ -64,6 +66,7 @@ export default function Home() {
         <Form />
       </div>
       <Infra />
+      <PricingPreview />
       <DayInTheLife />
       <FaqSection />
     </>

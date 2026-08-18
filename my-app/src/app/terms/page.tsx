@@ -80,16 +80,16 @@ export default function Terms() {
                                 To secure infrastructure and real estate allocation, the following payment terms are non-negotiable:
                             </p>
                             <p>
-                                <b className="text-slate-900">Total Cost:</b> The total fee for the 28-day Camp is $1,499 USD.
+                                <b className="text-slate-900">Total Cost:</b> The 14-day Workation is $1,199 USD ($300 off $1,499). The 28-day Workation is $1,799 USD ($300 off $2,099). Enterprise pricing is custom. Yearly Pass pricing is TBD.
                             </p>
                             <p>
-                                <b className="text-slate-900">Non-Refundable Deposit:</b> A non-refundable deposit of $199 USD is required immediately upon acceptance to secure your allocation. This fee covers immediate administrative and local infrastructure reservation costs.
+                                <b className="text-slate-900">Non-Refundable Deposit:</b> A non-refundable deposit of $299 USD is required immediately upon acceptance to secure your allocation. This fee covers immediate administrative and local infrastructure reservation costs.
                             </p>
                             <p>
-                                <b className="text-slate-900">Balance of Payment:</b> The remaining balance of $1,300 USD must be settled in full no later than thirty (30) days prior to the official launch date of the Camp. Failure to remit the balance will result in the immediate forfeiture of your allocation and the $199 USD deposit.
+                                <b className="text-slate-900">Balance of Payment:</b> The remaining balance ($900 USD for the 14-day plan, $1,500 USD for the 28-day plan) must be settled in full no later than thirty (30) days prior to the official launch date of the Camp. Failure to remit the balance will result in the immediate forfeiture of your allocation and the $299 USD deposit.
                             </p>
                             <p>
-                                <b className="text-slate-900">Cancellation &amp; Refund Policy:</b> SyncRetreat operates on strict infrastructure leasing agreements. The initial $199 deposit is strictly non-refundable. For the remaining balance, cancellations made thirty (30) days prior to the cohort start date are eligible for a 50% refund. Cancellations made within thirty (30) days of the start date are strictly non-refundable due to the inability to re-lease the physical node on short notice.
+                                <b className="text-slate-900">Cancellation &amp; Refund Policy:</b> SyncRetreat operates on strict infrastructure leasing agreements. The initial $299 deposit is strictly non-refundable. For the remaining balance, cancellations made thirty (30) days prior to the cohort start date are eligible for a 50% refund. Cancellations made within thirty (30) days of the start date are strictly non-refundable due to the inability to re-lease the physical node on short notice.
                             </p>
                         </div>
                     </section>

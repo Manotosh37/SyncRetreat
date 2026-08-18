@@ -54,7 +54,7 @@ const applicationSteps = [
   {
     title: "Secure Your Workspace",
     description:
-      "Once approved, reserve your spot with a $1,499 payment. We handle all logistics—premium housing, daily meals, and high-speed Wi-Fi—so you can focus on your work.",
+      "Once approved, reserve your spot with a $299 deposit. We handle all logistics—premium housing, daily meals, and high-speed Wi-Fi—so you can focus on your work.",
   },
 ];
 

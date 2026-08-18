@@ -163,7 +163,7 @@ export const DepositBookingModal: React.FC<DepositBookingModalProps> = ({
           />
 
           <p className="text-xs text-center text-slate-500 mt-4">
-            Secure payment powered by Razorpay • Your deposit is fully refundable up to 60 days before the retreat
+            Secure payment powered by Razorpay • $299 deposit is non-refundable • Balance due 30 days before the retreat
           </p>
         </div>
       </motion.div>
