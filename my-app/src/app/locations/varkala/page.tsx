@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "digital nomad varkala kerala india",
     "co-working varkala fiber internet",
     "software engineer retreat varkala",
-    "work from varkala 2025",
+    "work from varkala 2026",
     "varkala remote work villa",
   ],
   alternates: { canonical: "https://syncretreat.com/locations/varkala" },
@@ -42,7 +42,7 @@ const varkalaConfig: DestinationConfig = {
     subtitle: "Coastal Focus Retreat",
     title: "VARKALA.",
     locationText: "Varkala, Kerala, India",
-    dateRangeText: "Starting 10th October 2025",
+    dateRangeText: "Starting 10th October 2026",
     sprintText: "28 Days stays.",
   },
   about: {
