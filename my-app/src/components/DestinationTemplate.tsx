@@ -60,6 +60,7 @@ export interface DestinationConfig {
     spotsLeft?: number;
     deadline?: string;
     planId?: string; // e.g., "varkala-14day", "varkala-28day"
+    deposit?: number;
   }[];
 
   documents: {
@@ -243,7 +244,7 @@ function DestinationTemplateInner({
             <DepositBookingCard
               destination={config.name}
               totalPrice={config.pricing.isStatic ? config.pricing.staticOriginal || 1799 : selectedTrip?.price || 1799}
-              depositAmount={config.pricing.deposit}
+              depositAmount={config.pricing.isStatic ? config.pricing.deposit : (selectedTrip?.deposit ?? config.pricing.deposit)}
               isCompleted={config.isCompleted}
               startDate={selectedTrip?.fromDate && selectedTrip?.toDate ? `${selectedTrip.fromDate} ${selectedTrip.toDate}` : "TBD"}
               planId={selectedTrip?.planId}

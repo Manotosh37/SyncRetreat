@@ -150,6 +150,7 @@ const varkalaConfig: DestinationConfig = {
       price: 1199,
       originalPrice: 1699,
       planId: "varkala-14day",
+      deposit: 199,
     },
     {
       fromDate: "OCTOBER",
@@ -160,6 +161,7 @@ const varkalaConfig: DestinationConfig = {
       price: 1799,
       originalPrice: 2099,
       planId: "varkala-28day",
+      deposit: 299,
     },
   ],
   documents: [
