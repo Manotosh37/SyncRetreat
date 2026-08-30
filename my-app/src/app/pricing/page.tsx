@@ -45,7 +45,7 @@ export default function PricingPage() {
 
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {PRICING_PLANS.map((plan) => (
               <div
                 key={plan.id}

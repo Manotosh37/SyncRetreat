@@ -9,11 +9,6 @@ interface RazorpayButtonProps {
   className?: string;
 }
 
-declare global {
-  interface Window {
-    Razorpay: any;
-  }
-}
 
 export const RazorpayButton: React.FC<RazorpayButtonProps> = ({
   amount,
@@ -73,7 +68,7 @@ export const RazorpayButton: React.FC<RazorpayButtonProps> = ({
 
       // Initialize Razorpay checkout
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "",
         amount: order.amount,
         currency: order.currency,
         name: "SyncRetreat",

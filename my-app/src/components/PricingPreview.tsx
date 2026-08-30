@@ -17,7 +17,7 @@ export default function PricingPreview() {
             Workation Plans
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto">
-            All-inclusive for Western professionals — accommodation through
+            All-inclusive for professionals accommodation through
             medical support.
           </p>
         </div>

@@ -1,13 +1,15 @@
 "use client";
-import React, { useState } from "react";
-import { Calendar, CheckCircle, X, Info } from "lucide-react";
-import { RazorpayButton } from "./RazorpayButton";
+import React from "react";
+import { CheckCircle, X } from "lucide-react";
+import Link from "next/link";
 
 interface DepositBookingCardProps {
   destination: string;
   totalPrice: number;
   depositAmount: number;
-  isCompleted?: boolean; // For retreats that are done
+  isCompleted?: boolean;
+  startDate?: string;
+  planId?: string;
 }
 
 export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
@@ -15,9 +17,27 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
   totalPrice,
   depositAmount,
   isCompleted = false,
+  startDate = "August 10, 2025",
+  planId,
 }) => {
-  const [selectedDate, setSelectedDate] = useState("October 10, 2025");
   const remainingAmount = totalPrice - depositAmount;
+
+  const getPlanId = () => {
+    // If planId is explicitly provided, use it
+    if (planId) return planId;
+    
+    // Otherwise, fallback to old logic
+    const destLower = destination.toLowerCase();
+    if (destLower.includes("varkala")) {
+      if (totalPrice === 1520) return "varkala-14day";
+      if (totalPrice === 1799) return "varkala-28day";
+      if (totalPrice === 3000) return "varkala-combo";
+    }
+    if (destLower.includes("ladakh")) {
+      return "ladakh-28day";
+    }
+    return "varkala-28day"; // default
+  };
 
   const included = [
     "Private airport transfers",
@@ -40,14 +60,12 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
   return (
     <div className="bg-white rounded-3xl shadow-2xl border-2 border-slate-100 overflow-hidden sticky top-24">
       <div className="p-8">
-        {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-slate-900 mb-2 uppercase tracking-wide">
             Reserve Your Workspace
           </h2>
         </div>
 
-        {/* Pricing Display */}
         <div className="text-center mb-6">
           <div className="text-6xl font-black text-emerald-600 mb-2">
             ${depositAmount}
@@ -57,7 +75,6 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
           </p>
         </div>
 
-        {/* Pricing Breakdown */}
         <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-6 mb-6">
           <div className="space-y-3">
             <div className="flex justify-between items-center pb-3 border-b border-slate-300">
@@ -79,28 +96,17 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
           </div>
         </div>
 
-        {/* Date Selection */}
         <div className="mb-6">
           <label className="block text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">
-            Choose Your Date
+            Retreat Start Date
           </label>
-          <div className="relative">
-            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-            <select
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 border-2 border-slate-300 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all font-semibold text-slate-900 bg-white appearance-none cursor-pointer"
-            >
-              <option>October 10, 2026</option>
-              <option>November 15, 2026</option>
-              <option>January 20, 2027</option>
-            </select>
+          <div className="bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-4 text-center">
+            <p className="font-bold text-slate-900 text-lg">{startDate}</p>
           </div>
         </div>
 
         <div className="border-t-2 border-slate-200 my-6"></div>
 
-        {/* Included Section */}
         <div className="mb-6">
           <h3 className="text-sm font-black text-slate-900 mb-4 uppercase tracking-wider">
             Included
@@ -112,15 +118,11 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
                 <span className="text-sm text-slate-700 leading-relaxed">{item}</span>
               </div>
             ))}
-            <button className="text-sm text-emerald-600 font-bold hover:text-emerald-700 transition-colors pl-8">
-              + {included.length - 3} more...
-            </button>
           </div>
         </div>
 
         <div className="border-t-2 border-slate-200 my-6"></div>
 
-        {/* Not Included Section */}
         <div className="mb-6">
           <h3 className="text-sm font-black text-slate-900 mb-4 uppercase tracking-wider">
             Not Included
@@ -132,15 +134,11 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
                 <span className="text-sm text-slate-600 leading-relaxed">{item}</span>
               </div>
             ))}
-            <button className="text-sm text-slate-600 font-bold hover:text-slate-700 transition-colors pl-8">
-              + {notIncluded.length - 3} more...
-            </button>
           </div>
         </div>
 
         <div className="border-t-2 border-slate-200 my-6"></div>
 
-        {/* Payment Button */}
         {isCompleted ? (
           <div className="bg-slate-100 border-2 border-slate-300 rounded-xl p-6 text-center">
             <p className="text-slate-600 font-bold uppercase tracking-wider text-sm mb-2">
@@ -152,13 +150,13 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
           </div>
         ) : (
           <>
-            <RazorpayButton
-              amount={depositAmount}
-              destination={destination}
-              onSuccess={(details) => console.log("Deposit paid:", details)}
-            />
+            <Link
+              href={`/checkout?plan=${getPlanId()}`}
+              className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/30 text-center uppercase tracking-wide"
+            >
+              Reserve for ${depositAmount}
+            </Link>
 
-            {/* Info Text */}
             <p className="text-xs text-center text-slate-500 mt-4 leading-relaxed">
               Secure payment • Refundable up to 60 days before retreat
             </p>

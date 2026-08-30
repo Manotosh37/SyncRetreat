@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import * as Icons from "lucide-react";
 import { Check, X, FileText, Download } from "lucide-react";
 import Image from "next/image";
@@ -58,6 +59,7 @@ export interface DestinationConfig {
     originalPrice?: number;
     spotsLeft?: number;
     deadline?: string;
+    planId?: string; // e.g., "varkala-14day", "varkala-28day"
   }[];
 
   documents: {
@@ -78,7 +80,29 @@ export default function DestinationTemplate({
 }: {
   config: DestinationConfig;
 }) {
-  const [selectedBatch, setSelectedBatch] = useState<number>(1);
+  const searchParams = useSearchParams();
+  const planParam = searchParams.get("plan");
+  
+  // Find initial batch based on plan parameter or default to first
+  const getInitialBatch = () => {
+    if (planParam) {
+      const trip = config.trips.find(t => t.planId === planParam);
+      if (trip) return trip.batchId;
+    }
+    return config.trips[0]?.batchId || 1;
+  };
+
+  const [selectedBatch, setSelectedBatch] = useState<number>(getInitialBatch());
+
+  // Update selected batch when plan parameter changes
+  useEffect(() => {
+    if (planParam) {
+      const trip = config.trips.find(t => t.planId === planParam);
+      if (trip) {
+        setSelectedBatch(trip.batchId);
+      }
+    }
+  }, [planParam, config.trips]);
 
   const selectedTrip =
     config.trips.find((t) => t.batchId === selectedBatch) || config.trips[0];
@@ -150,6 +174,62 @@ export default function DestinationTemplate({
                 );
               })}
             </div>
+
+            {/* Plan Selection - Only show if multiple trips available */}
+            {!config.pricing.isStatic && config.trips.length > 1 && (
+              <div className="mb-10">
+                <h3 className="text-xl font-bold text-slate-900 mb-4 uppercase tracking-wide">
+                  Choose Your Plan
+                </h3>
+                <div className="grid grid-cols-1 gap-3">
+                  {config.trips.map((trip) => (
+                    <button
+                      key={trip.batchId}
+                      onClick={() => setSelectedBatch(trip.batchId)}
+                      className={`relative p-4 rounded-xl border-2 transition-all text-left ${
+                        selectedBatch === trip.batchId
+                          ? "border-emerald-600 bg-emerald-50 shadow-lg shadow-emerald-600/10"
+                          : "border-slate-200 bg-white hover:border-emerald-300"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-bold text-slate-900">
+                              {trip.status}
+                            </h4>
+                            {trip.status.includes("28") && (
+                              <span className="text-xs bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold">
+                                Popular
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm text-slate-600">
+                            Starting {trip.fromDate} {trip.toDate}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          {trip.originalPrice && trip.originalPrice > (trip.price || 0) && (
+                            <p className="text-xs text-slate-400 line-through">
+                              ${trip.originalPrice}
+                            </p>
+                          )}
+                          <p className="text-2xl font-bold text-emerald-600">
+                            ${trip.price}
+                          </p>
+                        </div>
+                      </div>
+                      {selectedBatch === trip.batchId && (
+                        <div className="absolute top-4 left-4 w-5 h-5 bg-emerald-600 rounded-full flex items-center justify-center">
+                          <Check className="w-3 h-3 text-white" />
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <h3 className="text-2xl md:text-3xl font-bold uppercase tracking-wide text-slate-900 mb-10">
               Things You Will Do
             </h3>
@@ -165,6 +245,8 @@ export default function DestinationTemplate({
               totalPrice={config.pricing.isStatic ? config.pricing.staticOriginal || 1799 : selectedTrip?.price || 1799}
               depositAmount={config.pricing.deposit}
               isCompleted={config.isCompleted}
+              startDate={selectedTrip?.fromDate && selectedTrip?.toDate ? `${selectedTrip.fromDate} ${selectedTrip.toDate}` : "TBD"}
+              planId={selectedTrip?.planId}
             />
           </div>
         </div>

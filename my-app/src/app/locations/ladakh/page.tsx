@@ -150,6 +150,7 @@ const ladakhConfig: DestinationConfig = {
       batchId: 2,
       price: 1799,
       originalPrice: 2099,
+      planId: "ladakh-28day",
     },
   ],
   documents: [
