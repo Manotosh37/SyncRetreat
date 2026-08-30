@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SyncRetreat Varkala — Coastal Deep Work Retreat for Engineers",
     description:
-      "Private villa with pool, Dual-WAN fiber, chef meals, and curated cliff beach weekends in Varkala. 28-day co-living for software engineers. October 2025 cohort coming soon.",
+      "Private villa with pool, Dual-WAN fiber, chef meals, and curated cliff beach weekends in Varkala. 28-day co-living for software engineers. October 202 cohort coming soon.",
     url: "https://syncretreat.com/locations/varkala",
     images: [
       {
@@ -142,34 +142,24 @@ const varkalaConfig: DestinationConfig = {
   },
   trips: [
     {
-      fromDate: "AUGUST",
-      toDate: "2025",
+      fromDate: "OCTOBER",
+      toDate: "2026",
       tripNumber: "01",
       status: "14-Day Plan",
       batchId: 1,
-      price: 1520,
+      price: 1199,
       originalPrice: 1699,
       planId: "varkala-14day",
     },
     {
-      fromDate: "AUGUST",
-      toDate: "2025",
+      fromDate: "OCTOBER",
+      toDate: "2026",
       tripNumber: "02",
       status: "28-Day Plan",
       batchId: 2,
       price: 1799,
       originalPrice: 2099,
       planId: "varkala-28day",
-    },
-    {
-      fromDate: "AUGUST",
-      toDate: "2025",
-      tripNumber: "03",
-      status: "Combo 14+28",
-      batchId: 3,
-      price: 3000,
-      originalPrice: 3798,
-      planId: "varkala-combo",
     },
   ],
   documents: [
@@ -183,7 +173,7 @@ const varkalaConfig: DestinationConfig = {
       file: "SyncRetreat_Alignment_Protocol.pdf",
     },
   ],
-  formDestinationOptions: ["Varkala - August 2025"],
+  formDestinationOptions: ["Varkala - Oct 19th, 2026"],
 };
 
 import Schema from "../../../components/Schema";
@@ -224,11 +214,11 @@ const varkalaGraph = {
     // ── Event: October 2025 Cohort ────────────────────────────────────────
     makeEventSchema({
       inGraph: true,
-      name: "SyncRetreat Varkala — October 2025 Coastal Sprint (28 Days)",
+      name: "SyncRetreat Varkala — October 2026 Coastal Sprint (28 Days)",
       description:
         "28-day coastal deep work retreat in Varkala, Kerala, India. Enterprise-grade Dual-WAN internet, ergonomic workstations, private villa with pool, chef-prepared meals, and curated cliff beach excursions for software engineers and remote professionals.",
-      startDate: "2025-10-10",
-      endDate: "2025-11-06",
+      startDate: "2026-10-19",
+      endDate: "2026-11-16",
       locationName: "SyncRetreat Varkala Villa",
       locationLocality: "Varkala",
       locationRegion: "Kerala",

@@ -180,8 +180,6 @@ export default function PricingPage() {
           </Link>
         </div>
       </section>
-
-      <Footer />
     </>
   );
 }

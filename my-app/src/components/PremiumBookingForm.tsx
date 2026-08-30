@@ -19,7 +19,7 @@ export const DepositBookingModal: React.FC<DepositBookingModalProps> = ({
   totalPrice,
   depositAmount,
 }) => {
-  const [selectedDate, setSelectedDate] = useState("October 10, 2025");
+  const [selectedDate, setSelectedDate] = useState("October 19, 2026");
   const remainingAmount = totalPrice - depositAmount;
 
   if (!isOpen) return null;
@@ -104,9 +104,9 @@ export const DepositBookingModal: React.FC<DepositBookingModalProps> = ({
                 onChange={(e) => setSelectedDate(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all font-semibold"
               >
-                <option>October 10, 2025</option>
-                <option>November 15, 2025</option>
-                <option>December 20, 2025</option>
+                <option>October 19, 2026</option>
+                <option>November 15, 2026</option>
+                <option>December 17, 2026</option>
               </select>
             </div>
           </div>

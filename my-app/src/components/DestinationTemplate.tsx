@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import * as Icons from "lucide-react";
 import { Check, X, FileText, Download } from "lucide-react";
@@ -75,7 +75,7 @@ import { Card, ImgCard, PlaceCard, Section } from "./DestinationUI";
 
 // ============= MAIN TEMPLATE =============
 
-export default function DestinationTemplate({
+function DestinationTemplateInner({
   config,
 }: {
   config: DestinationConfig;
@@ -337,5 +337,17 @@ export default function DestinationTemplate({
         </div>
       </Section>
     </>
+  );
+}
+
+export default function DestinationTemplate(props: { config: DestinationConfig }) {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-500 font-medium">
+        Loading...
+      </div>
+    }>
+      <DestinationTemplateInner {...props} />
+    </Suspense>
   );
 }

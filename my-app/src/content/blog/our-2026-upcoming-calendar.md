@@ -16,7 +16,7 @@ Watch out our calendar for more details.
 ## SEE THE FULL Q2 & Q3 2025 CALENDAR HERE:
 
 1. **Ladakh, India** 21st - 26th July 2025
-2. **Varkala, Kerala, India** Starting from October 10th, 2025
+2. **Varkala, Kerala, India** Starting from October 19th, 2026
 3. **Upcoming across India** Stay Tuned!!!
 
 ---

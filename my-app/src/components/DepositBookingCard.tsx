@@ -29,7 +29,7 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
     // Otherwise, fallback to old logic
     const destLower = destination.toLowerCase();
     if (destLower.includes("varkala")) {
-      if (totalPrice === 1520) return "varkala-14day";
+      if (totalPrice === 1199) return "varkala-14day";
       if (totalPrice === 1799) return "varkala-28day";
       if (totalPrice === 3000) return "varkala-combo";
     }
