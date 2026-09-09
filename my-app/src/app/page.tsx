@@ -5,6 +5,7 @@ import Infra from "../components/Infra";
 import DayInTheLife from "../components/DayInTheLife";
 import FaqSection from "../components/FaqSection";
 import Schema from "../components/Schema";
+import { VideoReelSection } from "../components/VideoReelSection";
 import { makeFAQSchema } from "../lib/schemas";
 import { COST_FAQ_ANSWER } from "../lib/shared-constants";
 import { Metadata } from "next";
@@ -61,11 +62,19 @@ export default function Home() {
     <>
       <Schema schema={makeFAQSchema(homepageFaqs)} />
       <Hero />
+      
+      {/* Video Reel Section */}
+      <VideoReelSection
+        videoUrl="https://www.instagram.com/reel/DdEmrWKNTM_/"
+        title="Experience SyncRetreat"
+        subtitle="See what a month of deep work and adventure looks like"
+      />
+      
       <div id="application-form">
         <Form />
       </div>
-      <Infra />
       <PricingPreview />
+      <Infra />
       <DayInTheLife />
       <FaqSection />
     </>

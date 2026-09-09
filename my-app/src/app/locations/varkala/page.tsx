@@ -42,7 +42,7 @@ const varkalaConfig: DestinationConfig = {
     subtitle: "Coastal Focus Retreat",
     title: "VARKALA.",
     locationText: "Varkala, Kerala, India",
-    dateRangeText: "Starting 10th October 2026",
+    dateRangeText: "Starting 16th October 2026",
     sprintText: "28 Days stays.",
   },
   about: {
@@ -142,7 +142,7 @@ const varkalaConfig: DestinationConfig = {
   },
   trips: [
     {
-      fromDate: "OCTOBER",
+      fromDate: "OCTOBER 18",
       toDate: "2026",
       tripNumber: "01",
       status: "14-Day Plan",
@@ -151,9 +151,16 @@ const varkalaConfig: DestinationConfig = {
       originalPrice: 1699,
       planId: "varkala-14day",
       deposit: 199,
+      availableDates: [
+        { id: "oct-18", label: "October 18, 2026", startDate: "2026-10-18", endDate: "2026-10-31" },
+        { id: "nov-1", label: "November 1, 2026", startDate: "2026-11-01", endDate: "2026-11-14" },
+        { id: "nov-15", label: "November 15, 2026", startDate: "2026-11-15", endDate: "2026-11-28" },
+        { id: "nov-29", label: "November 29, 2026", startDate: "2026-11-29", endDate: "2026-12-12" },
+        { id: "dec-13", label: "December 13, 2026", startDate: "2026-12-13", endDate: "2026-12-26" },
+      ],
     },
     {
-      fromDate: "OCTOBER",
+      fromDate: "OCTOBER 18",
       toDate: "2026",
       tripNumber: "02",
       status: "28-Day Plan",
@@ -162,6 +169,11 @@ const varkalaConfig: DestinationConfig = {
       originalPrice: 2099,
       planId: "varkala-28day",
       deposit: 299,
+      availableDates: [
+        { id: "oct-18", label: "October 18, 2026", startDate: "2026-10-18", endDate: "2026-11-14" },
+        { id: "nov-15", label: "November 15, 2026", startDate: "2026-11-15", endDate: "2026-12-12" },
+        { id: "dec-13", label: "December 13, 2026", startDate: "2026-12-13", endDate: "2027-01-09" },
+      ],
     },
   ],
   documents: [

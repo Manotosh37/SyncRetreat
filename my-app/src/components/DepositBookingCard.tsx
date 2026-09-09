@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { CheckCircle, X } from "lucide-react";
+import { CheckCircle, X, Calendar } from "lucide-react";
 import Link from "next/link";
 
 interface DepositBookingCardProps {
@@ -10,6 +10,20 @@ interface DepositBookingCardProps {
   isCompleted?: boolean;
   startDate?: string;
   planId?: string;
+  availableDates?: Array<{
+    id: string;
+    label: string;
+    startDate: string;
+    endDate: string;
+  }>;
+  selectedDateId?: string | null;
+  onDateChange?: (dateId: string) => void;
+  selectedDateData?: {
+    id: string;
+    label: string;
+    startDate: string;
+    endDate: string;
+  };
 }
 
 export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
@@ -19,6 +33,10 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
   isCompleted = false,
   startDate = "August 10, 2025",
   planId,
+  availableDates,
+  selectedDateId,
+  onDateChange,
+  selectedDateData,
 }) => {
   const remainingAmount = totalPrice - depositAmount;
 
@@ -29,7 +47,7 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
     // Otherwise, fallback to old logic
     const destLower = destination.toLowerCase();
     if (destLower.includes("varkala")) {
-      if (totalPrice === 1199) return "varkala-14day";
+      if (totalPrice === 1520) return "varkala-14day";
       if (totalPrice === 1799) return "varkala-28day";
       if (totalPrice === 3000) return "varkala-combo";
     }
@@ -100,9 +118,31 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
           <label className="block text-sm font-bold text-slate-900 mb-3 uppercase tracking-wider">
             Retreat Start Date
           </label>
-          <div className="bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-4 text-center">
-            <p className="font-bold text-slate-900 text-lg">{startDate}</p>
-          </div>
+          {availableDates && availableDates.length > 0 ? (
+            <div className="relative">
+              <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none z-10" />
+              <select
+                value={selectedDateId || ""}
+                onChange={(e) => onDateChange?.(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 border-2 border-slate-300 rounded-xl focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all font-semibold text-slate-900 bg-white appearance-none cursor-pointer"
+              >
+                {availableDates.map((date) => (
+                  <option key={date.id} value={date.id}>
+                    {date.label}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg className="w-5 h-5 text-slate-400" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-4 text-center">
+              <p className="font-bold text-slate-900 text-lg">{startDate}</p>
+            </div>
+          )}
         </div>
 
         <div className="border-t-2 border-slate-200 my-6"></div>
@@ -151,7 +191,7 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
         ) : (
           <>
             <Link
-              href={`/checkout?plan=${getPlanId()}`}
+              href={`/checkout?plan=${getPlanId()}${selectedDateData ? `&startDate=${selectedDateData.startDate}&endDate=${selectedDateData.endDate}` : ''}`}
               className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/30 text-center uppercase tracking-wide"
             >
               Reserve for ${depositAmount}

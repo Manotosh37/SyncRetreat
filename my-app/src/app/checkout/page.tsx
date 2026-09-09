@@ -32,10 +32,10 @@ const pricingPlans = {
     id: "varkala-14day",
     label: "14-Day Varkala Workation",
     destination: "Varkala, Kerala",
-    price: 1199,
+    price: 1520,
     deposit: 199,
     duration: "14 days",
-    startDate: "August 10, 2025",
+    startDate: "October 18, 2026",
     completed: false,
     popular: false,
   },
@@ -46,7 +46,7 @@ const pricingPlans = {
     price: 1799,
     deposit: 299,
     duration: "28 days",
-    startDate: "August 10, 2025",
+    startDate: "October 18, 2026",
     popular: true,
     completed: false,
   },
@@ -119,6 +119,10 @@ function CheckoutContent() {
   const planParam = searchParams.get("plan") || "varkala-28day";
   const selectedPlanData = pricingPlans[planParam as keyof typeof pricingPlans] || pricingPlans["varkala-28day"];
   
+  // Get selected dates from URL
+  const startDateParam = searchParams.get("startDate");
+  const endDateParam = searchParams.get("endDate");
+  
   const [form, setForm] = useState<FormData>({
     name: "",
     email: "",
@@ -133,6 +137,13 @@ function CheckoutContent() {
   const isEnterprise = form.plan === "enterprise" || form.plan === "yearly";
   const isCompleted = currentPlan.completed;
   const depositAmount = currentPlan.deposit;
+
+  // Determine the display date
+  const displayStartDate = startDateParam ? new Date(startDateParam).toLocaleDateString('en-US', { 
+    month: 'long', 
+    day: 'numeric', 
+    year: 'numeric' 
+  }) : currentPlan.startDate;
 
   const update = <K extends keyof FormData>(field: K, value: FormData[K]) =>
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -221,6 +232,9 @@ function CheckoutContent() {
                   plan: currentPlan.label,
                   destination: currentPlan.destination,
                   amount: orderData.amount,
+                  startDate: startDateParam || currentPlan.startDate,
+                  endDate: endDateParam || "",
+                  retreatDates: startDateParam ? `${new Date(startDateParam).toLocaleDateString()} - ${new Date(endDateParam || startDateParam).toLocaleDateString()}` : currentPlan.startDate,
                 },
               }),
             });
@@ -378,10 +392,10 @@ function CheckoutContent() {
                         <MapPin className="w-4 h-4" />
                         {currentPlan.destination}
                       </p>
-                      {currentPlan.startDate && (
+                      {displayStartDate && (
                         <p className="text-sm text-slate-600 flex items-center gap-1.5 mt-1">
                           <Calendar className="w-4 h-4" />
-                          Starting {currentPlan.startDate}
+                          Starting {displayStartDate}
                         </p>
                       )}
                       {currentPlan.popular && (

@@ -61,6 +61,12 @@ export interface DestinationConfig {
     deadline?: string;
     planId?: string; // e.g., "varkala-14day", "varkala-28day"
     deposit?: number;
+    availableDates?: Array<{
+      id: string;
+      label: string;
+      startDate: string;
+      endDate: string;
+    }>;
   }[];
 
   documents: {
@@ -94,6 +100,7 @@ function DestinationTemplateInner({
   };
 
   const [selectedBatch, setSelectedBatch] = useState<number>(getInitialBatch());
+  const [selectedDateId, setSelectedDateId] = useState<string | null>(null);
 
   // Update selected batch when plan parameter changes
   useEffect(() => {
@@ -101,12 +108,24 @@ function DestinationTemplateInner({
       const trip = config.trips.find(t => t.planId === planParam);
       if (trip) {
         setSelectedBatch(trip.batchId);
+        // Reset date selection when plan changes
+        setSelectedDateId(trip.availableDates?.[0]?.id || null);
       }
     }
   }, [planParam, config.trips]);
 
   const selectedTrip =
     config.trips.find((t) => t.batchId === selectedBatch) || config.trips[0];
+
+  // Initialize selected date if not set
+  useEffect(() => {
+    if (!selectedDateId && selectedTrip?.availableDates) {
+      setSelectedDateId(selectedTrip.availableDates[0]?.id || null);
+    }
+  }, [selectedTrip, selectedDateId]);
+
+  // Get the actual selected date object
+  const selectedDate = selectedTrip?.availableDates?.find(d => d.id === selectedDateId);
 
   return (
     <>
@@ -246,8 +265,12 @@ function DestinationTemplateInner({
               totalPrice={config.pricing.isStatic ? config.pricing.staticOriginal || 1799 : selectedTrip?.price || 1799}
               depositAmount={config.pricing.isStatic ? config.pricing.deposit : (selectedTrip?.deposit ?? config.pricing.deposit)}
               isCompleted={config.isCompleted}
-              startDate={selectedTrip?.fromDate && selectedTrip?.toDate ? `${selectedTrip.fromDate} ${selectedTrip.toDate}` : "TBD"}
+              startDate={selectedDate?.label || (selectedTrip?.fromDate && selectedTrip?.toDate ? `${selectedTrip.fromDate} ${selectedTrip.toDate}` : "TBD")}
               planId={selectedTrip?.planId}
+              availableDates={selectedTrip?.availableDates}
+              selectedDateId={selectedDateId}
+              onDateChange={setSelectedDateId}
+              selectedDateData={selectedDate}
             />
           </div>
         </div>
