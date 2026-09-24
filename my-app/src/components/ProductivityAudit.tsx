@@ -884,7 +884,7 @@ export default function ProductivityAudit() {
                 Book a 15-min Call →
               </Link>
               <a
-                href="https://cal.com/syncretreat/meet"
+                href="https://cal.com/syncretreat/quick-chat"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-full transition-all text-sm"

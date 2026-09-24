@@ -10,6 +10,8 @@ import {
   Mail,
   Phone,
   MapPin,
+  PhoneCall,
+  ExternalLink,
 } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -529,6 +531,27 @@ function CheckoutContent() {
                       ? "We'll respond within 24 hours"
                       : "Secured by Razorpay • Refundable up to 60 days before retreat"}
                   </p>
+
+                  {/* Reserve a Call Option via Cal.com */}
+                  <div className="mt-6 pt-5 border-t border-slate-200 text-center">
+                    <div className="flex items-center justify-center gap-1.5 text-xs text-slate-600 font-medium mb-2.5">
+                      <PhoneCall className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Have doubts or want to speak with us first?</span>
+                    </div>
+                    <a
+                      href="https://cal.com/syncretreat/quick-chat"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3.5 px-4 rounded-xl border border-slate-300 hover:border-emerald-600 bg-white hover:bg-slate-50 text-slate-800 hover:text-emerald-700 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 shadow-sm hover:shadow"
+                    >
+                      <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Reserve a 15-Min Call via Cal.com</span>
+                      <ExternalLink className="w-3 h-3 opacity-60 ml-0.5" />
+                    </a>
+                    <p className="text-[11px] text-slate-400 mt-2">
+                      Direct 1-on-1 with founders · Clear your doubts about WiFi, stay, dates & itinerary
+                    </p>
+                  </div>
                 </div>
               </form>
             </motion.div>

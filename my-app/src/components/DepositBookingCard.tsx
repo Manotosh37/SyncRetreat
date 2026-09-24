@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { CheckCircle, X, Calendar } from "lucide-react";
+import { CheckCircle, X, Calendar, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface DepositBookingCardProps {
@@ -24,6 +24,7 @@ interface DepositBookingCardProps {
     startDate: string;
     endDate: string;
   };
+  calLink?: string;
 }
 
 export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
@@ -37,6 +38,7 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
   selectedDateId,
   onDateChange,
   selectedDateData,
+  calLink = "https://cal.com/syncretreat/quick-chat",
 }) => {
   const remainingAmount = totalPrice - depositAmount;
 
@@ -184,9 +186,18 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
             <p className="text-slate-600 font-bold uppercase tracking-wider text-sm mb-2">
               This Retreat is Complete
             </p>
-            <p className="text-slate-500 text-xs">
+            <p className="text-slate-500 text-xs mb-4">
               Check back soon for upcoming dates
             </p>
+            <a
+              href={calLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wide transition-all"
+            >
+              <Calendar className="w-4 h-4 text-emerald-400" />
+              <span>Ask About Future Dates</span>
+            </a>
           </div>
         ) : (
           <>
@@ -197,9 +208,37 @@ export const DepositBookingCard: React.FC<DepositBookingCardProps> = ({
               Reserve for ${depositAmount}
             </Link>
 
-            <p className="text-xs text-center text-slate-500 mt-4 leading-relaxed">
+            <p className="text-xs text-center text-slate-500 mt-3 leading-relaxed">
               Secure payment • Refundable up to 60 days before retreat
             </p>
+
+            {/* Direct Founder/Team Call via Cal.com */}
+            <div className="mt-5 pt-4 border-t border-slate-200">
+              <div className="flex items-center justify-between mb-2.5">
+                <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-700">
+                  Need Clarity First?
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  15-Min 1-on-1 Call
+                </span>
+              </div>
+
+              <a
+                href={calLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center gap-2 w-full bg-stone-900 hover:bg-black text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 text-center text-xs uppercase tracking-wider shadow-md hover:shadow-lg"
+              >
+                <Calendar className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+                <span>Reserve a Call on Cal.com</span>
+                <ArrowRight className="w-3.5 h-3.5 text-stone-400 group-hover:translate-x-1 transition-transform" />
+              </a>
+
+              <p className="text-[11px] text-center text-slate-500 mt-2 leading-relaxed">
+                Connect directly with our team to clear your doubts and get all questions answered before reserving.
+              </p>
+            </div>
           </>
         )}
       </div>

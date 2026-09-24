@@ -2,12 +2,13 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Users } from "lucide-react";
+import { Users, PhoneCall } from "lucide-react";
 
 const SURGE_MESSAGES = [
   "🔥 High demand: 3 bookings in last 2 hours",
   "⚡ Fast filling up for October",
   "✨ 6/16 seats left · Varkala Oct 19",
+  "💬 Have doubts? Reserve a call with us",
 ];
 
 export default function LiveSeatsPill() {
@@ -38,10 +39,10 @@ export default function LiveSeatsPill() {
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: -50, opacity: 0, scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="fixed top-6 left-1/2 -translate-x-1/2 z-100 w-max max-w-[90vw]"
+          className="fixed top-6 left-1/2 -translate-x-1/2 z-100 w-max max-w-[92vw]"
         >
           {/* Glassmorphism Pill */}
-          <div className="bg-white/95 dark:bg-black/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 shadow-2xl rounded-full px-5 py-2.5 flex items-center gap-3">
+          <div className="bg-white/95 dark:bg-black/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 shadow-2xl rounded-full px-4 py-2 sm:px-5 sm:py-2.5 flex items-center gap-2.5 sm:gap-3">
             
             {/* Live Pulsing Dot */}
             <div className="relative flex h-3 w-3 items-center justify-center">
@@ -53,7 +54,7 @@ export default function LiveSeatsPill() {
             <Users size={14} className="text-zinc-500 hidden sm:block" />
 
             {/* Ticker Text */}
-            <div className="relative overflow-hidden h-5 w-56 sm:w-64 text-sm font-medium text-zinc-800 dark:text-zinc-200 tracking-tight">
+            <div className="relative overflow-hidden h-5 w-52 sm:w-64 text-sm font-medium text-zinc-800 dark:text-zinc-200 tracking-tight">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={messageIndex}
@@ -67,6 +68,20 @@ export default function LiveSeatsPill() {
                 </motion.span>
               </AnimatePresence>
             </div>
+
+            {/* Reserve a Call Link */}
+            <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-700 mx-0.5" />
+            <a
+              href="https://cal.com/syncretreat/quick-chat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-(--copper)/10 hover:bg-(--copper)/20 text-(--copper) text-xs font-semibold tracking-wide transition-all whitespace-nowrap shadow-xs hover:scale-105"
+              title="Schedule a 1-on-1 call with founders on Cal.com"
+            >
+              <PhoneCall size={12} />
+              <span className="hidden xs:inline sm:inline">Reserve a Call</span>
+              <span className="inline xs:hidden sm:hidden">Call</span>
+            </a>
           </div>
         </motion.div>
       )}
