@@ -1,0 +1,136 @@
+"use client";
+import { motion } from "framer-motion";
+import { MapPin, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Fragment } from "react";
+
+const destinations = [
+  {
+    title: "Varkala, Kerala",
+    tagline: "Clifftop Coastal Retreat",
+    description: "Red laterite cliffs meeting the Arabian Sea. Morning yoga, fresh seafood, and sunset co-working sessions by the ocean.",
+    status: "Next Up",
+    statusColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
+    image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=1470&auto=format&fit=crop",
+    region: "Kerala",
+    href: "/varkala",
+    highlight: true,
+  },
+  {
+    title: "Ladakh",
+    tagline: "High Altitude Escape",
+    description: "The original Sync Retreat location. Rugged landscapes, Buddhist monasteries, and crystal-clear mountain air at 3,524m.",
+    status: "Past Retreat",
+    statusColor: "bg-zinc-100 text-zinc-600 border-zinc-200",
+    image: "https://images.unsplash.com/photo-1600242466690-c1c04f081762?q=80&w=1470&auto=format&fit=crop",
+    region: "Jammu & Kashmir",
+  },
+  {
+    title: "Manali, Himachal",
+    tagline: "Mountain Valley Focus",
+    description: "Pine forests, snow-capped peaks, and the gentle Beas river. A Himalayan setting for clear thinking and deep work.",
+    status: "Coming Soon",
+    statusColor: "bg-amber-100 text-amber-800 border-amber-200",
+    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bWFuYWxpfGVufDB8MHwwfHx8MA%3D%3D",
+    region: "Himachal Pradesh",
+  },
+  {
+    title: "Jaipur, Rajasthan",
+    tagline: "Royal Heritage Workation",
+    description: "Pink city grandeur, centuries-old havelis, and the warm light of the Thar Desert. Culture meets productivity.",
+    status: "Coming Soon",
+    statusColor: "bg-amber-100 text-amber-800 border-amber-200",
+    image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2070&auto=format&fit=crop",
+    region: "Rajasthan",
+  },
+];
+
+export default function PlacesToSee() {
+  return (
+    <section id="destinations" className="bg-white text-zinc-900 py-12 md:py-14 px-6 md:px-12 lg:px-24 border-t border-stone-200">
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header */}
+        <div className="max-w-3xl mb-7">
+          <span className="text-xs font-mono tracking-[0.4em] text-(--copper) uppercase mb-2 block">
+            DESTINATIONS
+          </span>
+          <h2 className="text-3xl md:text-4xl font-serif font-medium tracking-tight">
+            Varkala now. More locations later.
+          </h2>
+          <p className="text-zinc-500 font-sans text-sm md:text-base leading-relaxed mt-2">
+            Varkala is the currently bookable retreat. Manali and Jaipur are future locations, not alternative dates for this booking.
+          </p>
+        </div>
+
+        {/* Grid */}
+        <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.3em] text-(--copper)">CURRENTLY BOOKABLE</p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {destinations.map((dest, idx) => (
+            <Fragment key={dest.title}>
+            {idx === 1 && <p className="col-span-full mb-0 mt-3 font-mono text-xs font-bold uppercase tracking-[0.3em] text-zinc-400">FUTURE LOCATIONS &amp; PAST RETREATS</p>}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1, duration: 0.5 }}
+              className={`group flex flex-col rounded-3xl overflow-hidden border transition-all duration-300 ${
+                dest.highlight
+                  ? "bg-(--basalt) border-(--copper)/30 shadow-xl shadow-(--copper)/10 lg:col-span-2"
+                  : "bg-stone-50 border-stone-200 hover:shadow-lg hover:border-stone-300"
+              }`}
+            >
+              {/* Image Frame */}
+              <div className={`overflow-hidden relative ${dest.highlight ? "h-44 md:h-48" : "h-24 md:h-28"}`}>
+                <Image
+                  src={dest.image}
+                  alt={dest.title}
+                  fill
+                  unoptimized
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
+                {/* Status badge */}
+                <div className={`absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-mono font-bold uppercase tracking-wider border ${dest.statusColor} ${dest.highlight ? "bg-emerald-500 text-white border-emerald-400" : ""}`}>
+                  {dest.status === "Next Up" && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />}
+                  {dest.status}
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className={`${dest.highlight ? "p-4 md:p-5" : "p-4"} grow flex flex-col`}>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <MapPin size={11} className={dest.highlight ? "text-(--copper-light)" : "text-(--copper)"} />
+                  <span className={`text-[10px] font-mono uppercase tracking-wider ${dest.highlight ? "text-zinc-400" : "text-zinc-400"}`}>
+                    {dest.region}
+                  </span>
+                </div>
+                <h3 className={`text-lg font-serif font-bold mb-1 ${dest.highlight ? "text-white" : "text-zinc-900"}`}>
+                  {dest.title}
+                </h3>
+                <p className={`text-xs font-mono uppercase tracking-wider mb-3 ${dest.highlight ? "text-(--copper-light)" : "text-(--copper)"}`}>
+                  {dest.tagline}
+                </p>
+                <p className={`text-xs leading-relaxed grow ${dest.highlight ? "text-zinc-400" : "text-zinc-500 line-clamp-2"}`}>
+                  {dest.description}
+                </p>
+
+                {dest.href && (
+                  <Link
+                    href={dest.href}
+                    className="mt-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white bg-(--copper) px-4 py-2.5 rounded-full hover:bg-(--copper-dark) transition-colors"
+                  >
+                    Book Varkala <ArrowRight size={13} />
+                  </Link>
+                )}
+              </div>
+            </motion.div>
+            </Fragment>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

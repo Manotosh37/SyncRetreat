@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import FloatingAbout from './FloatingAbout';
 import { Toaster } from './ui/toast';
 
 export default function LayoutContent({ children }: { children: React.ReactNode }) {
@@ -24,6 +25,7 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
     <div className="min-h-screen bg-[#fefbf7]">
       <Toaster />
       <Navbar />
+      <FloatingAbout />
       <main id="main-content">
         {children}
       </main>

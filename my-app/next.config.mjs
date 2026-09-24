@@ -40,9 +40,24 @@ const nextConfig = {
     ],
   },
 
-  // 301 Permanent Redirect www.syncretreat.com -> syncretreat.com
+  // 301 Permanent Redirect www.syncretreat.com -> syncretreat.com & /book -> /varkala
   async redirects() {
     return [
+      {
+        source: '/book',
+        destination: '/varkala',
+        permanent: false,
+      },
+      {
+        source: '/book/varkala',
+        destination: '/varkala',
+        permanent: false,
+      },
+      {
+        source: '/book-varkala',
+        destination: '/varkala',
+        permanent: false,
+      },
       {
         source: '/:path*',
         has: [

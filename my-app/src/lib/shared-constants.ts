@@ -160,7 +160,7 @@ export const PRICING_PLANS = [
     cta: "Book Now",
     status: "Active" as const,
     featured: false,
-    link: "/locations/varkala?plan=varkala-14day",
+    link: "/varkala",
   },
   {
     id: "28-day",
@@ -175,7 +175,7 @@ export const PRICING_PLANS = [
     cta: "Book Now",
     status: "Active" as const,
     featured: true,
-    link: "/locations/varkala?plan=varkala-28day",
+    link: "/varkala",
   },
   {
     id: "enterprise",
